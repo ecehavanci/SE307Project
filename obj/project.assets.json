@@ -2026,19 +2026,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\eceha\\.nuget\\packages\\": {}
+    "C:\\Users\\SILA\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\eceha\\source\\repos\\SE307Project\\SE307Project.csproj",
+      "projectUniqueName": "C:\\Users\\SILA\\MyGitFiles\\SE307Project\\SE307Project.csproj",
       "projectName": "SE307Project",
-      "projectPath": "C:\\Users\\eceha\\source\\repos\\SE307Project\\SE307Project.csproj",
-      "packagesPath": "C:\\Users\\eceha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\eceha\\source\\repos\\SE307Project\\obj\\",
+      "projectPath": "C:\\Users\\SILA\\MyGitFiles\\SE307Project\\SE307Project.csproj",
+      "packagesPath": "C:\\Users\\SILA\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\SILA\\MyGitFiles\\SE307Project\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\eceha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\SILA\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2084,7 +2084,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.415\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }
