@@ -1,0 +1,16 @@
+C:\Users\eceha\source\repos\SE307Project\obj\Debug\netcoreapp3.1\SE307Project.csproj.AssemblyReference.cache
+C:\Users\eceha\source\repos\SE307Project\obj\Debug\netcoreapp3.1\SE307Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\eceha\source\repos\SE307Project\obj\Debug\netcoreapp3.1\SE307Project.AssemblyInfoInputs.cache
+C:\Users\eceha\source\repos\SE307Project\obj\Debug\netcoreapp3.1\SE307Project.AssemblyInfo.cs
+C:\Users\eceha\source\repos\SE307Project\obj\Debug\netcoreapp3.1\SE307Project.csproj.CoreCompileInputs.cache
+C:\Users\eceha\source\repos\SE307Project\bin\Debug\netcoreapp3.1\SE307Project.exe
+C:\Users\eceha\source\repos\SE307Project\bin\Debug\netcoreapp3.1\SE307Project.deps.json
+C:\Users\eceha\source\repos\SE307Project\bin\Debug\netcoreapp3.1\SE307Project.runtimeconfig.json
+C:\Users\eceha\source\repos\SE307Project\bin\Debug\netcoreapp3.1\SE307Project.runtimeconfig.dev.json
+C:\Users\eceha\source\repos\SE307Project\bin\Debug\netcoreapp3.1\SE307Project.dll
+C:\Users\eceha\source\repos\SE307Project\bin\Debug\netcoreapp3.1\SE307Project.pdb
+C:\Users\eceha\source\repos\SE307Project\bin\Debug\netcoreapp3.1\CsvHelper.dll
+C:\Users\eceha\source\repos\SE307Project\obj\Debug\netcoreapp3.1\SE307Project.csproj.CopyComplete
+C:\Users\eceha\source\repos\SE307Project\obj\Debug\netcoreapp3.1\SE307Project.dll
+C:\Users\eceha\source\repos\SE307Project\obj\Debug\netcoreapp3.1\SE307Project.pdb
+C:\Users\eceha\source\repos\SE307Project\obj\Debug\netcoreapp3.1\SE307Project.genruntimeconfig.cache

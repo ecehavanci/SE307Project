@@ -8,7 +8,7 @@ namespace SE307Project
         private List<PetOwner> PetOwnerContacts;
         private List<Request> Requests;
 
-        public PetSitter()
+        public PetSitter(string name, string surname, string email, string password, string Location):base(name,surname,email,password,Location)
         {
             Comments = new List<Comment>();
             PetOwnerContacts = new List<PetOwner>();
@@ -30,7 +30,7 @@ namespace SE307Project
         }
         public void ReadRequests()
         {
-
+            
         }
 
         public void ShowCommentsAndRates()

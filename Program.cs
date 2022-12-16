@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SE307Project
 {
@@ -6,7 +7,11 @@ namespace SE307Project
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            PetSitter sitter = new PetSitter("name","surname","email","pass","Location");
+            FileHandler hander = new FileHandler();
+            var users = new List<User>();
+            users.Add(sitter);
+            hander.saveToCSV();
         }
     }
 }
