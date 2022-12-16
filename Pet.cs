@@ -2,7 +2,7 @@
 
 namespace SE307Project
 {
-    internal class Pet
+    public class Pet
     {
         private int Age;
         private string Breed;

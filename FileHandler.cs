@@ -11,7 +11,7 @@ using System.Collections;
 
 namespace SE307Project
 {
-    class FileHandler
+    public class FileHandler
     {
         public void saveToCSV()
         {

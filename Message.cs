@@ -2,7 +2,7 @@
 
 namespace SE307Project
 {
-    class Message
+    public class Message
     {
         private DateTime Date;
         private String SenderMail;

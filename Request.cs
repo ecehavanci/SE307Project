@@ -2,7 +2,7 @@
 
 namespace SE307Project
 {
-    class Request
+    public class Request
     {
         private string RequestOwnerName;
         private ArrayList RequestedPets;

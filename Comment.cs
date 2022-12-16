@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SE307Project
 {
-    class Comment
+    public class Comment
     {
         private DateTime Date;
         private String SenderName;

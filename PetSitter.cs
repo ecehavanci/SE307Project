@@ -2,7 +2,7 @@
 
 namespace SE307Project
 {
-    class PetSitter : User
+    public class PetSitter : User
     {
         private List<Comment> Comments;
         private List<PetOwner> PetOwnerContacts;

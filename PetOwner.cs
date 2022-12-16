@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SE307Project
 {
-    class PetOwner : User
+    public class PetOwner : User
     {
         private List<PetSitter> HiredPetSitters;
         private List<Pet> Pets;

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace SE307Project
 {
-    class User : ClassMap<User>
+    public class User : ClassMap<User>
     {
         protected String Name { get; set; }
         protected String Surname { get; set; }
