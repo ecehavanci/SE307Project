@@ -1,8 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SE307Project
 {
-    public class PetSitter : User
+    public interface ICalculable
+    {
+        public void CalculateMedian();
+        public void CalculateAverage();
+
+    }
+    
+    public class PetSitter : User, ICalculable
     {
         private List<Comment> Comments;
         private List<PetOwner> PetOwnerContacts;
@@ -14,6 +22,16 @@ namespace SE307Project
             PetOwnerContacts = new List<PetOwner>();
             Requests = new List<Request>();
         }
+        
+        public void AddRequest(Request request)
+        {
+            Requests.Add(request);
+        }
+        
+        public void AddComment(Comment comment)
+        {
+            Comments.Add(comment);
+        }
 
         public void AcceptRequest(Request request)
         {
@@ -24,7 +42,7 @@ namespace SE307Project
 
         }
 
-        public void EditProfile()
+        public override void EditProfile()
         {
 
         }
@@ -38,10 +56,19 @@ namespace SE307Project
 
         }
 
-        public void ShowMessageFor(string UserName)
+        public override void ShowMessagesFor(String email)
         {
 
         }
 
+        public void CalculateMedian()
+        {
+            //throw new System.NotImplementedException();
+        }
+
+        public void CalculateAverage()
+        {
+            //throw new System.NotImplementedException();
+        }
     }
 }

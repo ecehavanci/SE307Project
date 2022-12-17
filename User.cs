@@ -6,11 +6,13 @@ using System.Collections.Generic;
 
 namespace SE307Project
 {
-    public class User : ClassMap<User>
+    public abstract class User : ClassMap<User>
     {
         protected String Name { get; set; }
         protected String Surname { get; set; }
         protected String Email { get; set; }
+        public String _Email { get {return Email;} }
+
 
         protected String Location { get; set; }
         protected String Password;
@@ -37,34 +39,7 @@ namespace SE307Project
 
         }
 
-        public void EditProfile()
-        {   
-            Console.WriteLine("Which part of your profile you want to edit? \n1)Name \n2)Surname \nEmail \nLocation");
-            int editWhere = Int32.Parse(Console.ReadLine());
-            switch (editWhere) {
-            case 1:
-                    Console.WriteLine("Write new input for name");
-                    string newName = Console.ReadLine();
-                    this.Name = newName;
-                    break;
-                case 2:
-                    Console.WriteLine("Write new input for Surname");
-                    string newSurname = Console.ReadLine();
-                    this.Name = newSurname;
-                    break;
-                case 3:
-                    Console.WriteLine("Write new input for Email");
-                    string newMail = Console.ReadLine();
-                    this.Name = newMail;
-                    break;
-                case 4:
-                    Console.WriteLine("Write new input for Location");
-                    string newLoc = Console.ReadLine();
-                    this.Name = newLoc;
-                    break;
-            }
-
-        }
+        public abstract void EditProfile();
 
         public void ShowProfile()
         {
@@ -77,6 +52,11 @@ namespace SE307Project
         {
 
         }
+        
+        public void AddMessage(Message message)
+        {
+            MessageBox.Add(message);
+        }
 
         public void ChangePassword()
         {
@@ -85,8 +65,9 @@ namespace SE307Project
             string pass = Console.ReadLine();
             Console.WriteLine("Please write your password again.");
             string pass2 = Console.ReadLine();
-            while (true) { 
-                if(pass == pass2)
+            while (true)
+            {
+                if (pass == pass2)
                 {
                     Password = pass;
                     loop = false;
@@ -94,10 +75,12 @@ namespace SE307Project
                 else
                 {
                     Console.WriteLine("Passwords doesn't match.");
-                 }
+                }
             }
-            
         }
+
+        public abstract void ShowMessagesFor(String email);
+
 
     }
 

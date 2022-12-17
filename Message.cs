@@ -6,12 +6,14 @@ namespace SE307Project
     {
         private DateTime Date;
         private String SenderMail;
+        private String ReceiverMail;
         private String Text;
 
-        public Message(DateTime date, string senderMail, string text)
+        public Message(String senderMail, String receiverMail, String text)
         {
-            this.Date = date;
+            Date = DateTime.Now;
             SenderMail = senderMail;
+            ReceiverMail = receiverMail;
             Text = text;
         }
 

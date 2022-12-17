@@ -7,11 +7,12 @@ namespace SE307Project
     {
         static void Main(string[] args)
         {
-            PetSitter sitter = new PetSitter("name","surname","email","pass","Location");
+            /*PetSitter sitter = new PetSitter("name","surname","email","pass","Location");
             FileHandler hander = new FileHandler();
             var users = new List<User>();
             users.Add(sitter);
-            hander.saveToCSV();
+            hander.saveToCSV();*/
+
         }
     }
 }
