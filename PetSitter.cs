@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SE307Project
 {
@@ -6,22 +7,25 @@ namespace SE307Project
     {
         private List<Comment> Comments;
         private List<PetOwner> PetOwnerContacts;
-        private List<Request> Requests;
 
         public PetSitter(string name, string surname, string email, string password, string Location):base(name,surname,email,password,Location)
         {
-            Comments = new List<Comment>();
-            PetOwnerContacts = new List<PetOwner>();
-            Requests = new List<Request>();
+            this.Comments = new List<Comment>();
+            this.PetOwnerContacts = new List<PetOwner>();
         }
 
-        public void AcceptRequest(Request request)
+        public void ReceiveRequest(Request request)
         {
-
+            Console.WriteLine("Request Received!");
         }
-        public void DeclineRequest(Request request)
-        {
 
+        public void AcceptRequest(Request request) ///////////////////////////
+        {
+            Console.WriteLine("Request Accepted!");
+        }
+        public void AcceptReject(Request request) ///////////////////////////
+        {
+            Console.WriteLine("Request Rejected!");
         }
 
         public void EditProfile()
