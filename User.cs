@@ -34,6 +34,13 @@ namespace SE307Project
             set { Location = _Location; }
         }
         protected String Password;
+        
+        public String _Password
+        {
+            get { return Password; }
+            set { Password = _Password; }
+        }
+        
         protected List<Message> MessageBox { get; set; }
         public List<Message> _MessageBox
         {
