@@ -140,6 +140,30 @@ namespace SE307Project
                 CareRoutine.Add(CareType.GiveMeds);
             }
         }
+
+        public string ListCareRoutine()
+        {
+            string routine = "";
+            foreach(CareType careType in CareRoutine)
+            {
+                routine += careType+",\t";
+            }
+            return routine;
+            
+        }
+
+        public override string ToString()
+        {
+            string PetInfo = "--- Pet Info ---";
+            PetInfo += "Name:\t "+Name;
+            PetInfo += "\nAge:\t "+Age;
+            PetInfo += "\nBreed:\t "+Breed;
+            PetInfo += "\nAnimalType:\t "+Species;
+            PetInfo += "\nCare Routine:\t "+ListCareRoutine();
+            PetInfo += "---------------------------------------------";
+
+            return PetInfo;
+        }
     }
 
     public enum AnimalType

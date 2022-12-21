@@ -9,16 +9,49 @@ namespace SE307Project
     public abstract class User : ClassMap<User>
     {
         protected String Name { get; set; }
+        public String _Name
+        {
+            get { return Name; }
+            set { Name = _Name; }
+        }
         protected String Surname { get; set; }
+        public String _Surname
+        {
+            get { return Surname; }
+            set { Surname = _Surname; }
+        }
         protected String Email { get; set; }
-        public String _Email { get {return Email;} }
-
+        public String _Email
+        {
+            get { return Email; }
+            set { Email = _Email; }
+        }
 
         protected String Location { get; set; }
+        public String _Location
+        {
+            get { return Location; }
+            set { Location = _Location; }
+        }
         protected String Password;
+        
+        public String _Password
+        {
+            get { return Password; }
+            set { Password = _Password; }
+        }
+        
         protected List<Message> MessageBox { get; set; }
+        public List<Message> _MessageBox
+        {
+            get { return MessageBox; }
+            set { MessageBox = _MessageBox; }
+        }
         protected DateTime signUpTime { get; set; }
 
+        private RequestBox AcceptedRequestsBox { get; set; }
+        private RequestBox RejectedRequestsBox { get; set; }
+        private RequestBox WaitingRequestsBox { get; set; }
 
         public User(string name,string surname,string email,string password,string Location)
         {
@@ -29,6 +62,9 @@ namespace SE307Project
             this.Location = Location;
             this.Password = password;
             signUpTime = DateTime.Now;
+            this.WaitingRequestsBox = new RequestBox(this,AcceptionEnum.Waiting);
+            this.AcceptedRequestsBox = new RequestBox(this,AcceptionEnum.Accepted);
+            this.RejectedRequestsBox = new RequestBox(this,AcceptionEnum.Rejected);
 
             Map(p => p.Email).Index(0);
             Map(p => p.Name).Index(1);

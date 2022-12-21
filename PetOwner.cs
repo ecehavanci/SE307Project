@@ -9,7 +9,6 @@ namespace SE307Project
     {
         private List<PetSitter> HiredPetSitters;
         private List<Pet> Pets;
-
         public PetOwner(string name, string surname, string email, string password, string Location) : base(name,
             surname, email, password, Location)
         {
