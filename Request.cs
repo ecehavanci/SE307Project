@@ -7,7 +7,6 @@ namespace SE307Project
     {
         private DateTime Date;
         private PetOwner RequestOwner;
-        private PetSitter RequestTaker;
         private ArrayList RequestedPets;
         private bool IsAccepted = false;
         public bool _IsAccepted
@@ -16,20 +15,13 @@ namespace SE307Project
             set { IsAccepted = _IsAccepted; }
         }
 
-        public Request(PetOwner RequestOwner,PetSitter RequestTaker,DateTime date)
+        public Request(PetOwner requestOwner, ArrayList requestedPets)
         {
-            this.RequestTaker = RequestTaker;
-            this.RequestOwner = RequestOwner;
-            this.Date = date;
-            RequestedPets = new ArrayList();
+            RequestOwner = requestOwner;
+            Date = DateTime.Now;
+            RequestedPets = requestedPets;
         }
         
-        public Request(String requestOwnerName, ArrayList pets)
-        {
-            RequestedPets = pets;
-            RequestOwnerName = requestOwnerName;
-        }
-
         public override string ToString()
         {
             string content = "********* Request Content *********";

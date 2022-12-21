@@ -14,11 +14,13 @@ namespace SE307Project
     {
         private List<Comment> Comments;
         private List<PetOwner> PetOwnerContacts;
+        private List<Request> Requests;
 
         public PetSitter(string name, string surname, string email, string password, string Location):base(name,surname,email,password,Location)
         {
-            this.Comments = new List<Comment>();
-            this.PetOwnerContacts = new List<PetOwner>();
+            Comments = new List<Comment>();
+            PetOwnerContacts = new List<PetOwner>();
+            Requests = new List<Request>();
         }
         
         public void AddRequest(Request request)

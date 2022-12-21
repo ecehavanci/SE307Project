@@ -254,7 +254,7 @@ namespace SE307Project
                 }
             }
 
-            Request request = new Request(Name, pets);
+            Request request = new Request(this, pets);
             petSitter.AddRequest(request);
         }
 
