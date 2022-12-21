@@ -21,16 +21,30 @@ namespace SE307Project
 
         public void RegisterPetOwner(string name,string surname,string email,string password,string location)
         {
-            User newPetOwner = new PetOwner(name, surname, email, password, location);
+            User newPetOwner = new PetOwner(name, surname, email, password);
             UserList.Add(newPetOwner);
             Console.WriteLine("Registration successful.");
         }
         
         public void RegisterPetSitter(string name,string surname,string email,string password,string location)
         {
-            User newPetSitter = new PetOwner(name, surname, email, password, location);
+            User newPetSitter = new PetOwner(name, surname, email, password);
             UserList.Add(newPetSitter);
             Console.WriteLine("Registration successful.");
         }
+
+        public void ListUsers()
+        {
+            foreach (var user in UserList)
+            {
+                Console.WriteLine(user.ToString());
+            }
+        }
+        
+        public void ListUsers(Char type)
+        {
+            
+        }
+
     }
 }

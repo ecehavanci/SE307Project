@@ -13,10 +13,11 @@ namespace SE307Project
     public class PetSitter : User, ICalculable
     {
         private List<Comment> Comments;
-        private List<PetOwner> PetOwnerContacts;
+        private List<PetOwner> PetOwnerContacts;//???
         private List<Request> Requests;
+        private String Bio;
 
-        public PetSitter(string name, string surname, string email, string password, string Location):base(name,surname,email,password,Location)
+        public PetSitter(string name, string surname, string email, string password):base(name,surname,email,password)
         {
             Comments = new List<Comment>();
             PetOwnerContacts = new List<PetOwner>();
@@ -68,12 +69,19 @@ namespace SE307Project
 
         public void CalculateMedian()
         {
+            //FOR STARS
             //throw new System.NotImplementedException();
         }
 
         public void CalculateAverage()
         {
+            //FOR STARS
             //throw new System.NotImplementedException();
+        }
+
+        public override String ToString()
+        {
+            return Name + " " + Surname + "\n" + Bio;
         }
     }
 }

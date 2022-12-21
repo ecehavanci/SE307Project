@@ -9,8 +9,8 @@ namespace SE307Project
     {
         private List<PetSitter> HiredPetSitters;
         private List<Pet> Pets;
-        public PetOwner(string name, string surname, string email, string password, string Location) : base(name,
-            surname, email, password, Location)
+        public PetOwner(string name, string surname, string email, string password) : base(name,
+            surname, email, password)
         {
             HiredPetSitters = new List<PetSitter>();
             Pets = new List<Pet>();
@@ -83,30 +83,37 @@ namespace SE307Project
             Console.Write("Name: ");
             String name = Console.ReadLine();
 
-            Console.Write("Age: ");
-            String age = Console.ReadLine();
-
-            ListPetSpecies();
-            Console.Write("Species: ");
-            String species = Console.ReadLine();
-
-            Console.Write("Breed: ");
-            String breed = Console.ReadLine();
-
             if (name != "-1")
             {
                 pet._Name = name;
             }
+            
+            Console.Write("Age: ");
+            String age = Console.ReadLine();
 
             if (age != "-1")
             {
-                pet._Age = int.Parse(age);
+                try
+                {
+                    pet._Age = int.Parse(age);
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("Age should be given in numeric format");
+                }
             }
+            
+            ListPetSpecies();
+            Console.Write("Species: ");
+            String species = Console.ReadLine();
 
             if (species != "-1")
             {
                 pet._Species = species;
             }
+            
+            Console.Write("Breed: ");
+            String breed = Console.ReadLine();
 
             if (breed != "-1")
             {
@@ -128,32 +135,40 @@ namespace SE307Project
 
         public override void EditProfile()
         {
-            Console.WriteLine(
-                "Which part of your profile you want to edit? \n1) Name \n2) Surname \n3) Email \n4) Location");
-            int editWhere = Int32.Parse(Console.ReadLine());
-            switch (editWhere)
+            bool isExit = false;
+            while (!isExit)
             {
-                case 1:
-                    Console.WriteLine("Write new name");
-                    string newName = Console.ReadLine();
-                    Name = newName;
-                    break;
-                case 2:
-                    Console.WriteLine("Write new surname");
-                    string newSurname = Console.ReadLine();
-                    this.Surname = newSurname;
-                    break;
-                case 3:
-                    Console.WriteLine("Write new email");
-                    string newMail = Console.ReadLine();
-                    Email = newMail;
-                    break;
-                case 4:
-                    Console.WriteLine("Write new location");
-                    string newLoc = Console.ReadLine();
-                    Location = newLoc;
-                    break;
+                Console.WriteLine(
+                    "Which part of your profile you want to edit? \n1) Name \n2) Surname \n3) Email \n4) Location \n5) Exit");
+                int editWhere = Int32.Parse(Console.ReadLine());
+                switch (editWhere)
+                {
+                    case 1:
+                        Console.WriteLine("Write new name");
+                        string newName = Console.ReadLine();
+                        Name = newName;
+                        break;
+                    case 2:
+                        Console.WriteLine("Write new surname");
+                        string newSurname = Console.ReadLine();
+                        this.Surname = newSurname;
+                        break;
+                    case 3:
+                        Console.WriteLine("Write new email");
+                        string newMail = Console.ReadLine();
+                        Email = newMail;
+                        break;
+                    case 4:
+                        Console.WriteLine("Write new location");
+                        string newLoc = Console.ReadLine();
+                        Location = newLoc;
+                        break;
+                    case 5:
+                        isExit = true;
+                        break;
+                }
             }
+            
         }
 
         public void HirePetSitter(PetSitter petSitter)
@@ -286,6 +301,12 @@ namespace SE307Project
             }
 
             return null;
+        }
+
+        public override String ToString()
+        {
+            return ""; // TODO: To be filled
+            //throw new NotImplementedException();
         }
     }
 }

@@ -47,31 +47,30 @@ namespace SE307Project
             get { return MessageBox; }
             set { MessageBox = _MessageBox; }
         }
-        protected DateTime signUpTime { get; set; }
+        protected DateTime SignUpTime { get; set; }
 
         private RequestBox AcceptedRequestsBox { get; set; }
         private RequestBox RejectedRequestsBox { get; set; }
         private RequestBox WaitingRequestsBox { get; set; }
 
-        public User(string name,string surname,string email,string password,string Location)
+        public User(string name,string surname,string email,string password)
         {
             MessageBox = new List<Message>();
-            this.Name = name;
-            this.Surname = surname;
-            this.Email = email;
-            this.Location = Location;
-            this.Password = password;
-            signUpTime = DateTime.Now;
-            this.WaitingRequestsBox = new RequestBox(this,AcceptionEnum.Waiting);
-            this.AcceptedRequestsBox = new RequestBox(this,AcceptionEnum.Accepted);
-            this.RejectedRequestsBox = new RequestBox(this,AcceptionEnum.Rejected);
+            Name = name;
+            Surname = surname;
+            Email = email;
+            Password = password;
+            SignUpTime = DateTime.Now;
+            WaitingRequestsBox = new RequestBox(this,AcceptionEnum.Waiting);
+            AcceptedRequestsBox = new RequestBox(this,AcceptionEnum.Accepted);
+            RejectedRequestsBox = new RequestBox(this,AcceptionEnum.Rejected);
 
             Map(p => p.Email).Index(0);
             Map(p => p.Name).Index(1);
             Map(p => p.Surname).Index(2);
             Map(p => p.Password).Index(3);
             Map(p => p.Location).Index(4);
-            Map(p => p.signUpTime).Index(5);
+            Map(p => p.SignUpTime).Index(5);
 
         }
 
@@ -80,8 +79,8 @@ namespace SE307Project
         public void ShowProfile()
         {
             Console.WriteLine("********** My Profile **********");
-            string ProfileInfo = "Name:\t" + Name + "\nSurname:\t" + Surname + "\nEmail:\t" + Email + "\nLocation:\t" + Location;
-            Console.WriteLine(ProfileInfo);
+            string profileInfo = "Name:\t" + Name + " " + Surname + "\nLocation:\t" + (Location == null? "N/A" : Location);
+            Console.WriteLine(profileInfo);
         }
 
         public void ReadMessages()
@@ -116,6 +115,8 @@ namespace SE307Project
         }
 
         public abstract void ShowMessagesFor(String email);
+        
+        public abstract String ToString();
 
 
     }
