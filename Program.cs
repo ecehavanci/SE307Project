@@ -12,7 +12,7 @@ namespace SE307Project
             var users = new List<User>();
             users.Add(sitter);
             hander.saveToCSV(); */
-            Database db = new Database();
+            Database db = new Database("server=server_name;database=database_name;email=email;password=password");
 
             bool logOut = false;
 
@@ -62,17 +62,16 @@ namespace SE307Project
                             String newPassword = Console.ReadLine();
                             Console.WriteLine("Location: ");
                             String newLocation = Console.ReadLine();
-
-                            //TODO: When connection of sql is made
+                            
                             switch (signUpChoice)
                             {
                                 case 1:
-                                    db.RegisterPetSitter(newName, newSurname, newEmail, newPassword,
-                                        newLocation); //TODO:for sign up as a pet sitter
+                                    db.InsertPetSitter(newName, newSurname, newEmail, newPassword,
+                                        newLocation);
                                     break;
                                 case 2:
-                                    db.RegisterPetOwner(newName, newSurname, newEmail, newPassword,
-                                        newLocation); //TODO:for sign up as a pet owner
+                                    db.InsertPetOwner(newName, newSurname, newEmail, newPassword,
+                                        newLocation);
                                     break;
                             }
                         }
@@ -95,7 +94,11 @@ namespace SE307Project
                         String password = Console.ReadLine();
                         try
                         {
-                            user = db.LogIn(email, password);
+                            //user = db.LogIn(email, password);
+                            if (db.CheckUserExist(email, password))
+                            {
+                                Console.WriteLine("Sign in successful!");
+                            }
                             isSigned = true;
                         }
                         catch (ExceptionWrongPassword e)
