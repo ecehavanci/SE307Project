@@ -47,5 +47,46 @@ namespace SE307Project
             return Requests[RequestNo];
         }
 
+        public void ReceiveRequest(Request request)
+        {
+            Requests.Add(request);
+            Console.WriteLine("Success!");
+        }
+
+        public Request MoveMailToAnotherBox(int selection)
+        {
+            Requests.RemoveAt(selection);
+            return Requests[selection];
+        }
+
+        public void SortByDateDesc()
+        {
+            for (int i = 0; i < Requests.Count; i++)
+            {
+                int j = i;
+                while (j > 0 && Requests[j - 1]._Date < Requests[j]._Date)
+                {
+                    Request temp = Requests[j - 1];
+                    Requests[j - 1] = Requests[j];
+                    Requests[j] = temp;
+                    j--;
+                }
+            }
+        }
+
+        public void SortByDateAsc()
+        {
+            for (int i = 0; i < Requests.Count; i++)
+            {
+                int j = i;
+                while (j > 0 && Requests[j - 1]._Date > Requests[j]._Date)
+                {
+                    Request temp = Requests[j - 1];
+                    Requests[j - 1] = Requests[j];
+                    Requests[j] = temp;
+                    j--;
+                }
+            }
+        }
     }
 }

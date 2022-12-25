@@ -14,6 +14,11 @@ namespace SE307Project
             get { return IsAccepted; }
             set { IsAccepted = _IsAccepted; }
         }
+        public DateTime _Date
+        {
+            get { return Date; }
+            set { Date = _Date; }
+        }
 
         public Request(PetOwner requestOwner, ArrayList requestedPets)
         {
