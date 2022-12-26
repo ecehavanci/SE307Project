@@ -12,7 +12,8 @@ namespace SE307Project
             var users = new List<User>();
             users.Add(sitter);
             hander.saveToCSV(); */
-            Database db = new Database("server=server_name;database=database_name;email=email;password=password");
+            //Database db = new Database("server=server_name;database=database_name;email=email;password=password");
+            Database db = new Database();
 
             bool logOut = false;
 
@@ -66,24 +67,22 @@ namespace SE307Project
                             switch (signUpChoice)
                             {
                                 case 1:
-                                    db.InsertPetSitter(newName, newSurname, newEmail, newPassword,
+                                    db.RegisterPetSitter(newName, newSurname, newEmail, newPassword,
                                         newLocation);
                                     break;
                                 case 2:
-                                    db.InsertPetOwner(newName, newSurname, newEmail, newPassword,
+                                    db.RegisterPetOwner(newName, newSurname, newEmail, newPassword,
                                         newLocation);
                                     break;
                             }
                         }
                         else
                             Console.WriteLine("Invalid choice.");
-
                         break;
 
                     case 2:
                         if (db.UserList.Count == 0)
-                        {
-                            //TODO: When connection of sql is made, change it.
+                        { 
                             Console.WriteLine("There is no such account. Please create an account for logging in.");
                             continue;
                         }
@@ -94,12 +93,16 @@ namespace SE307Project
                         String password = Console.ReadLine();
                         try
                         {
-                            //user = db.LogIn(email, password);
-                            if (db.CheckUserExist(email, password))
+                            user = db.LogIn(email, password);
+                            isSigned = true;
+                            if (isSigned)
                             {
                                 Console.WriteLine("Sign in successful!");
                             }
-                            isSigned = true;
+                        }
+                        catch (ExceptionWrongEmail e)
+                        {
+                            e.PrintException();
                         }
                         catch (ExceptionWrongPassword e)
                         {
@@ -167,7 +170,6 @@ namespace SE307Project
                                 }
                             }
                         }
-
                         break;
 
                     case 3:
@@ -200,4 +202,33 @@ namespace SE307Project
             Console.WriteLine(Message);
         }
     }
+    class ExceptionWrongEmail : Exception
+    {
+        private String Email;
+
+        public ExceptionWrongEmail(string email) : base("Entered email does not exist! Try Again.")
+        {
+            Email = email;
+        }
+
+        public void PrintException()
+        {
+            Console.WriteLine(Message);
+        }
+    }
+    class ExceptionAlreadyExistEmail : Exception
+    {
+        private String Email;
+
+        public ExceptionAlreadyExistEmail(string email) : base("Entered email is already exist. Please use new one.")
+        {
+            Email = email;
+        }
+
+        public void PrintException()
+        {
+            Console.WriteLine(Message);
+        }
+    }
+    
 }

@@ -48,6 +48,10 @@ namespace SE307Project
             set { MessageBox = _MessageBox; }
         }
         protected DateTime SignUpTime { get; set; }
+        
+        public User(): this("","","","")
+        {
+        }
 
         public User(string name,string surname,string email,string password)
         {

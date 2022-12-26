@@ -27,6 +27,10 @@ namespace SE307Project
             AcceptedRequestBox = new RequestBox(this,AcceptionEnum.Accepted);
             RejectedRequestBox = new RequestBox(this,AcceptionEnum.Rejected);
         }
+
+        public PetSitter(): this("","","","")
+        {
+        }
         
         public void AddComment(Comment comment)
         {
