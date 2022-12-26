@@ -109,9 +109,21 @@ namespace SE307Project
             }
         }
         
-        public void ListUsers(Char type)
+        public List<PetSitter> ListPetSitters()
         {
-            
+            int index = 1;
+            List<PetSitter> list = new List<PetSitter>();
+            foreach (var user in UserList)
+            {
+                if (user is PetSitter)
+                {
+                    Console.WriteLine( index+ ") " + user.ToString());
+                    list.Add((PetSitter) user);
+                    index++;
+                }
+            }
+
+            return list;
         }
 
     }

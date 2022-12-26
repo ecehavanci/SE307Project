@@ -108,6 +108,7 @@ namespace SE307Project
 
                         if (user is PetOwner)
                         {
+                            PetOwner petOwner = (PetOwner) user;
                             while (true)
                             {
                                 Console.WriteLine("1) List pet sitters");
@@ -127,7 +128,35 @@ namespace SE307Project
                                 switch (mainPageChoice)
                                 {
                                     case 1 : 
-                                        db.ListUsers();
+                                        List<PetSitter> list = db.ListPetSitters();
+                                        Console.WriteLine("Which one do you want to send a request? Enter -1 to exit.");
+                                        while (true)
+                                        {
+                                            int petSitterIndex = int.Parse(Console.ReadLine());
+                                            try
+                                            {
+                                                if (petSitterIndex == -1)
+                                                {
+                                                    break;
+                                                }
+                                                if (petSitterIndex > list.Count || petSitterIndex< 0)
+                                                {
+                                                    Console.WriteLine("Please enter a number between 0 and " + list.Count);
+                                                }
+                                                else
+                                                {
+                                                    petOwner.SendRequestToPetSitter(list[petSitterIndex]);
+                                                    break;
+
+                                                }
+                                            }
+                                            catch (FormatException e)
+                                            {
+                                                Console.WriteLine("Please enter a number.");
+                                                throw;
+                                            }
+                                        }
+                                        
                                         break;
                                     case 2 : 
                                         user.EditProfile();

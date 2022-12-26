@@ -32,6 +32,11 @@ namespace SE307Project
         {
             Comments.Add(comment);
         }
+        
+        public void AddRequest(Request request)
+        {
+            WaitingRequestBox.ReceiveRequest(request);
+        }
 
         public void ReadRequestBox()
         {
