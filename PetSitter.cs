@@ -162,22 +162,55 @@ namespace SE307Project
         }
         public void ShowCommentsAndRates()
         {
-
+            foreach(Comment comment in Comments)
+            {
+                comment.ToString();
+            }
         }
 
         public override void ShowMessagesFor(String email)
         {
 
         }
+        private static double GetMedian(int[] sourceNumbers)
+        {
+            //Framework 2.0 version of this method. there is an easier way in F4        
+            if (sourceNumbers == null || sourceNumbers.Length == 0)
+                throw new System.Exception("Median of empty array not defined.");
+
+            //make sure the list is sorted, but use a new array
+            double[] sortedPNumbers = (double[])sourceNumbers.Clone();
+            Array.Sort(sortedPNumbers);
+
+            //get the median
+            int size = sortedPNumbers.Length;
+            int mid = size / 2;
+            double median = (size % 2 != 0) ? (double)sortedPNumbers[mid] : ((double)sortedPNumbers[mid] + (double)sortedPNumbers[mid - 1]) / 2;
+            return median;
+        }
 
         public void CalculateMedian()
         {
+            int[] allRates = { };
+            Console.WriteLine("My Calculated Rate Median is:");
+            for (int i =0;i<Comments.Count;i++)
+            {
+                allRates[i] = Comments[i]._Star;
+            }
+            GetMedian(allRates);
             //FOR STARS
             //throw new System.NotImplementedException();
         }
 
         public void CalculateAverage()
         {
+            double counter = 0;
+            Console.WriteLine("My Calculated Rate Average is:");
+            for (int i = 0; i < Comments.Count; i++)
+            {
+                counter += Comments[i]._Star;
+            }
+            counter = counter / Comments.Count;
             //FOR STARS
             //throw new System.NotImplementedException();
         }

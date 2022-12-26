@@ -10,6 +10,10 @@ namespace SE307Project
         private DateTime Date;
         private String SenderName;
         private int Star;
+        public int _Star
+        {
+            get { return Star; }
+        }
         private String Text;
 
         public Comment(String senderName, int star, String text)
@@ -22,7 +26,30 @@ namespace SE307Project
 
         public override string ToString()
         {
-            return base.ToString();
+            string print = "-----------------------------------";
+            print +="Date:\t" + Date;
+            print += "Sender:\t" + SenderName;
+            print += "Rate:\t" + StarPrinter();
+            print += "Comment:\t" + Text;
+            return print;
+        }
+
+        private string StarPrinter()
+        {
+            switch (Star)
+            {
+                case 1:
+                    return "*";
+                case 2:
+                    return "*_*";
+                case 3:
+                    return "*_*_*";
+                case 4:
+                    return "*_*_*_*";
+                case 5:
+                    return "*_*_*_*_*";
+            }
+            return null;
         }
     }
 }
