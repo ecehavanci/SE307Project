@@ -41,8 +41,6 @@ namespace SE307Project
         public void ReadRequestBox()
         {
             bool loop = true;
-           
-           
 
             while (loop) { 
                      Console.WriteLine("Which Request Box do you wish to read?\n1)Waiting Requests\n2)AcceptedRequests\n3)Rejected Requests\n4)Exit");
@@ -101,8 +99,6 @@ namespace SE307Project
 
                 }
             }
-      
-
 
         }
 
@@ -121,17 +117,47 @@ namespace SE307Project
                     return null;
             }
         }
-        public void AcceptRequest(Request request) ///////////////////////////
+        public void AcceptRequest(Request request) 
         {
+            AcceptedRequestBox.ReceiveRequest(request);
             Console.WriteLine("Request Accepted!");
         }
-        public void RejectRequest(Request request) ///////////////////////////
+        public void RejectRequest(Request request) 
         {
+            RejectedRequestBox.ReceiveRequest(request);
             Console.WriteLine("Request Rejected!");
         }
 
         public override void EditProfile()
         {
+            this.ShowProfile();
+            Console.WriteLine(this.Bio == ""?Bio:"No Biography available.");
+            Console.WriteLine("Enter index of the are would you like to Edit");
+            Console.WriteLine("1)Email\t2)Location\t3)Password\t4)Biography");
+            int selection = Convert.ToInt32(Console.ReadLine());
+            switch (selection)
+            {
+                case 1:
+                    Console.WriteLine("Enter the new Email:");
+                    string newMail = Console.ReadLine();
+                    this.Email = newMail;
+                    break;
+                case 2:
+                    Console.WriteLine("Enter the new Location:");
+                    string newLocation = Console.ReadLine();
+                    this.Location = newLocation;
+                    break;
+                case 3:
+                    Console.WriteLine("Enter the new Password:");
+                    this.ChangePassword();
+                    break;
+
+                case 4:
+                    Console.WriteLine("Edit your Biography:");
+                    string biog = Console.ReadLine();
+                    this.Bio = biog;
+                    break;
+            }
 
         }
         public void ShowCommentsAndRates()
