@@ -174,8 +174,45 @@ namespace SE307Project
 
         public override void ShowMessagesFor(String email)
         {
-
+            PetOwner petOwner = FindPetOwner(email);
+            if(petOwner != null)
+            {
+                Console.WriteLine("Messages:\n");
+                foreach (var message in MessageBox)
+                {
+                    Console.WriteLine(message.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("No connection with email " + email);
+            }
         }
+
+        public void SendMessageToPetOwner(PetOwner petOwner)
+        {
+            if (PetOwnerContacts.Contains(petOwner))
+            {
+                Console.WriteLine("Message:");
+                String messageText = Console.ReadLine();
+                Message message = new Message(Email, petOwner._Email, messageText);
+                petOwner.AddMessage(message);
+                AddMessage(message);
+            }
+        }
+
+        private PetOwner FindPetOwner(String email)
+        {
+            foreach(PetOwner petOwner in PetOwnerContacts)
+            {
+                if(email == petOwner._Email)
+                {
+                    return petOwner;
+                }
+            }
+            return null;
+        }
+
         private static double GetMedian(int[] sourceNumbers)
         {
             //Framework 2.0 version of this method. there is an easier way in F4        
@@ -195,28 +232,39 @@ namespace SE307Project
 
         public void CalculateMedian()
         {
-            int[] allRates = { };
-            Console.WriteLine("My Calculated Rate Median is:");
-            for (int i =0;i<Comments.Count;i++)
+            if (Comments.Count == 0)
             {
-                allRates[i] = Comments[i]._Star;
+                throw new System.NotImplementedException();
             }
-            GetMedian(allRates);
-            //FOR STARS
-            //throw new System.NotImplementedException();
+            else {
+                int[] allRates = { };
+                Console.WriteLine("My Calculated Rate Median is:");
+                for (int i = 0; i < Comments.Count; i++)
+                {
+                    allRates[i] = Comments[i]._Star;
+                }
+                GetMedian(allRates);
+            }
+         
         }
 
         public void CalculateAverage()
         {
-            double counter = 0;
-            Console.WriteLine("My Calculated Rate Average is:");
-            for (int i = 0; i < Comments.Count; i++)
+            if(Comments.Count == 0)
             {
-                counter += Comments[i]._Star;
+                throw new System.NotImplementedException();
             }
-            counter = counter / Comments.Count;
-            //FOR STARS
-            //throw new System.NotImplementedException();
+            else
+            {
+                double counter = 0;
+                Console.WriteLine("My Calculated Rate Average is:");
+                for (int i = 0; i < Comments.Count; i++)
+                {
+                    counter += Comments[i]._Star;
+                }
+                counter = counter / Comments.Count;
+            }
+           
         }
 
         public override String ToString()

@@ -165,7 +165,7 @@ namespace SE307Project
                                         user.EditProfile();
                                         break;
                                     case 3 : 
-                                        user.ReadMessages();
+                                       // user.ReadMessages();  this empty method is deleted
                                         break;
                                 }
                             }

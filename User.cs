@@ -79,11 +79,6 @@ namespace SE307Project
             string profileInfo = "Name:\t" + Name + " " + Surname + "\nLocation:\t" + (Location == null? "N/A" : Location);
             Console.WriteLine(profileInfo);
         }
-
-        public void ReadMessages()
-        {
-
-        }
         
         public void AddMessage(Message message)
         {
