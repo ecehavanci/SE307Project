@@ -1,12 +1,11 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration;
+﻿
 
 using System;
 using System.Collections.Generic;
 
 namespace SE307Project
 {
-    public abstract class User : ClassMap<User>
+    public abstract class User 
     {
         protected String Name { get; set; }
         public String _Name
@@ -62,12 +61,7 @@ namespace SE307Project
             Password = password;
             SignUpTime = DateTime.Now;
 
-            Map(p => p.Email).Index(0);
-            Map(p => p.Name).Index(1);
-            Map(p => p.Surname).Index(2);
-            Map(p => p.Password).Index(3);
-            Map(p => p.Location).Index(4);
-            Map(p => p.SignUpTime).Index(5);
+          
 
         }
 
