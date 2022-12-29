@@ -16,6 +16,11 @@ namespace SE307Project
             Pets = new List<Pet>();
         }
 
+        public PetOwner()
+        {
+            
+        }
+
         public void AddPet(String name, int age, String breed, AnimalType species)
         {
             Pets.Add(new Pet(name, age, breed, species));

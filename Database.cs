@@ -16,10 +16,12 @@ namespace SE307Project
         }
         
         public User LogIn(string email, string password){
+            FileHandler xmlHandler = new FileHandler();
             foreach (User user in UserList) {
                 if (user._Email == email)
                 {
-                    if (user._Password == password) {
+                    if (user._Password == password)
+                    {
                         return user;
                     }
                     throw new ExceptionWrongPassword(password);
@@ -28,6 +30,13 @@ namespace SE307Project
                 throw new ExceptionWrongEmail(email);
             }
             return null;
+        }
+
+        public void ListSerializer()
+        {
+            FileHandler xmlHandler = new FileHandler();
+            UserList = xmlHandler.ReadUser("user.xml");
+
         }
 
         public void RegisterPetOwner(string name,string surname,string email,string password,string location)
@@ -42,25 +51,25 @@ namespace SE307Project
               }*/
 
             User newPetOwner = new PetOwner(name, surname, email, password);
-            FileHandler xmlHandler = new FileHandler();
-            xmlHandler.WriteUser("petOwner.xml", newPetOwner);
             UserList.Add(newPetOwner);
+            FileHandler xmlHandler = new FileHandler();
+            xmlHandler.WriteUser("user.xml", UserList);
             Console.WriteLine("Registration successful.");
             
         }
         
         public void RegisterPetSitter(string name,string surname,string email,string password,string location)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(User));
-            User newPetSitter = new PetSitter(name, surname, email, password);
+            
+            User newPetSitter = new PetOwner(name, surname, email, password);
             UserList.Add(newPetSitter);
+            FileHandler xmlHandler = new FileHandler();
+            xmlHandler.WriteUser("user.xml", UserList);
+          
             Console.WriteLine("Registration successful.");
             //FileHandler xmlHandler = new FileHandler();
             //xmlHandler.WriteUser("petSitter.xml", newPetSitter);
-            using (XmlWriter writer = XmlWriter.Create("petSitter.xml"))
-            {
-                serializer.Serialize(writer, newPetSitter);
-            }
+           
         } 
         
         private void CheckUserExists(string email) { //TODO: Implement it

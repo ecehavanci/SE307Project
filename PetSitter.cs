@@ -28,7 +28,7 @@ namespace SE307Project
             RejectedRequestBox = new RequestBox(this,AcceptionEnum.Rejected);
         }
 
-        public PetSitter(): this("","","","")
+        public PetSitter()
         {
         }
         

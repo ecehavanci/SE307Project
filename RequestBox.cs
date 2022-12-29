@@ -24,6 +24,11 @@ namespace SE307Project
             AcceptionEnum = acceptionType;
         }
 
+        public RequestBox()
+        {
+            
+        }
+
         public virtual void DisplayRequestBox()
         {
             Console.WriteLine("----------- "+AcceptionEnum+ "Request Box -----------");

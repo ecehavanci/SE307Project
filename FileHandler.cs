@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CsvHelper.Configuration.Attributes;
-using System.Globalization;
 using System.IO;
-using System.Text;
-using CsvHelper.Configuration;
-using CsvHelper;
-using System.Collections;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -15,22 +9,22 @@ namespace SE307Project
 {
     public class FileHandler
     {
-        public void WriteUser(string filename, User user)
+        public void WriteUser(string filename, List<User> userList)
             {
-                XmlSerializer x = new XmlSerializer(user.GetType());
+                XmlSerializer x = new XmlSerializer(userList.GetType());
                 Stream fs = new FileStream(filename, FileMode.Create);
                 XmlWriter writer = new XmlTextWriter(fs, Encoding.Unicode);
-                x.Serialize(writer, user);
+                x.Serialize(writer, userList);
                 writer.Close();
             }
 
-            public User ReadUser(string filename)
+            public List<User> ReadUser(string filename)
             {
                 Stream reader = new FileStream(filename, FileMode.Open);
-                XmlSerializer serializer = new XmlSerializer(typeof(User));
-
-                User user = (User)serializer.Deserialize(reader);
-                return user;
+                
+                XmlSerializer serializer = new XmlSerializer(typeof(List<User>));
+                List<User> userList = (List<User>)serializer.Deserialize(reader);
+                return userList;
             }
         
         

@@ -26,6 +26,11 @@ namespace SE307Project
             Date = DateTime.Now;
             RequestedPets = requestedPets;
         }
+
+        public Request()
+        {
+            
+        }
         
         public override string ToString()
         {

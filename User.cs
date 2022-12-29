@@ -48,7 +48,7 @@ namespace SE307Project
         }
         protected DateTime SignUpTime { get; set; }
         
-        public User(): this("","","","")
+        public User()
         {
         }
 

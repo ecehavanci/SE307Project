@@ -1,32 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\SILA\\MyGitFiles\\SE307Project\\SE307Project.csproj": {}
+    "/Users/sila/Desktop/SE307_Project/SE307Project/SE307Project.csproj": {}
   },
   "projects": {
-    "C:\\Users\\SILA\\MyGitFiles\\SE307Project\\SE307Project.csproj": {
+    "/Users/sila/Desktop/SE307_Project/SE307Project/SE307Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\SILA\\MyGitFiles\\SE307Project\\SE307Project.csproj",
+        "projectUniqueName": "/Users/sila/Desktop/SE307_Project/SE307Project/SE307Project.csproj",
         "projectName": "SE307Project",
-        "projectPath": "C:\\Users\\SILA\\MyGitFiles\\SE307Project\\SE307Project.csproj",
-        "packagesPath": "C:\\Users\\SILA\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\SILA\\MyGitFiles\\SE307Project\\obj\\",
+        "projectPath": "/Users/sila/Desktop/SE307_Project/SE307Project/SE307Project.csproj",
+        "packagesPath": "/Users/sila/.nuget/packages/",
+        "outputPath": "/Users/sila/Desktop/SE307_Project/SE307Project/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\SILA\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/sila/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -38,7 +35,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "CsvHelper": {
               "target": "Package",
@@ -68,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.402/RuntimeIdentifierGraph.json"
         }
       }
     }

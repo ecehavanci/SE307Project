@@ -24,6 +24,11 @@ namespace SE307Project
             Text = text;
         }
 
+        public Comment()
+        {
+            
+        }
+
         public override string ToString()
         {
             string print = "-----------------------------------";

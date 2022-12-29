@@ -17,6 +17,11 @@ namespace SE307Project
             Text = text;
         }
 
+        public Message()
+        {
+            
+        }
+
         public override string ToString()
         {
             return "Sender:\t"+SenderMail+"\n Date:"+Date+"\nText:\t"+Text;

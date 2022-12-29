@@ -14,6 +14,17 @@ namespace SE307Project
             hander.saveToCSV(); */
             //Database db = new Database("server=server_name;database=database_name;email=email;password=password");
             Database db = new Database();
+            //db.ListSerializer();
+            List<User> u = new List<User>();
+            u.Add(new PetSitter("name","surname","email","pass"));
+            FileHandler xmlHandler = new FileHandler();
+            xmlHandler.WriteUser("temp.xml",u);
+            List<User> userL = xmlHandler.ReadUser("temp.xml");
+
+            foreach (User us in userL)
+            {
+                Console.WriteLine(us._Email);
+            }
 
             bool logOut = false;
 
