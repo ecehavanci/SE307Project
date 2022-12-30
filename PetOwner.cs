@@ -2,13 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace SE307Project
 {
     public class PetOwner : User
     {
-        private List<PetSitter> HiredPetSitters;
-        private List<Pet> Pets;
+        public PetOwner()
+        {
+            HiredPetSitters = new List<PetSitter>();
+            Pets = new List<Pet>();
+        }
+
+        public List<PetSitter> HiredPetSitters;
+
+        public List<Pet> Pets;
+
         public PetOwner(string name, string surname, string email, string password) : base(name,
             surname, email, password)
         {
@@ -16,7 +25,7 @@ namespace SE307Project
             Pets = new List<Pet>();
         }
 
-        public void AddPet(String name, int age, String breed, AnimalType species)
+        public void AddPet(String name, int age, String breed, String species)
         {
             Pets.Add(new Pet(name, age, breed, species));
         }
@@ -27,7 +36,7 @@ namespace SE307Project
         {
             foreach (var pet in Pets)
             {
-                if (PetName == pet._Name)
+                if (PetName == pet.Name)
                 {
                     return pet;
                 }
@@ -38,13 +47,13 @@ namespace SE307Project
 
         public Pet FindPetInPets(int index)
         {
-            try
-            {
-                return Pets[index];
-            }
-            catch (IndexOutOfRangeException i)
+            if (index > Pets.Count-1 || index < 0)
             {
                 return null;
+            }
+            else
+            {
+                return Pets[index];
             }
         }
 
@@ -62,68 +71,226 @@ namespace SE307Project
 
         public void DeletePet(int index)
         {
-            Pets.RemoveAt(index);
+            if (index>Pets.Count || index<0)
+            {
+                Console.WriteLine("Index must be between 1 and " + Pets.Count);
+            }
+            else
+            {
+                Pets.RemoveAt(index);
+
+            }
         }
 
         public int EditPet(String PetName)
         {
-            Pet pet;
-            try
+            Pet pet = FindPetInPets(PetName);
+
+            if (pet == null)
             {
-                pet = FindPetInPets(PetName);
-            }
-            catch (NullReferenceException n)
-            {
-                Console.WriteLine("There is no pet with the given name");
-                return -1;
+                return 0;
             }
 
             Console.WriteLine("Enter new properties, enter -1 to skip");
 
-            Console.Write("Name: ");
+            Console.Write("Name(" + pet.Name + "): ");
             String name = Console.ReadLine();
 
             if (name != "-1")
             {
-                pet._Name = name;
+                pet.Name = name;
             }
-            
-            Console.Write("Age: ");
-            String age = Console.ReadLine();
 
-            if (age != "-1")
+            
+
+            while (true)
             {
-                try
+                Console.Write("Age(" + pet.Age + "): ");
+                String age = Console.ReadLine();
+                if (age != "-1")
                 {
-                    pet._Age = int.Parse(age);
+                    try
+                    {
+                        pet.Age = int.Parse(age);
+                        break;
+                    }
+                    catch (FormatException e)
+                    {
+                        Console.WriteLine("Age must be entered in numeric format.");
+                    }
                 }
-                catch (FormatException e)
+                else
                 {
-                    Console.WriteLine("Age should be given in numeric format");
+                    break;
                 }
             }
-            
+
+
             ListPetSpecies();
-            Console.Write("Species: ");
+            Console.Write("Species(" + pet.GetSpecies() + "): ");
             String species = Console.ReadLine();
 
             if (species != "-1")
             {
-                pet._Species = species;
+                pet.SetSpecies(species);
             }
-            
-            Console.Write("Breed: ");
+
+            Console.Write("Breed:(" + pet.Breed + "): ");
             String breed = Console.ReadLine();
 
             if (breed != "-1")
             {
-                pet._Breed = breed;
+                pet.Breed = breed;
             }
 
-            return 0;
+            return 1;
         }
 
-        public void ListPetSpecies()
+
+        public int EditPet(int petIndex)
+        {
+            Pet pet = FindPetInPets(petIndex);
+            if (pet == null)
+            {
+                return 0;
+            }
+
+            Console.WriteLine("Enter new properties, enter -1 to skip");
+
+            Console.Write("Name(" + pet.Name + "): ");
+            String name = Console.ReadLine();
+
+            if (name != "-1")
+            {
+                pet.Name = name;
+            }
+
+            
+
+            while (true)
+            {
+                Console.Write("Age(" + pet.Age + "): ");
+                String age = Console.ReadLine();
+                if (age != "-1")
+                {
+                    try
+                    {
+                        pet.Age = int.Parse(age);
+                        break;
+                    }
+                    catch (FormatException e)
+                    {
+                        Console.WriteLine("Age must be entered in numeric format.");
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+
+            ListPetSpecies();
+            Console.Write("Species(" + pet.GetSpecies() + "): ");
+            String species = Console.ReadLine();
+
+            if (species != "-1")
+            {
+                pet.SetSpecies(species);
+            }
+
+            Console.Write("Breed:(" + pet.Breed + "): ");
+            String breed = Console.ReadLine();
+
+            if (breed != "-1")
+            {
+                pet.Breed = breed;
+            }
+
+            return 1;
+
+        }
+
+        private void CreatePet()
+        {
+            Console.WriteLine("Please enter pet data");
+
+            Console.Write("Name: ");
+            String petName = Console.ReadLine();
+
+            int petAge = 0;
+
+            while (true)
+            {
+                Console.Write("Age: ");
+                try
+                {
+                    petAge = int.Parse(Console.ReadLine());
+                    break;
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("Age must be entered in numeric format.");
+                }
+            }
+
+            ListPetSpecies();
+            Console.Write("Species: ");
+            String petSpecies = "";
+            try
+            {
+                petSpecies = Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            Console.Write("Breed: ");
+
+            String petBreed = Console.ReadLine();
+
+            Pets.Add(new Pet(petName, petAge, petBreed, petSpecies));
+            Console.WriteLine(petName + " is added to your pets.");
+        }
+
+        private bool EditPersonalInformation()
+        {
+            String location = String.IsNullOrEmpty(Location) ? "Unknown" : Location;
+            Console.WriteLine(
+                "Which part of your profile you want to edit? \n1) Name(" + Name + ")\n2) Surname(" + Surname +
+                ")\n3) Email(" + Email + ")\n4) Location(" + location + ") \n5) Exit");
+            int editWhere = Int32.Parse(Console.ReadLine());
+            switch (editWhere)
+            {
+                case 1:
+                    Console.Write("New name: ");
+                    string newName = Console.ReadLine();
+                    Name = newName;
+                    break;
+                case 2:
+                    Console.Write("New surname: ");
+                    string newSurname = Console.ReadLine();
+                    Surname = newSurname;
+                    break;
+                case 3:
+                    Console.Write("New email:");
+                    string newMail = Console.ReadLine();
+                    Email = newMail;
+                    break;
+                case 4:
+                    Console.Write(Location == null || Location == "" ? "Location: " : "New Location: ");
+                    string newLoc = Console.ReadLine();
+                    Location = newLoc;
+                    break;
+                case 5:
+                    return true;
+            }
+
+            return false;
+        }
+
+        private void ListPetSpecies()
         {
             Console.WriteLine("Possible species");
             Console.WriteLine("1) Dog");
@@ -135,40 +302,85 @@ namespace SE307Project
 
         public override void EditProfile()
         {
-            bool isExit = false;
-            while (!isExit)
+            bool isDone = false;
+            Console.WriteLine("What do you want to edit? \n1) Personal Information\n2) Pets\n3) Exit");
+            String editChoice = Console.ReadLine();
+
+            if (editChoice == "1")
             {
-                Console.WriteLine(
-                    "Which part of your profile you want to edit? \n1) Name \n2) Surname \n3) Email \n4) Location \n5) Exit");
-                int editWhere = Int32.Parse(Console.ReadLine());
-                switch (editWhere)
+                while (!isDone)
                 {
-                    case 1:
-                        Console.WriteLine("Write new name");
-                        string newName = Console.ReadLine();
-                        Name = newName;
-                        break;
-                    case 2:
-                        Console.WriteLine("Write new surname");
-                        string newSurname = Console.ReadLine();
-                        this.Surname = newSurname;
-                        break;
-                    case 3:
-                        Console.WriteLine("Write new email");
-                        string newMail = Console.ReadLine();
-                        Email = newMail;
-                        break;
-                    case 4:
-                        Console.WriteLine("Write new location");
-                        string newLoc = Console.ReadLine();
-                        Location = newLoc;
-                        break;
-                    case 5:
-                        isExit = true;
-                        break;
+                    isDone = EditPersonalInformation();
+                }
+
+                Console.WriteLine();
+            }
+
+            else if (editChoice == "2")
+            {
+                while (!isDone)
+                {
+                    Console.WriteLine("Please choose an action \n1) Add pet\n2) Edit pet \n3) Delete pet\n4) Exit");
+                    String petChoice = Console.ReadLine();
+                    switch (petChoice)
+                    {
+                        case "1":
+                            CreatePet();
+                            break;
+                        case "2":
+                            Console.WriteLine("Your Pets:");
+                            ListPets();
+                            Console.WriteLine("Please enter the name/index of the pet you want to edit");
+                            String petInput = Console.ReadLine();
+
+                            try
+                            {
+                                int petIndex = int.Parse(petInput);
+                                int result = EditPet(petIndex - 1);
+
+                                if (result == 0)
+                                {
+                                    Console.WriteLine("There is no pet with in the index " + petIndex);
+                                }
+
+                                if (result == -1)
+                                {
+                                    Console.WriteLine("Given index is not valid");
+                                }
+                            }
+                            catch (FormatException e)
+                            {
+                                int result = EditPet(petInput);
+                                if (result == 0)
+                                {
+                                    Console.WriteLine("There is no pet with name " + petInput);
+                                }
+                            }
+
+
+                            break;
+                        case "3":
+                            Console.WriteLine("Your Pets:");
+                            ListPets();
+                            Console.WriteLine("Please enter the name/index of the pet you want to edit");
+                            String petInput2 = Console.ReadLine();
+
+                            try
+                            {
+                                int petIndex = int.Parse(petInput2);
+                                DeletePet(petIndex-1);
+                            }
+                            catch (FormatException e)
+                            {
+                                DeletePet(petInput2);
+                            }
+                            break;
+                        case "4":
+                            isDone = true;
+                            break;
+                    }
                 }
             }
-            
         }
 
         public void HirePetSitter(PetSitter petSitter)
@@ -178,9 +390,9 @@ namespace SE307Project
 
         private void ListPets()
         {
-            foreach (var pet in Pets)
+            for (int i = 0; i < Pets.Count; i++)
             {
-                Console.WriteLine(pet._Name);
+                Console.WriteLine(i + 1 + ") " + Pets[i].Name);
             }
         }
 
@@ -198,7 +410,8 @@ namespace SE307Project
         }
 
         public int
-            RatePetSitter( /*PetSitter petSitter*/) //Unfortunately we might have to delete pet sitter from parameters
+            RatePetSitter(
+                /*PetSitter petSitter*/) //Unfortunately we might have to delete pet sitter from parameters
         {
             while (true)
             {
@@ -229,7 +442,7 @@ namespace SE307Project
             {
                 Console.WriteLine("Message:");
                 String messageText = Console.ReadLine();
-                Message message = new Message(Email, petSitter._Email, messageText);
+                Message message = new Message(Email, petSitter.Email, messageText);
                 petSitter.AddMessage(message);
                 AddMessage(message);
             }
@@ -237,15 +450,21 @@ namespace SE307Project
 
         public void SendRequestToPetSitter(PetSitter petSitter)
         {
+            if (Pets.Count == 0)
+            {
+                Console.WriteLine("You have to have at least one pet to send a request.");
+                return;
+            }
+
             Console.WriteLine("Please choose the animals you want to hire this pet sitter for");
             ListPets();
 
             ArrayList pets = new ArrayList();
 
+            Console.WriteLine("Enter a pet name to add to the request, enter -1 when enough pets are added.");
             while (true)
             {
                 Pet pet;
-                Console.WriteLine("Enter a pet name to add to the request, enter -1 when enough pets are added.");
                 String petInput = Console.ReadLine();
 
                 if (petInput == "-1")
@@ -255,28 +474,68 @@ namespace SE307Project
 
                 try
                 {
-                    pet = FindPetInPets(int.Parse(petInput));
-                    pets.Add(pet);
+                    pet = FindPetInPets(int.Parse(petInput)-1);
+                    if (pet != null)
+                    {
+                        pets.Add(pet);
+                    }
+                    else
+                    {
+                        Console.WriteLine("There is no pet with given name.");
+                    }
                 }
-                catch (FormatException)
+                catch (FormatException e)
                 {
                     pet = FindPetInPets(petInput);
                     pets.Add(pet);
                 }
-                catch (NullReferenceException)
+                catch (NullReferenceException e)
                 {
                     Console.WriteLine("Given pet name/index is wrong. Please try again.");
                 }
             }
 
-            Request request = new Request(this, pets);
-            petSitter.AddRequest(request);
+            if (pets.Count == 0)
+            {
+                Console.WriteLine("You have to choose at least one pet to send a request.");
+                return;
+            }
+
+            Console.Write("Sending request for ");
+            foreach (Pet pet in pets)
+            {
+                Console.Write(pet.Name + " ");
+            }
+
+            Console.WriteLine("\nDo you confirm? (Y/N)");
+            String yesNoInput = Console.ReadLine();
+            if (yesNoInput.ToUpper() == "Y")
+            {
+                Request request = new Request(this, pets);
+                petSitter.AddRequest(request);
+                Console.WriteLine("Request is sent");
+            }
+            else
+            {
+                Console.WriteLine("Request is canceled");
+            }
+            
+        }
+
+        public override void ShowProfile()
+        {
+            base.ShowProfile();
+            Console.WriteLine("Pets:");
+            foreach (var pet in Pets)
+            {
+                Console.WriteLine(pet.Name + "(" + pet.GetSpecies() + ")");
+            }
         }
 
         public override void ShowMessagesFor(String email)
         {
             PetSitter petSitter = FindPetSitter(email);
-            if (petSitter!=null)
+            if (petSitter != null)
             {
                 Console.WriteLine("Messages: ");
                 foreach (var message in MessageBox)
@@ -294,7 +553,7 @@ namespace SE307Project
         {
             foreach (var petSitter in HiredPetSitters)
             {
-                if (email == petSitter._Email)
+                if (email == petSitter.Email)
                 {
                     return petSitter;
                 }

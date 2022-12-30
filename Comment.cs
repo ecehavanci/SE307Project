@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace SE307Project
 {
-    
+    [XmlRoot("Comment")]
     public class Comment
     {
-        private DateTime Date;
-        private String SenderName;
-        private int Star;
-        public int _Star
-        {
-            get { return Star; }
-        }
-        private String Text;
+        public Comment(){}
+        
+        public DateTime Date;
+        
+        public String SenderName;
+
+        public int Star;
+        
+        public String Text;
 
         public Comment(String senderName, int star, String text)
         {

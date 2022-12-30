@@ -18,5 +18,18 @@ namespace SE307Project
         }
 
     }
+    
+    class ExceptionWrongPassword : Exception
+    {
+
+        public ExceptionWrongPassword() : base("Entered password is wrong! Try Again.")
+        {
+        }
+
+        public void PrintException()
+        {
+            Console.WriteLine(Message);
+        }
+    }
 
 }

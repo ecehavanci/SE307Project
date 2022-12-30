@@ -1,14 +1,30 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace SE307Project
 {
+    [XmlRoot("Message")]
     public class Message
     {
-        private DateTime Date;
-        private String SenderMail;
-        private String ReceiverMail;
-        private String Text;
+        
+        public DateTime Date;
+        
+        public String SenderMail;
+        
+        public String ReceiverMail;
+        
+        public String Text;
 
+        
+        public Message()
+        {
+            Date = DateTime.Now;
+            SenderMail = "";
+            ReceiverMail = "";
+            Text = "";
+        }
+
+        
         public Message(String senderMail, String receiverMail, String text)
         {
             Date = DateTime.Now;

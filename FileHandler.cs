@@ -8,59 +8,59 @@ using System.Text;
 using CsvHelper.Configuration;
 using CsvHelper;
 using System.Collections;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace SE307Project
 {
-    public class FileHandler
+    public class XMLHandler
     {
-        public void saveToCSV()
+        public void WritePetOwnerList(string filename, List<PetOwner> po)
         {
-            /*// T var = (T)(object)obj;
-
-
-             var configUser = new CsvConfiguration(CultureInfo.InvariantCulture)
-             {
-                 HasHeaderRecord = false
-             };
-
-             using (var stream = File.Open("users.csv", FileMode.Append))
-             using (var writer = new StreamWriter(stream))
-             using (var csv = new CsvWriter(writer, configUser))
-             {
-
-                 csv.WriteRecords(users);*/
-            /*var myPersons = new List<Person>()
-            {
-                new Person { Id = 1, IsLiving = true, Name = "John", DateOfBirth = Convert.ToDateTime("03/05/2006") },
-                new Person { Id = 2, IsLiving = true, Name = "Steve", DateOfBirth = Convert.ToDateTime("03/09/1998") },
-                new Person { Id = 3, IsLiving = true, Name = "James", DateOfBirth = Convert.ToDateTime("03/08/1994") }
-            };
-
-            using (var writer = new StreamWriter("filePersonsWithDoB.csv"))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            {
-                csv.WriteRecords(myPersons);
-            } */
-
+            XmlSerializer x = new XmlSerializer(po.GetType());
+            Stream fs = new FileStream(filename, FileMode.Create);
+            XmlWriter writer = new XmlTextWriter(fs, Encoding.Unicode);
+            x.Serialize(writer, po);
+            writer.Close();
         }
 
-        private User readFromCSV()
+        public List<PetOwner> ReadPetOwnerList(string filename)
         {
-            User record = null;
-
-            var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
+            if (!File.Exists(filename))
             {
-                HasHeaderRecord = false,
-                IncludePrivateMembers = true,
-            };
-
-            using (var reader = new StreamReader("users.csv"))
-            using (var csv = new CsvReader(reader, configuration))
-            {
-                record = csv.GetRecord<User>();
-
+                return new List<PetOwner>();
             }
-            return record;
+            Stream reader = new FileStream(filename, FileMode.Open);
+            XmlSerializer serializer = new XmlSerializer(typeof(List<PetOwner>));
+            List<PetOwner> po = (List<PetOwner>) serializer.Deserialize(reader);
+            reader.Close();
+            return po;
         }
+        
+        
+        public void WritePetSitterList(string filename, List<PetSitter> ps)
+        {
+            XmlSerializer x = new XmlSerializer(ps.GetType());
+            Stream fs = new FileStream(filename, FileMode.Create);
+            XmlWriter writer = new XmlTextWriter(fs, Encoding.Unicode);
+            x.Serialize(writer, ps);
+            writer.Close();
+        }
+
+        public List<PetSitter> ReadPetSitterList(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                return new List<PetSitter>();
+            }
+            Stream reader = new FileStream(filename, FileMode.Open);
+            XmlSerializer serializer = new XmlSerializer(typeof(List<PetSitter>));
+            List<PetSitter> ps = (List<PetSitter>) serializer.Deserialize(reader);
+            reader.Close();
+            return ps;
+        }
+        
+        
+        
     }
 }

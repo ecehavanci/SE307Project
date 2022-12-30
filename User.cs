@@ -3,51 +3,29 @@ using CsvHelper.Configuration;
 
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SE307Project
 {
-    public abstract class User : ClassMap<User>
+    [XmlRoot("User")]
+    public abstract class User //: ClassMap<User>
     {
-        protected String Name { get; set; }
-        public String _Name
-        {
-            get { return Name; }
-            set { Name = _Name; }
-        }
-        protected String Surname { get; set; }
-        public String _Surname
-        {
-            get { return Surname; }
-            set { Surname = _Surname; }
-        }
-        protected String Email { get; set; }
-        public String _Email
-        {
-            get { return Email; }
-            set { Email = _Email; }
-        }
-
-        protected String Location { get; set; }
-        public String _Location
-        {
-            get { return Location; }
-            set { Location = _Location; }
-        }
-        protected String Password;
+        public User(){}
         
-        public String _Password
-        {
-            get { return Password; }
-            set { Password = _Password; }
-        }
+        public String Name { get; set; }
+        public String Surname { get; set; }
+        public String Email { get; set; }
+        public String Location { get; set; }
         
-        protected List<Message> MessageBox { get; set; }
-        public List<Message> _MessageBox
+        public String Password { get; set; }
+        public List<Message> MessageBox { get; set; }
+        public DateTime SignUpTime { get; set; }
+        
+        [XmlElement("SignUpTime")]
+        public DateTime _SignUpTime
         {
-            get { return MessageBox; }
-            set { MessageBox = _MessageBox; }
+            get { return SignUpTime; }
         }
-        protected DateTime SignUpTime { get; set; }
 
         public User(string name,string surname,string email,string password)
         {
@@ -58,21 +36,21 @@ namespace SE307Project
             Password = password;
             SignUpTime = DateTime.Now;
 
-            Map(p => p.Email).Index(0);
+            /*Map(p => p.Email).Index(0);
             Map(p => p.Name).Index(1);
             Map(p => p.Surname).Index(2);
             Map(p => p.Password).Index(3);
             Map(p => p.Location).Index(4);
-            Map(p => p.SignUpTime).Index(5);
+            Map(p => p.SignUpTime).Index(5);*/
 
         }
 
         public abstract void EditProfile();
 
-        public void ShowProfile()
+        public virtual void ShowProfile()
         {
-            Console.WriteLine("********** My Profile **********");
-            string profileInfo = "Name:\t" + Name + " " + Surname + "\nLocation:\t" + (Location == null? "N/A" : Location);
+            Console.WriteLine("********** " + Name + " " + Surname + "'s Profile **********");
+            string profileInfo = "Location:\t" + (Location == null? "N/A" : Location);
             Console.WriteLine(profileInfo);
         }
 

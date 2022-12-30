@@ -6,18 +6,40 @@ namespace SE307Project
 {
     public class Database
     {
-        public List<User> UserList = new List<User>();
-        
+        public List<PetOwner> PetOwnerList = new List<PetOwner>();
+        public List<PetSitter> PetSitterList = new List<PetSitter>();
+
+        public readonly String XmlOwnerFileName = "lastTryO5";
+        public readonly String XmlSitterFileName = "lastTryS5";
+
+
         private readonly string _connectionString;
+
         public Database(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public void InsertPetOwner(string name,string surname,string email,string password,string location)
+        //This is for trying TODO: DELETE LATER
+        public PetOwner AddPetOwner(string name, string surname, string email, string password)
         {
-            string insertSql = "INSERT INTO users (name, surname, email, password, location) VALUES (@name, @surname, @email, @password, @location)";
-            
+            var po = new PetOwner(name, surname, email, password);
+            PetOwnerList.Add(po);
+            return po;
+        }
+
+        public PetSitter AddPetSitter(string name, string surname, string email, string password)
+        {
+            var ps = new PetSitter(name, surname, email, password);
+            PetSitterList.Add(ps);
+            return ps;
+        }
+
+        public void InsertPetOwner(string name, string surname, string email, string password/*, string location*/)
+        {
+            /*string insertSql =
+                "INSERT INTO users (name, surname, email, password, location) VALUES (@name, @surname, @email, @password, @location)";
+
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -32,13 +54,20 @@ namespace SE307Project
                     command.Parameters.AddWithValue("@location", location);
                     command.ExecuteNonQuery();
                 }
-            }
-        }
-        
-        public void InsertPetSitter(string name,string surname,string email,string password,string location)
-        {
-            string insertSql = "INSERT INTO users (name, surname, email, password, location) VALUES (@name, @surname, @email, @password, @location)";
+            }*/
             
+            PetOwner po = new PetOwner(name, surname, email, password);
+            PetOwnerList.Add(po);
+            XMLHandler xmlHandler = new XMLHandler();
+            xmlHandler.WritePetOwnerList(XmlOwnerFileName,PetOwnerList);
+
+        }
+
+        public void InsertPetSitter(string name, string surname, string email, string password)
+        {
+            /*string insertSql =
+                "INSERT INTO users (name, surname, email, password, location) VALUES (@name, @surname, @email, @password, @location)";
+
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -53,8 +82,16 @@ namespace SE307Project
                     command.Parameters.AddWithValue("@location", location);
                     command.ExecuteNonQuery();
                 }
-            }
+            
+            
+            }*/
+
+            PetSitter ps = new PetSitter(name, surname, email, password);
+            PetSitterList.Add(ps);
+            XMLHandler xmlHandler = new XMLHandler();
+            xmlHandler.WritePetSitterList(XmlSitterFileName,PetSitterList);
         }
+
         public bool CheckUserExist(string email, string password)
         {
             string selectSql = "SELECT COUNT(*) FROM users WHERE email = @email AND password = @password";
@@ -67,64 +104,99 @@ namespace SE307Project
                 {
                     command.Parameters.AddWithValue("@email", email);
                     command.Parameters.AddWithValue("@password", password);
-                    int count = (int)command.ExecuteScalar();
+                    int count = (int) command.ExecuteScalar();
                     return count > 0;
                 }
             }
         }
-        
-        
-       /* public User LogIn(string email, string password){
-            foreach (User user in UserList) {
-                if (user._Email == email)
+
+        public User FindUser(string email, string password)
+        {
+            foreach (var user in PetOwnerList)
+            {
+                if (user.Email == email)
                 {
-                    if (user._Password == password) {
-                        return user;
+                    if (user.Password!= password)
+                    {
+                        throw new ExceptionWrongPassword();
                     }
-                    throw new ExceptionWrongPassword(password);
-                } 
+                    return user;
+                }
             }
+
+            foreach (var user in PetSitterList)
+            {
+                if (user.Email == email)
+                {
+                    if (user.Password!= password)
+                    {
+                        throw new ExceptionWrongPassword();
+                    }
+                    return user;
+                }
+            }
+
             return null;
         }
 
-        public void RegisterPetOwner(string name,string surname,string email,string password,string location)
-        {
-            User newPetOwner = new PetOwner(name, surname, email, password);
-            UserList.Add(newPetOwner);
-            Console.WriteLine("Registration successful.");
-        }
-        
-        public void RegisterPetSitter(string name,string surname,string email,string password,string location)
-        {
-            User newPetSitter = new PetOwner(name, surname, email, password);
-            UserList.Add(newPetSitter);
-            Console.WriteLine("Registration successful.");
-        } */
 
-        public void ListUsers()
-        {
-            foreach (var user in UserList)
-            {
-                Console.WriteLine(user.ToString());
-            }
-        }
-        
+        /* public User LogIn(string email, string password){
+             foreach (User user in UserList) {
+                 if (user._Email == email)
+                 {
+                     if (user._Password == password) {
+                         return user;
+                     }
+                     throw new ExceptionWrongPassword(password);
+                 } 
+             }
+             return null;
+         }
+ 
+         public void RegisterPetOwner(string name,string surname,string email,string password,string location)
+         {
+             User newPetOwner = new PetOwner(name, surname, email, password);
+             UserList.Add(newPetOwner);
+             Console.WriteLine("Registration successful.");
+         }
+         
+         public void RegisterPetSitter(string name,string surname,string email,string password,string location)
+         {
+             User newPetSitter = new PetOwner(name, surname, email, password);
+             UserList.Add(newPetSitter);
+             Console.WriteLine("Registration successful.");
+         } */
+
+
         public List<PetSitter> ListPetSitters()
         {
             int index = 1;
             List<PetSitter> list = new List<PetSitter>();
-            foreach (var user in UserList)
+            foreach (var user in PetSitterList)
             {
-                if (user is PetSitter)
-                {
-                    Console.WriteLine( index+ ") " + user.ToString());
-                    list.Add((PetSitter) user);
-                    index++;
-                }
+                Console.WriteLine(index + ") ");
+                user.ShowProfile();
+                list.Add(user);
+                index++;
             }
 
             return list;
         }
+        
+        
+        public List<PetOwner> ListPetOwners()
+        {
+            int index = 1;
+            List<PetOwner> list = new List<PetOwner>();
+            foreach (var user in PetOwnerList)
+            {
+                Console.WriteLine(index + ") ");
+                user.ShowProfile();
+                list.Add(user);
+                index++;
+            }
 
+            return list;
+        }
     }
 }

@@ -1,77 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Xml.Serialization;
 
 namespace SE307Project
 {
+    [XmlRoot("Pet")]
     public class Pet
     {
-        private String Name { set; get; }
+        public String Name { set; get; }
+        public int Age { set; get; }
+        public String Breed { set; get; }
+        public AnimalType Species { set; get; }
 
-        public String _Name
+        public String GetSpecies()
         {
-            get { return Name; }
-            set { Name = _Name; }
+            return Species.ToString().Replace("Species.", "").Replace("A", " A");
         }
 
-        private int Age { set; get; }
-
-        public int _Age
+        public void SetSpecies(String _Species)
         {
-            get { return Age; }
-            set { Age = _Age; }
-        }
-
-        private String Breed { set; get; }
-
-        public String _Breed
-        {
-            get { return Breed; }
-            set { Breed = _Breed; }
-        }
-
-        private AnimalType Species { set; get; }
-
-        public String _Species
-        {
-            get { return Species.ToString().Replace("Species.", "").Replace("A", " A"); }
-            set
+            if (_Species.ToUpper() == "DOG" || _Species == "1")
             {
-                if (_Species == "Dog")
-                {
-                    Species = AnimalType.Dog;
-                }
-                else if (_Species == "Cat")
-                {
-                    Species = AnimalType.Cat;
-                }
-                else if (_Species == "Bird")
-                {
-                    Species = AnimalType.Bird;
-                }
-                else if (_Species == "Hamster")
-                {
-                    Species = AnimalType.Hamster;
-                }
-                else if (_Species == "Exotic Animal")
-                {
-                    Species = AnimalType.ExoticAnimal;
-                }
+                Species = AnimalType.Dog;
+            }
+            else if (_Species.ToUpper() == "CAT" || _Species == "2")
+            {
+                Species = AnimalType.Cat;
+            }
+            else if (_Species.ToUpper() == "BIRD" || _Species == "3")
+            {
+                Species = AnimalType.Bird;
+            }
+            else if (_Species.ToUpper() == "HAMSTER" || _Species == "4")
+            {
+                Species = AnimalType.Hamster;
+            }
+            else if (_Species.ToUpper() == "EXOTIC ANIMAL" || _Species == "5")
+            {
+                Species = AnimalType.ExoticAnimal;
+            }
+            else
+            {
+                Species = AnimalType.Undefined;
+                Console.WriteLine("Species must be dog, cat, bird, exotic animal or hamster.");
             }
         }
 
-        private List<CareType> CareRoutine { get; }
+        public List<CareType> CareRoutine { get; }
 
         public Pet()
         {
             CareRoutine = new List<CareType>();
+            Name = "";
+            Age = 0;
+            Breed = "";
+            Species = AnimalType.Undefined;
         }
 
-        public Pet(String name, int age, String breed, AnimalType species)
+        public Pet(String name, int age, String breed, String species)
         {
             Name = name;
             Age = age;
             Breed = breed;
-            Species = species;
+            SetSpecies(species);
             CareRoutine = new List<CareType>();
         }
 
@@ -144,22 +136,22 @@ namespace SE307Project
         public string ListCareRoutine()
         {
             string routine = "";
-            foreach(CareType careType in CareRoutine)
+            foreach (CareType careType in CareRoutine)
             {
-                routine += careType+",\t";
+                routine += careType + ",\t";
             }
+
             return routine;
-            
         }
 
         public override string ToString()
         {
             string PetInfo = "--- Pet Info ---";
-            PetInfo += "Name:\t "+Name;
-            PetInfo += "\nAge:\t "+Age;
-            PetInfo += "\nBreed:\t "+Breed;
-            PetInfo += "\nAnimalType:\t "+Species;
-            PetInfo += "\nCare Routine:\t "+ListCareRoutine();
+            PetInfo += "Name:\t " + Name;
+            PetInfo += "\nAge:\t " + Age;
+            PetInfo += "\nBreed:\t " + Breed;
+            PetInfo += "\nAnimalType:\t " + Species;
+            PetInfo += "\nCare Routine:\t " + ListCareRoutine();
             PetInfo += "---------------------------------------------";
 
             return PetInfo;
@@ -172,7 +164,8 @@ namespace SE307Project
         Dog,
         Bird,
         Hamster,
-        ExoticAnimal
+        ExoticAnimal,
+        Undefined,
     }
 
     public enum CareType

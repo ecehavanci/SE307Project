@@ -4,29 +4,35 @@ using System.Text;
 
 namespace SE307Project
 {
-    enum AcceptionEnum
+    public enum StatusEnum
     {
         Waiting,
         Accepted,
         Rejected
     }
 
-    class RequestBox
+    public class RequestBox
     {
         public List<Request> Requests { get; set; }
-        public User Owner { get; set; }
-        public AcceptionEnum AcceptionEnum { get; set; }
+        public String OwnerName { get; set; }
+        public StatusEnum StatusEnum { get; set; }
 
-        public RequestBox(User Owner, AcceptionEnum acceptionType)
+        public RequestBox(String ownerName, StatusEnum status)
         {
             Requests = new List<Request>();
-            this.Owner = Owner;
-            AcceptionEnum = acceptionType;
+            OwnerName = ownerName;
+            StatusEnum = status;
         }
 
+        public RequestBox()
+        {
+            Requests = new List<Request>();
+            OwnerName = "";
+            StatusEnum = StatusEnum.Waiting;
+        }
         public virtual void DisplayRequestBox()
         {
-            Console.WriteLine("----------- "+AcceptionEnum+ "Request Box -----------");
+            Console.WriteLine("----------- "+StatusEnum+ "Request Box -----------");
             if (Requests.Count == 0)
                 Console.WriteLine("No Requests here!\n");
             else
@@ -64,7 +70,7 @@ namespace SE307Project
             for (int i = 0; i < Requests.Count; i++)
             {
                 int j = i;
-                while (j > 0 && Requests[j - 1]._Date < Requests[j]._Date)
+                while (j > 0 && Requests[j - 1].Date < Requests[j].Date)
                 {
                     Request temp = Requests[j - 1];
                     Requests[j - 1] = Requests[j];
@@ -79,7 +85,7 @@ namespace SE307Project
             for (int i = 0; i < Requests.Count; i++)
             {
                 int j = i;
-                while (j > 0 && Requests[j - 1]._Date > Requests[j]._Date)
+                while (j > 0 && Requests[j - 1].Date > Requests[j].Date)
                 {
                     Request temp = Requests[j - 1];
                     Requests[j - 1] = Requests[j];

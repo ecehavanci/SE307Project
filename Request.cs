@@ -1,25 +1,31 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SE307Project
 {
+    [XmlRoot("Request")]
     public class Request
     {
-        private DateTime Date;
-        private PetOwner RequestOwner;
-        private ArrayList RequestedPets;
-        private bool IsAccepted = false;
-        public bool _IsAccepted
+        
+        public DateTime Date;
+
+        public PetOwner RequestOwner;
+
+        public ArrayList RequestedPets;
+        
+        public bool IsAccepted = false;
+
+        public Request()
         {
-            get { return IsAccepted; }
-            set { IsAccepted = _IsAccepted; }
-        }
-        public DateTime _Date
-        {
-            get { return Date; }
-            set { Date = _Date; }
+            Date = DateTime.Now;
+            RequestOwner = new PetOwner();
+            RequestedPets = new ArrayList();
+            IsAccepted = false;
         }
 
+        
         public Request(PetOwner requestOwner, ArrayList requestedPets)
         {
             RequestOwner = requestOwner;
@@ -30,8 +36,8 @@ namespace SE307Project
         public override string ToString()
         {
             string content = "********* Request Content *********";
-            content += "Request Owner Info:" + RequestOwner._Name + " " + RequestOwner._Surname+"\n";
-            content += "Desired Location:\t" + RequestOwner._Location+"\n";
+            content += "Request Owner Info:" + RequestOwner.Name + " " + RequestOwner.Surname+"\n";
+            content += "Desired Location:\t" + RequestOwner.Location+"\n";
             content += "Number Of Pets:\t"+RequestedPets.Count;
             foreach(Pet pet in RequestedPets)
             {
