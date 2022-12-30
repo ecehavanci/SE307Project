@@ -42,6 +42,7 @@ namespace SE307Project
 
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
 
@@ -65,9 +66,8 @@ namespace SE307Project
 
         public void InsertPetSitter(string name, string surname, string email, string password)
         {
-            /*string insertSql =
-                "INSERT INTO users (name, surname, email, password, location) VALUES (@name, @surname, @email, @password, @location)";
-
+            string insertSql = "INSERT INTO users (name, surname, email, password, location) VALUES (@name, @surname, @email, @password, @location)";
+            
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -96,11 +96,11 @@ namespace SE307Project
         {
             string selectSql = "SELECT COUNT(*) FROM users WHERE email = @email AND password = @password";
 
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(selectSql, connection))
+                using (MySqlCommand command = new MySqlCommand(selectSql, connection))
                 {
                     command.Parameters.AddWithValue("@email", email);
                     command.Parameters.AddWithValue("@password", password);

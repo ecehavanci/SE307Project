@@ -13,7 +13,7 @@ namespace SE307Project
             var users = new List<User>();
             users.Add(sitter);
             hander.saveToCSV(); */
-            Database db = new Database("server=serverName;database=databaseName;email=email;password=password");
+            Database db = new Database("server=server_name;database=database_name;email=email;password=password");
 
             //var po = new PetOwner("Selina", "Kyle", "1", "1");
             //var ps = db.AddPetSitter("Gizem", "Kilic", "2", "2");
@@ -238,6 +238,14 @@ namespace SE307Project
                             }
 
                             isSigned = true;
+                            if (isSigned)
+                            {
+                                Console.WriteLine("Sign in successful!");
+                            }
+                        }
+                        catch (ExceptionWrongEmail e)
+                        {
+                            e.PrintException();
                         }
                         catch (ExceptionWrongPassword e)
                         {

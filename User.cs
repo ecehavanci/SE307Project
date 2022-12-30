@@ -7,8 +7,7 @@ using System.Xml.Serialization;
 
 namespace SE307Project
 {
-    [XmlRoot("User")]
-    public abstract class User //: ClassMap<User>
+    public abstract class User 
     {
         public User(){}
         
@@ -21,12 +20,6 @@ namespace SE307Project
         public List<Message> MessageBox { get; set; }
         public DateTime SignUpTime { get; set; }
         
-        [XmlElement("SignUpTime")]
-        public DateTime _SignUpTime
-        {
-            get { return SignUpTime; }
-        }
-
         public User(string name,string surname,string email,string password)
         {
             MessageBox = new List<Message>();
@@ -42,6 +35,7 @@ namespace SE307Project
             Map(p => p.Password).Index(3);
             Map(p => p.Location).Index(4);
             Map(p => p.SignUpTime).Index(5);*/
+          
 
         }
 
@@ -52,11 +46,6 @@ namespace SE307Project
             Console.WriteLine("********** " + Name + " " + Surname + "'s Profile **********");
             string profileInfo = "Location:\t" + (Location == null? "N/A" : Location);
             Console.WriteLine(profileInfo);
-        }
-
-        public void ReadMessages()
-        {
-
         }
         
         public void AddMessage(Message message)

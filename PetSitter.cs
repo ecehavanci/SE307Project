@@ -36,12 +36,12 @@ namespace SE307Project
             AcceptedRequestBox = new RequestBox(Name, StatusEnum.Accepted);
             RejectedRequestBox = new RequestBox(Name, StatusEnum.Rejected);
         }
-
+        
         public void AddComment(Comment comment)
         {
             Comments.Add(comment);
         }
-
+        
         public void AddRequest(Request request)
         {
             WaitingRequestBox.ReceiveRequest(request);
@@ -61,7 +61,6 @@ namespace SE307Project
                     loop = false;
                     break;
                 }
-
                 RequestBox selectedRequestBox = SelectRequestBox(selection);
                 if (selectedRequestBox is null)
                 {
@@ -107,8 +106,10 @@ namespace SE307Project
                     selectedRequestBox.DisplayRequestBox();
                     int selectedRequest = Convert.ToInt32(Console.ReadLine());
                     RejectRequest(selectedRequestBox.MoveMailToAnotherBox(selectedRequest - 1));
+
                 }
             }
+
         }
 
         private RequestBox SelectRequestBox(int BoxChoice)
@@ -207,8 +208,8 @@ namespace SE307Project
                         break;
                 }
             }
-        }
 
+        }
         public void ShowCommentsAndRates()
         {
             foreach (Comment comment in Comments)
@@ -219,16 +220,54 @@ namespace SE307Project
 
         public override void ShowMessagesFor(String email)
         {
+            PetOwner petOwner = FindPetOwner(email);
+            if(petOwner != null)
+            {
+                Console.WriteLine("Messages:\n");
+                foreach (var message in MessageBox)
+                {
+                    Console.WriteLine(message.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("No connection with email " + email);
+            }
         }
 
+        public void SendMessageToPetOwner(PetOwner petOwner)
+        {
+            if (PetOwnerContacts.Contains(petOwner))
+            {
+                Console.WriteLine("Message:");
+                String messageText = Console.ReadLine();
+                Message message = new Message(Email, petOwner._Email, messageText);
+                petOwner.AddMessage(message);
+                AddMessage(message);
+            }
+        }
+
+        private PetOwner FindPetOwner(String email)
+        {
+            foreach(PetOwner petOwner in PetOwnerContacts)
+            {
+                if(email == petOwner._Email)
+                {
+                    return petOwner;
+                }
+            }
+            return null;
+        }
         private static double GetMedian(int[] sourceNumbers)
         {
+            //Framework 2.0 version of this method. there is an easier way in F4        
             if (sourceNumbers == null || sourceNumbers.Length == 0)
                 throw new System.Exception("Median of empty array not defined.");
 
             double[] sortedPNumbers = (double[]) sourceNumbers.Clone();
             Array.Sort(sortedPNumbers);
 
+            //get the median
             int size = sortedPNumbers.Length;
             int mid = size / 2;
             double median = (size % 2 != 0)
