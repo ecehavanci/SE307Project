@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace SE307Project
@@ -166,7 +167,72 @@ namespace SE307Project
 
         public override void ReadMessages()
         {
+            Database db = Database.GetInstance();
+            //PetSitter psToSend = null;
+            //bool willSendMessage = false;
             
+            if (MessageBox.Count == 0)
+            {
+                Console.WriteLine("You have no messages yet.");
+                return;
+            }
+
+            Dictionary<int, PetOwner> poIndexes = new Dictionary<int, PetOwner>();
+
+            Console.WriteLine("You are in contact with:");
+            int index = 0;
+            
+            //This is for obtaining message owners
+            foreach (var message  in MessageBox)
+            {
+                try
+                {
+                    PetOwner po = db.FindPetOwner(message.SenderMail);//There has to be at least one message sent by pet owner
+                    if (!poIndexes.ContainsValue(po))
+                    {
+                        poIndexes.Add(index,po);
+                        Console.WriteLine(index+1 + ") " + po.Name + " " + po.Surname);
+                        index++;
+                    }
+
+                }
+                catch (NullReferenceException e)
+                {
+                    continue;
+                }
+
+            }
+            Console.WriteLine("Enter the index of the pet owner you want to see messages of, enter -1 to exit");
+            PetOwner messagesOfWhom = null;
+            while (true)
+            {
+                try
+                {
+                    int messagesOfWhomIndex = int.Parse(Console.ReadLine());
+                    if (messagesOfWhomIndex == -1)
+                    {
+                        break;
+                    }
+
+                    messagesOfWhom = poIndexes[messagesOfWhomIndex - 1];
+                    break;
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("Please enter the index of whose messages you want to read or -1 to exit");
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    Console.WriteLine("Please enter a number between 1-" + poIndexes.Count + " or -1");
+                }
+            }
+
+            ShowMessagesFor(messagesOfWhom);
+            Console.WriteLine("Do you want to send message to " + messagesOfWhom.Name + "? (Y/N)");
+            if (Console.ReadLine().ToUpper() == "Y")
+            {
+                SendMessageToPetOwner(messagesOfWhom);
+            }
         }
 
         public override void EditProfile()
@@ -274,23 +340,13 @@ namespace SE307Project
             }
         }*/
 
-        public void SendMessageToPetOwner(String o_email)
+        public void SendMessageToPetOwner(PetOwner po)
         {
-            Database db = Database.GetInstance();
-            PetOwner po = db.FindPetOwner(o_email);
-
-            foreach (var contact in po.PetSitterContacts)
-            {
-                if (contact.Item1.Email == Email)
-                {
-                    Console.WriteLine("Message:");
-                    String messageText = Console.ReadLine();
-                    Message message = new Message(Email, contact.Item1.Email,messageText);
-                    contact.Item1.AddMessage(message);
-                    AddMessage(message);
-                }
-            }
-           
+            Console.WriteLine("Message:");
+            String messageText = Console.ReadLine();
+            Message message = new Message(Email, po.Email,messageText);
+            po.AddMessage(message);
+            AddMessage(message);
         }
 
         /*private PetOwner FindPetOwner(String email)

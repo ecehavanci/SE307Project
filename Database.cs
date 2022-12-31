@@ -10,8 +10,8 @@ namespace SE307Project
         public List<PetOwner> PetOwnerList = new List<PetOwner>();
         public List<PetSitter> PetSitterList = new List<PetSitter>();
 
-        public readonly String XmlOwnerFileName = "lastTryO20.xml";
-        public readonly String XmlSitterFileName = "lastTryS20.xml";
+        public readonly String XmlOwnerFileName = "lastTryO23.xml";
+        public readonly String XmlSitterFileName = "lastTryS23.xml";
 
 
         private readonly string _connectionString;
