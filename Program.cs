@@ -15,188 +15,194 @@ namespace SE307Project
             //Database db = new Database("server=server_name;database=database_name;email=email;password=password");
             Database db = new Database();
             //db.ListSerializer();
-            List<User> u = new List<User>();
-            u.Add(new PetSitter("name","surname","email","pass"));
-            FileHandler xmlHandler = new FileHandler();
-            xmlHandler.WriteUser("temp.xml",u);
-            List<User> userL = xmlHandler.ReadUser("temp.xml");
+            
+            
+PetOwner owner = new PetOwner("name","surname","1","1");
+FileHandler xmlHandler = new FileHandler();
+xmlHandler.WriteUser("temp4.xml",owner);
+PetOwner userL = xmlHandler.ReadUser("temp4.xml");
 
-            foreach (User us in userL)
-            {
-                Console.WriteLine(us._Email);
-            }
+db.UserList.Add(userL);
 
-            bool logOut = false;
+Console.WriteLine(userL.Name);
 
-            while (!logOut)
-            {
-                User user = LoginScreen(db);
-                Console.WriteLine("Welcome " + user._Name);
-            }
-        }
 
-        public static User LoginScreen(Database db)
-        {
-            User user = null;
 
-            while (true)
-            {
-                bool isSigned = false;
+bool logOut = false;
 
-                Console.WriteLine("Welcome!");
-                Console.WriteLine("1) Sign up");
-                Console.WriteLine("2) Sign in");
-                Console.WriteLine("3) Exit");
+while (!logOut)
+{
+   User user = LoginScreen(db);
+   Console.WriteLine("Welcome " + user.Name);
+}
+}
 
-                int choice = Convert.ToInt32(Console.ReadLine());
+public static User LoginScreen(Database db)
+{
+User user = null;
 
-                switch (choice)
-                {
-                    case 1:
-                        Console.WriteLine("What do you want to sign up as?");
-                        Console.WriteLine("1) Pet Sitter");
-                        Console.WriteLine("2) Pet Owner");
-                        Console.WriteLine("3) Cancel registration");
+while (true)
+{
+   bool isSigned = false;
 
-                        int signUpChoice = Convert.ToInt32(Console.ReadLine());
+   Console.WriteLine("Welcome!");
+   Console.WriteLine("1) Sign up");
+   Console.WriteLine("2) Sign in");
+   Console.WriteLine("3) Exit");
 
-                        if (signUpChoice == 3)
-                            break;
-                        if (signUpChoice == 1 || signUpChoice == 2)
-                        {
-                            Console.WriteLine("Name: ");
-                            String newName = Console.ReadLine();
-                            Console.WriteLine("Surname: ");
-                            String newSurname = Console.ReadLine();
-                            Console.WriteLine("Email: ");
-                            String newEmail = Console.ReadLine();
-                            Console.WriteLine("Password: ");
-                            String newPassword = Console.ReadLine();
-                            Console.WriteLine("Location: ");
-                            String newLocation = Console.ReadLine();
-                            
-                            switch (signUpChoice)
-                            {
-                                case 1:
-                                    db.RegisterPetSitter(newName, newSurname, newEmail, newPassword,
-                                        newLocation);
-                                    break;
-                                case 2:
-                                    db.RegisterPetOwner(newName, newSurname, newEmail, newPassword,
-                                        newLocation);
-                                    break;
-                            }
-                        }
-                        else
-                            Console.WriteLine("Invalid choice.");
-                        break;
+   int choice = Convert.ToInt32(Console.ReadLine());
 
-                    case 2:
-                        if (db.UserList.Count == 0)
-                        { 
-                            Console.WriteLine("There is no such account. Please create an account for logging in.");
-                            continue;
-                        }
+   switch (choice)
+   {
+       case 1:
+           Console.WriteLine("What do you want to sign up as?");
+           Console.WriteLine("1) Pet Sitter");
+           Console.WriteLine("2) Pet Owner");
+           Console.WriteLine("3) Cancel registration");
 
-                        Console.WriteLine("Email: ");
-                        String email = Console.ReadLine();
-                        Console.WriteLine("Password: ");
-                        String password = Console.ReadLine();
-                        try
-                        {
-                            user = db.LogIn(email, password);
-                            isSigned = true;
-                            if (isSigned)
-                            {
-                                Console.WriteLine("Sign in successful!");
-                            }
-                        }
-                        catch (ExceptionWrongEmail e)
-                        {
-                            e.PrintException();
-                        }
-                        catch (ExceptionWrongPassword e)
-                        {
-                            e.PrintException();
-                        }
+           int signUpChoice = Convert.ToInt32(Console.ReadLine());
 
-                        if (user is PetOwner)
-                        {
-                            PetOwner petOwner = (PetOwner) user;
-                            while (true)
-                            {
-                                Console.WriteLine("1) List pet sitters");
-                                Console.WriteLine("2) Edit profile");
-                                Console.WriteLine("3) Read messages");
+           if (signUpChoice == 3)
+               break;
+           if (signUpChoice == 1 || signUpChoice == 2)
+           {
+               Console.WriteLine("Name: ");
+               String newName = Console.ReadLine();
+               Console.WriteLine("Surname: ");
+               String newSurname = Console.ReadLine();
+               Console.WriteLine("Email: ");
+               String newEmail = Console.ReadLine();
+               Console.WriteLine("Password: ");
+               String newPassword = Console.ReadLine();
+               Console.WriteLine("Location: ");
+               String newLocation = Console.ReadLine();
+               
+               switch (signUpChoice)
+               {
+                   case 1:
+                       db.RegisterPetSitter(newName, newSurname, newEmail, newPassword,
+                           newLocation);
+                       break;
+                   case 2:
+                       db.RegisterPetOwner(newName, newSurname, newEmail, newPassword,
+                           newLocation);
+                       break;
+               }
+           }
+           else
+               Console.WriteLine("Invalid choice.");
+           break;
 
-                                int mainPageChoice = -1;
-                                try
-                                {
-                                    mainPageChoice = Convert.ToInt32(Console.ReadLine());
-                                }
-                                catch (FormatException e)
-                                {
-                                    Console.WriteLine("Please enter a valid choice");
-                                }
+       case 2:
+           if (db.UserList.Count == 0)
+           { 
+               Console.WriteLine("There is no such account. Please create an account for logging in.");
+               continue;
+           }
 
-                                switch (mainPageChoice)
-                                {
-                                    case 1 : 
-                                        List<PetSitter> list = db.ListPetSitters();
-                                        Console.WriteLine("Which one do you want to send a request? Enter -1 to exit.");
-                                        while (true)
-                                        {
-                                            int petSitterIndex = int.Parse(Console.ReadLine());
-                                            try
-                                            {
-                                                if (petSitterIndex == -1)
-                                                {
-                                                    break;
-                                                }
-                                                if (petSitterIndex > list.Count || petSitterIndex< 0)
-                                                {
-                                                    Console.WriteLine("Please enter a number between 0 and " + list.Count);
-                                                }
-                                                else
-                                                {
-                                                    petOwner.SendRequestToPetSitter(list[petSitterIndex]);
-                                                    break;
+           Console.WriteLine("Email: ");
+           String email = Console.ReadLine();
+           Console.WriteLine("Password: ");
+           String password = Console.ReadLine();
+           try
+           {
+               user = db.LogIn(email, password);
+               isSigned = true;
+               if (isSigned)
+               {
+                   Console.WriteLine("Sign in successful!");
+               }
+           }
+           catch (ExceptionWrongEmail e)
+           {
+               e.PrintException();
+           }
+           catch (ExceptionWrongPassword e)
+           {
+               e.PrintException();
+           }
 
-                                                }
-                                            }
-                                            catch (FormatException e)
-                                            {
-                                                Console.WriteLine("Please enter a number.");
-                                                throw;
-                                            }
-                                        }
-                                        
-                                        break;
-                                    case 2 : 
-                                        user.EditProfile();
-                                        break;
-                                    case 3 : 
-                                       // user.ReadMessages();  this empty method is deleted
-                                        break;
-                                }
-                            }
-                        }
-                        break;
+           if (user is PetOwner)
+           {
+               PetOwner petOwner = (PetOwner) user;
+               while (true)
+               {
+                   Console.WriteLine("1) List pet sitters");
+                   Console.WriteLine("2) Edit profile");
+                   Console.WriteLine("3) Read messages");
 
-                    case 3:
-                        Console.WriteLine("Exiting...");
-                        Environment.Exit(0);
-                        break;
+                   int mainPageChoice = -1;
+                   try
+                   {
+                       mainPageChoice = Convert.ToInt32(Console.ReadLine());
+                   }
+                   catch (FormatException e)
+                   {
+                       Console.WriteLine("Please enter a valid choice");
+                   }
 
-                    default:
-                        Console.WriteLine("Invalid choice.");
-                        break;
-                }
+                   switch (mainPageChoice)
+                   {
+                       case 1 : 
+                           List<PetSitter> list = db.ListPetSitters();
+                           Console.WriteLine("Which one do you want to send a request? Enter -1 to exit.");
+                           while (true)
+                           {
+                               int petSitterIndex = int.Parse(Console.ReadLine());
+                               try
+                               {
+                                   if (petSitterIndex == -1)
+                                   {
+                                       break;
+                                   }
+                                   if (petSitterIndex > list.Count || petSitterIndex< 0)
+                                   {
+                                       Console.WriteLine("Please enter a number between 0 and " + list.Count);
+                                   }
+                                   else
+                                   {
+                                       petOwner.SendRequestToPetSitter(list[petSitterIndex]);
+                                       break;
 
-                if (isSigned)
-                    return user;
-            }
-        }
-    }
+                                   }
+                               }
+                               catch (FormatException e)
+                               {
+                                   Console.WriteLine("Please enter a number.");
+                                   throw;
+                               }
+                           }
+                           
+                           break;
+                       case 2 : 
+                           user.EditProfile();
+                           Console.WriteLine("ERGFDSV");
+                           FileHandler xmlHandler = new FileHandler();
+                           xmlHandler.WriteUser("temp4.xml",(PetOwner)user);
+
+                           break;
+                       case 3 : 
+                          // user.ReadMessages();  this empty method is deleted
+                           break;
+                   }
+               }
+           }
+           break;
+
+       case 3:
+           Console.WriteLine("Exiting...");
+           Environment.Exit(0);
+           break;
+
+       default:
+           Console.WriteLine("Invalid choice.");
+           break;
+   }
+
+   if (isSigned)
+       return user;
+}
+}
+}
 
 }

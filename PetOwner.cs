@@ -7,8 +7,8 @@ namespace SE307Project
 {
     public class PetOwner : User
     {
-        private List<PetSitter> HiredPetSitters;
-        private List<Pet> Pets;
+        public List<PetSitter> HiredPetSitters;
+        public List<Pet> Pets;
         public PetOwner(string name, string surname, string email, string password) : base(name,
             surname, email, password)
         {
@@ -234,7 +234,7 @@ namespace SE307Project
             {
                 Console.WriteLine("Message:");
                 String messageText = Console.ReadLine();
-                Message message = new Message(Email, petSitter._Email, messageText);
+                Message message = new Message(Email, petSitter.Email, messageText);
                 petSitter.AddMessage(message);
                 AddMessage(message);
             }
@@ -274,7 +274,7 @@ namespace SE307Project
                 }
             }
 
-            Request request = new Request(this, pets);
+            Request request = new Request(Email, pets);
             petSitter.AddRequest(request);
         }
 
@@ -299,7 +299,7 @@ namespace SE307Project
         {
             foreach (var petSitter in HiredPetSitters)
             {
-                if (email == petSitter._Email)
+                if (email == petSitter.Email)
                 {
                     return petSitter;
                 }

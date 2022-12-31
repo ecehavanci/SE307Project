@@ -2,51 +2,53 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SE307Project
 {
+    [Serializable, XmlRoot("user")]
     public abstract class User 
     {
-        protected String Name { get; set; }
-        public String _Name
+        public String Name { get; set; }
+        /*public String _Name
         {
             get { return Name; }
             set { Name = _Name; }
-        }
-        protected String Surname { get; set; }
-        public String _Surname
+        }*/
+        public String Surname { get; set; }
+        /*public String _Surname
         {
             get { return Surname; }
             set { Surname = _Surname; }
-        }
-        protected String Email { get; set; }
-        public String _Email
+        }*/
+        public String Email { get; set; }
+        /*public String _Email
         {
             get { return Email; }
             set { Email = _Email; }
-        }
+        }*/
 
-        protected String Location { get; set; }
-        public String _Location
+        public String Location { get; set; }
+        /*public String _Location
         {
             get { return Location; }
             set { Location = _Location; }
-        }
-        protected String Password;
+        }*/
+        public String Password;
         
-        public String _Password
+        /*public String _Password
         {
             get { return Password; }
             set { Password = _Password; }
-        }
+        }*/
         
-        protected List<Message> MessageBox { get; set; }
-        public List<Message> _MessageBox
+        public List<Message> MessageBox { get; set; }
+        /*public List<Message> _MessageBox
         {
             get { return MessageBox; }
             set { MessageBox = _MessageBox; }
-        }
-        protected DateTime SignUpTime { get; set; }
+        }*/
+        public DateTime SignUpTime { get; set; }
         
         public User()
         {

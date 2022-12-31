@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SE307Project
 {
@@ -9,23 +10,23 @@ namespace SE307Project
         public void CalculateAverage();
 
     }
-    
+    [Serializable, XmlRoot("petSitter")]
     public class PetSitter : User
     {
-        private List<Comment> Comments;
-        private List<PetOwner> PetOwnerContacts;//???
-        private RequestBox WaitingRequestBox;
-        private RequestBox AcceptedRequestBox;
-        private RequestBox RejectedRequestBox;
-        private String Bio;
+        public List<Comment> Comments;
+        public List<String> PetOwnerEmails;//???
+        public RequestBox WaitingRequestBox;
+        public RequestBox AcceptedRequestBox;
+        public RequestBox RejectedRequestBox;
+        public String Bio;
 
         public PetSitter(string name, string surname, string email, string password):base(name,surname,email,password)
         {
             Comments = new List<Comment>();
-            PetOwnerContacts = new List<PetOwner>();
-            WaitingRequestBox = new RequestBox(this,AcceptionEnum.Waiting);
-            AcceptedRequestBox = new RequestBox(this,AcceptionEnum.Accepted);
-            RejectedRequestBox = new RequestBox(this,AcceptionEnum.Rejected);
+            PetOwnerEmails = new List<String>();
+            WaitingRequestBox = new RequestBox(/*this,*/AcceptionEnum.Waiting);
+            AcceptedRequestBox = new RequestBox(/*this,*/AcceptionEnum.Accepted);
+            RejectedRequestBox = new RequestBox(/*this,*/AcceptionEnum.Rejected);
         }
 
         public PetSitter()
@@ -172,7 +173,7 @@ namespace SE307Project
             }
         }
 
-        public override void ShowMessagesFor(String email)
+        /*public override void ShowMessagesFor(String email)
         {
             PetOwner petOwner = FindPetOwner(email);
             if(petOwner != null)
@@ -187,11 +188,11 @@ namespace SE307Project
             {
                 Console.WriteLine("No connection with email " + email);
             }
-        }
+        }*/
 
-        public void SendMessageToPetOwner(PetOwner petOwner)
+        /*public void SendMessageToPetOwner(PetOwner petOwner)
         {
-            if (PetOwnerContacts.Contains(petOwner))
+            if (PetOwnerEmails.Contains(petOwner))
             {
                 Console.WriteLine("Message:");
                 String messageText = Console.ReadLine();
@@ -199,15 +200,15 @@ namespace SE307Project
                 petOwner.AddMessage(message);
                 AddMessage(message);
             }
-        }
+        }*/
 
-        private PetOwner FindPetOwner(String email)
+        private String FindPetOwner(String email)
         {
-            foreach(PetOwner petOwner in PetOwnerContacts)
+            foreach(String petOwnerEmail in PetOwnerEmails)
             {
-                if(email == petOwner._Email)
+                if(email == petOwnerEmail)
                 {
-                    return petOwner;
+                    return email;
                 }
             }
             return null;
@@ -265,6 +266,11 @@ namespace SE307Project
                 counter = counter / Comments.Count;
             }
            
+        }
+
+        public override void ShowMessagesFor(string email)
+        {
+            throw new NotImplementedException();
         }
 
         public override String ToString()

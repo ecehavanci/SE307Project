@@ -4,10 +4,10 @@ namespace SE307Project
 {
     public class Message
     {
-        private DateTime Date;
-        private String SenderMail;
-        private String ReceiverMail;
-        private String Text;
+        public DateTime Date;
+        public String SenderMail;
+        public String ReceiverMail;
+        public String Text;
 
         public Message(String senderMail, String receiverMail, String text)
         {

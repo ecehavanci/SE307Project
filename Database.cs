@@ -18,9 +18,9 @@ namespace SE307Project
         public User LogIn(string email, string password){
             FileHandler xmlHandler = new FileHandler();
             foreach (User user in UserList) {
-                if (user._Email == email)
+                if (user.Email == email)
                 {
-                    if (user._Password == password)
+                    if (user.Password == password)
                     {
                         return user;
                     }
@@ -31,13 +31,7 @@ namespace SE307Project
             }
             return null;
         }
-
-        public void ListSerializer()
-        {
-            FileHandler xmlHandler = new FileHandler();
-            UserList = xmlHandler.ReadUser("user.xml");
-
-        }
+        
 
         public void RegisterPetOwner(string name,string surname,string email,string password,string location)
         {
@@ -50,21 +44,21 @@ namespace SE307Project
                   e.PrintException();
               }*/
 
-            User newPetOwner = new PetOwner(name, surname, email, password);
+            /*User newPetOwner = new PetOwner(name, surname, email, password);
             UserList.Add(newPetOwner);
             FileHandler xmlHandler = new FileHandler();
-            xmlHandler.WriteUser("user.xml", UserList);
-            Console.WriteLine("Registration successful.");
+            xmlHandler.WriteUser("user.xml", newPetOwner);
+            Console.WriteLine("Registration successful.");*/
             
         }
         
         public void RegisterPetSitter(string name,string surname,string email,string password,string location)
         {
             
-            User newPetSitter = new PetOwner(name, surname, email, password);
+            PetSitter newPetSitter = new PetSitter(name, surname, email, password);
             UserList.Add(newPetSitter);
             FileHandler xmlHandler = new FileHandler();
-            xmlHandler.WriteUser("user.xml", UserList);
+            //xmlHandler.WriteUser("user.xml", newPetSitter);
           
             Console.WriteLine("Registration successful.");
             //FileHandler xmlHandler = new FileHandler();
@@ -74,7 +68,7 @@ namespace SE307Project
         
         private void CheckUserExists(string email) { //TODO: Implement it
             foreach (User user in UserList) {
-                if (user._Email == email) {
+                if (user.Email == email) {
                     throw new ExceptionAlreadyExistEmail(email);
                 }
             }

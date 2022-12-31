@@ -5,7 +5,7 @@ namespace SE307Project
 {
     public class Pet
     {
-        private String Name { set; get; }
+        public String Name { set; get; }
 
         public String _Name
         {
@@ -13,7 +13,7 @@ namespace SE307Project
             set { Name = _Name; }
         }
 
-        private int Age { set; get; }
+        public int Age { set; get; }
 
         public int _Age
         {
@@ -21,7 +21,7 @@ namespace SE307Project
             set { Age = _Age; }
         }
 
-        private String Breed { set; get; }
+        public String Breed { set; get; }
 
         public String _Breed
         {
@@ -29,7 +29,7 @@ namespace SE307Project
             set { Breed = _Breed; }
         }
 
-        private AnimalType Species { set; get; }
+        public AnimalType Species { set; get; }
 
         public String _Species
         {
@@ -59,7 +59,7 @@ namespace SE307Project
             }
         }
 
-        private List<CareType> CareRoutine { get; }
+        public List<CareType> CareRoutine { get; }
 
         public Pet()
         {

@@ -9,22 +9,22 @@ namespace SE307Project
 {
     public class FileHandler
     {
-        public void WriteUser(string filename, List<User> userList)
+        public void WriteUser(string filename, PetOwner owner)
             {
-                XmlSerializer x = new XmlSerializer(userList.GetType());
+                XmlSerializer x = new XmlSerializer(owner.GetType());
                 Stream fs = new FileStream(filename, FileMode.Create);
                 XmlWriter writer = new XmlTextWriter(fs, Encoding.Unicode);
-                x.Serialize(writer, userList);
+                x.Serialize(writer, owner);
                 writer.Close();
             }
 
-            public List<User> ReadUser(string filename)
+            public PetOwner ReadUser(string filename)
             {
                 Stream reader = new FileStream(filename, FileMode.Open);
-                
-                XmlSerializer serializer = new XmlSerializer(typeof(List<User>));
-                List<User> userList = (List<User>)serializer.Deserialize(reader);
-                return userList;
+                XmlSerializer serializer = new XmlSerializer(typeof(PetOwner));
+
+                PetOwner owner = (PetOwner)serializer.Deserialize(reader);
+                return owner;
             }
         
         
@@ -59,9 +59,9 @@ namespace SE307Project
 
         }*/
 
-        /*private User readFromCSV()
+        /*private owner readFromCSV()
         {
-            User record = null;
+            owner record = null;
 
             var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -72,7 +72,7 @@ namespace SE307Project
             using (var reader = new StreamReader("users.csv"))
             using (var csv = new CsvReader(reader, configuration))
             {
-                record = csv.GetRecord<User>();
+                record = csv.GetRecord<owner>();
 
             }
             return record;

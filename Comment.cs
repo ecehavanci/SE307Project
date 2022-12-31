@@ -7,14 +7,14 @@ namespace SE307Project
     
     public class Comment
     {
-        private DateTime Date;
-        private String SenderName;
-        private int Star;
+        public DateTime Date;
+        public String SenderName;
+        public int Star;
         public int _Star
         {
             get { return Star; }
         }
-        private String Text;
+        public String Text;
 
         public Comment(String senderName, int star, String text)
         {

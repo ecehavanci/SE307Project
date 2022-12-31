@@ -5,10 +5,10 @@ namespace SE307Project
 {
     public class Request
     {
-        private DateTime Date;
-        private PetOwner RequestOwner;
-        private ArrayList RequestedPets;
-        private bool IsAccepted = false;
+        public DateTime Date;
+        public String RequestOwnerEmail;
+        public ArrayList RequestedPets;
+        public bool IsAccepted = false;
         public bool _IsAccepted
         {
             get { return IsAccepted; }
@@ -20,9 +20,9 @@ namespace SE307Project
             set { Date = _Date; }
         }
 
-        public Request(PetOwner requestOwner, ArrayList requestedPets)
+        public Request(string requestOwnerEmail, ArrayList requestedPets)
         {
-            RequestOwner = requestOwner;
+            RequestOwnerEmail = requestOwnerEmail;
             Date = DateTime.Now;
             RequestedPets = requestedPets;
         }
@@ -32,7 +32,7 @@ namespace SE307Project
             
         }
         
-        public override string ToString()
+        /*public override string ToString()
         {
             string content = "********* Request Content *********";
             content += "Request Owner Info:" + RequestOwner._Name + " " + RequestOwner._Surname+"\n";
@@ -44,6 +44,6 @@ namespace SE307Project
             }
             content += "****************************";
             return content;
-        }
+        }*/
     }
 }

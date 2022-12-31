@@ -4,23 +4,23 @@ using System.Text;
 
 namespace SE307Project
 {
-    enum AcceptionEnum
+    public enum AcceptionEnum
     {
         Waiting,
         Accepted,
         Rejected
     }
 
-    class RequestBox
+    public class RequestBox
     {
         public List<Request> Requests { get; set; }
-        public User Owner { get; set; }
+        //public User Owner { get; set; }
         public AcceptionEnum AcceptionEnum { get; set; }
 
-        public RequestBox(User Owner, AcceptionEnum acceptionType)
+        public RequestBox(/*User Owner,*/ AcceptionEnum acceptionType)
         {
             Requests = new List<Request>();
-            this.Owner = Owner;
+            //this.Owner = Owner;
             AcceptionEnum = acceptionType;
         }
 
