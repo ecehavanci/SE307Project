@@ -19,7 +19,7 @@ namespace SE307Project
             //var po = new PetOwner("Selina", "Kyle", "1", "1");
             //var ps = db.AddPetSitter("Gizem", "Kilic", "2", "2");
             //bool logOut = false;
-            
+
             XMLHandler xmlHandler = new XMLHandler();
             //xmlHandler.WritePetOwnerList("bettertemp2.xml", db.);
 
@@ -33,6 +33,7 @@ namespace SE307Project
                 {
                     continue;
                 }
+
                 Console.WriteLine("Welcome " + user.Name);
 
                 if (user is PetOwner)
@@ -62,56 +63,99 @@ namespace SE307Project
                         {
                             case 1:
                                 List<PetSitter> list = db.ListPetSitters();
-                                Console.WriteLine("Which one do you want to send a request? Enter -1 to exit.");
-                                while (true)
+                                Console.WriteLine("1) Send request\n2) Mark as hired\n3) Exit");
+                                String actionChoice = Console.ReadLine();
+                                switch (actionChoice)
                                 {
-                                    int petSitterIndex = int.Parse(Console.ReadLine());
-                                    try
-                                    {
-                                        if (petSitterIndex == -1)
+                                    case "1":
+                                        Console.WriteLine("Which one do you want to send a request? Enter -1 to exit.");
+                                        while (true)
                                         {
-                                            break;
+                                            int petSitterIndex = int.Parse(Console.ReadLine());
+                                            try
+                                            {
+                                                if (petSitterIndex == -1)
+                                                {
+                                                    break;
+                                                }
+
+                                                if (petSitterIndex > list.Count || petSitterIndex < 0)
+                                                {
+                                                    Console.WriteLine("Please enter a number between 0 and " +
+                                                                      list.Count);
+                                                }
+                                                else
+                                                {
+                                                    petOwner.SendRequestToPetSitter(list[petSitterIndex - 1]);
+                                                    break;
+                                                }
+                                            }
+                                            catch (FormatException e)
+                                            {
+                                                Console.WriteLine("Please enter a number.");
+                                                throw;
+                                            }
                                         }
 
-                                        if (petSitterIndex > list.Count || petSitterIndex < 0)
+                                        break;
+                                    case "2":
+                                        Console.WriteLine("Which one do you want to mark as hired? Enter -1 to exit.");
+                                        while (true)
                                         {
-                                            Console.WriteLine("Please enter a number between 0 and " + list.Count);
+                                            int petSitterIndex = int.Parse(Console.ReadLine());
+                                            try
+                                            {
+                                                if (petSitterIndex == -1)
+                                                {
+                                                    break;
+                                                }
+
+                                                if (petSitterIndex > list.Count || petSitterIndex < 0)
+                                                {
+                                                    Console.WriteLine("Please enter a number between 0 and " +
+                                                                      list.Count);
+                                                }
+                                                else
+                                                {
+                                                    petOwner.HirePetSitter(list[petSitterIndex - 1]);
+                                                    break;
+                                                }
+                                            }
+                                            catch (FormatException e)
+                                            {
+                                                Console.WriteLine("Please enter a number.");
+                                                throw;
+                                            }
                                         }
-                                        else
-                                        {
-                                            petOwner.SendRequestToPetSitter(list[petSitterIndex-1]);
-                                            break;
-                                        }
-                                    }
-                                    catch (FormatException e)
-                                    {
-                                        Console.WriteLine("Please enter a number.");
-                                        throw;
-                                    }
+
+                                        break;
                                 }
-                                
-                               // xmlHandler.WritePetSitterList(db.XmlOwnerFileName, db.PetSitterList);
+
+
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 break;
                             case 2:
                                 user.EditProfile();
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
                                 xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 break;
                             case 3:
                                 user.ReadMessages();
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
                                 xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 break;
                             case 4:
                                 isLoggedIn = false;
                                 break;
                             case 5:
-                                user.AddMessage(new Message(user.Email, user.Email,"HELLO"));
                                 Environment.Exit(0);
                                 break;
                         }
                     }
                 }
-                
-                
+
+
                 if (user is PetSitter)
                 {
                     PetSitter petSitter = (PetSitter) user;
@@ -139,9 +183,9 @@ namespace SE307Project
                         {
                             case 1:
                                 petSitter.ReadRequestBox();
-                                
+
                                 xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
-                                //xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 break;
                             case 2:
                                 user.EditProfile();
@@ -149,7 +193,8 @@ namespace SE307Project
                                 break;
                             case 3:
                                 user.ReadMessages();
-                                
+
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
                                 xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 break;
                             case 4:
@@ -277,6 +322,4 @@ namespace SE307Project
             }
         }
     }
-
-    
 }

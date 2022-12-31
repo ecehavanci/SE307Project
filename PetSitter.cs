@@ -61,7 +61,7 @@ namespace SE307Project
             while (/*loop*/true)
             {
                 Console.WriteLine(
-                    "Which Request Box do you wish to read?\n1)Waiting Requests\n2)AcceptedRequests\n3)Rejected Requests\n4)Exit");
+                    "Which Request Box do you wish to read?\n1)Waiting Requests\n2)Accepted Requests\n3)Rejected Requests\n4)Exit");
                 int selection = Convert.ToInt32(Console.ReadLine());
                 if (selection == 4)
                 {
@@ -102,14 +102,14 @@ namespace SE307Project
                 }
                 else if (requestToDo == "2")
                 {
-                    Console.WriteLine("Which Request Do you want to Accept? Choose below:");
+                    Console.WriteLine("Which Request Do you want to accept? Choose below:");
                     selectedRequestBox.DisplayRequestBox();
                     int selectedRequest = Convert.ToInt32(Console.ReadLine());
                     AcceptRequest(selectedRequestBox.MoveMailToAnotherBox(selectedRequest - 1));
                 }
                 else if (requestToDo == "3")
                 {
-                    Console.WriteLine("Which Request Do you want to Reject? Choose below:");
+                    Console.WriteLine("Which Request Do you want to reject? Choose below:");
                     selectedRequestBox.DisplayRequestBox();
                     int selectedRequest = Convert.ToInt32(Console.ReadLine());
                     RejectRequest(selectedRequestBox.MoveMailToAnotherBox(selectedRequest - 1));
@@ -137,6 +137,17 @@ namespace SE307Project
 
         public void AcceptRequest(Request request)
         {
+            Database db = Database.GetInstance();
+            try
+            {
+                PetOwner po = db.FindPetOwner(request.RequestOwnerEmail);
+                po.PetSitterContacts.Add((this, false));
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine("Request owner not found. Cannot accept request");
+                return;
+            }
             AcceptedRequestBox.ReceiveRequest(request);
             Console.WriteLine("Request Accepted!");
         }
@@ -230,7 +241,7 @@ namespace SE307Project
             }
         }
 
-        public override void ShowMessagesFor(String email)
+        /*public override void ShowMessagesFor(String email)
         {
             bool isThereAnyMessage = false;
             foreach (var message in MessageBox)
@@ -260,8 +271,8 @@ namespace SE307Project
             else
             {
                 Console.WriteLine("No connection with email " + email);
-            }*/
-        }
+            }
+        }*/
 
         public void SendMessageToPetOwner(String o_email)
         {

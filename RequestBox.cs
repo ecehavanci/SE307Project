@@ -58,8 +58,9 @@ namespace SE307Project
 
         public Request MoveMailToAnotherBox(int selection)
         {
-            Requests.RemoveAt(selection);
-            return Requests[selection];
+            Request r = Requests[selection];
+            Requests.Remove(r);
+            return r;
         }
 
         public void SortByDateDesc()

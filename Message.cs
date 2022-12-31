@@ -34,7 +34,8 @@ namespace SE307Project
 
         public override string ToString()
         {
-            return "Sender:\t"+SenderMail+"\n Date:"+Date+"\nText:\t"+Text;
+            //Console.ForegroundColor == ConsoleColor.DarkGray;
+            return Text; //+ "                                     " + Date.ToString();
         }
     }
 }

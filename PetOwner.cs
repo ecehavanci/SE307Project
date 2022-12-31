@@ -10,18 +10,18 @@ namespace SE307Project
     {
         public PetOwner()
         {
-            PetSitterContacts = new List<(PetSitter,bool)>();
+            PetSitterContacts = new List<(PetSitter, bool)>();
             Pets = new List<Pet>();
         }
 
-        public List<(PetSitter,bool)> PetSitterContacts;//bool represents if the pet sitter is hired
+        public List<(PetSitter, bool)> PetSitterContacts; //bool represents if the pet sitter is hired
 
         public List<Pet> Pets;
 
         public PetOwner(string name, string surname, string email, string password) : base(name,
             surname, email, password)
         {
-            PetSitterContacts = new List<(PetSitter,bool)>();
+            PetSitterContacts = new List<(PetSitter, bool)>();
             Pets = new List<Pet>();
         }
 
@@ -47,7 +47,7 @@ namespace SE307Project
 
         public Pet FindPetInPets(int index)
         {
-            if (index > Pets.Count-1 || index < 0)
+            if (index > Pets.Count - 1 || index < 0)
             {
                 return null;
             }
@@ -71,14 +71,13 @@ namespace SE307Project
 
         public void DeletePet(int index)
         {
-            if (index>Pets.Count || index<0)
+            if (index > Pets.Count || index < 0)
             {
                 Console.WriteLine("Index must be between 1 and " + Pets.Count);
             }
             else
             {
                 Pets.RemoveAt(index);
-
             }
         }
 
@@ -101,7 +100,6 @@ namespace SE307Project
                 pet.Name = name;
             }
 
-            
 
             while (true)
             {
@@ -142,7 +140,7 @@ namespace SE307Project
             {
                 pet.Breed = breed;
             }
-            
+
             /*Console.Write("Care Routine: ");
             pet.ListCareRoutine();
             Console.WriteLine();
@@ -175,7 +173,6 @@ namespace SE307Project
                 pet.Name = name;
             }
 
-            
 
             while (true)
             {
@@ -218,7 +215,6 @@ namespace SE307Project
             }
 
             return 1;
-
         }
 
         private void CreatePet()
@@ -380,12 +376,13 @@ namespace SE307Project
                             try
                             {
                                 int petIndex = int.Parse(petInput2);
-                                DeletePet(petIndex-1);
+                                DeletePet(petIndex - 1);
                             }
                             catch (FormatException e)
                             {
                                 DeletePet(petInput2);
                             }
+
                             break;
                         case "4":
                             isDone = true;
@@ -397,8 +394,10 @@ namespace SE307Project
 
         public void HirePetSitter(PetSitter petSitter)
         {
-            PetSitterContacts.Add((petSitter,false));
+            //PetSitterContacts.Add((petSitter, false));
+            //TODO: Send hiring message
         }
+
 
         private void ListPets()
         {
@@ -410,7 +409,7 @@ namespace SE307Project
 
         public void AddToPetSitters(PetSitter petSitter)
         {
-            PetSitterContacts.Add((petSitter,false));
+            PetSitterContacts.Add((petSitter, false));
         }
 
         public void MakeCommentToPetSitter(PetSitter petSitter)
@@ -450,7 +449,7 @@ namespace SE307Project
 
         public void SendMessageToPetSitter(PetSitter petSitter)
         {
-            if (PetSitterContacts.Contains((petSitter,false)))
+            if (PetSitterContacts.Contains((petSitter, false)))
             {
                 Console.WriteLine("Message:");
                 String messageText = Console.ReadLine();
@@ -458,6 +457,7 @@ namespace SE307Project
                 petSitter.AddMessage(message);
                 AddMessage(message);
             }
+            Console.WriteLine("Message sent!");
         }
 
         public void SendRequestToPetSitter(PetSitter petSitter)
@@ -486,7 +486,7 @@ namespace SE307Project
 
                 try
                 {
-                    pet = FindPetInPets(int.Parse(petInput)-1);
+                    pet = FindPetInPets(int.Parse(petInput) - 1);
                     if (pet != null)
                     {
                         pets.Add(pet);
@@ -523,17 +523,24 @@ namespace SE307Project
             String yesNoInput = Console.ReadLine();
             if (yesNoInput.ToUpper() == "Y")
             {
-                Request request = new Request(Name + " " + Surname, pets, Location);
+                Request request = new Request(Name + " " + Surname, Email, pets, Location);
                 petSitter.AddRequest(request);
                 Console.WriteLine("Request is sent");
-
-                
             }
             else
             {
                 Console.WriteLine("Request is canceled");
             }
-            
+        }
+
+        private void ListContacts()
+        {
+            Console.WriteLine("You are in contact with:");
+            for (int i = 0; i < PetSitterContacts.Count; i++)
+            {
+                Console.WriteLine(i + 1 + ") " + PetSitterContacts[i].Item1.Name + " " +
+                                  PetSitterContacts[i].Item1.Surname);
+            }
         }
 
         public override void ShowProfile()
@@ -548,28 +555,51 @@ namespace SE307Project
 
         public override void ReadMessages()
         {
-            Console.WriteLine("Whose messages do you want to read?");
-            String ps_email = Console.ReadLine();
-            ShowMessagesFor(ps_email);
-        }
-
-        public override void ShowMessagesFor(String email)
-        {
-            PetSitter petSitter = FindPetSitter(email);
-            if (petSitter != null)
+            PetSitter psToSend = null;
+            bool willSendMessage = false;
+            if (PetSitterContacts.Count == 0)
             {
-                Console.WriteLine("Messages: ");
-                foreach (var message in MessageBox)
+                Console.WriteLine("You do not have any contact with a pet sitter yet. To establish contact you should" +
+                                  " send a request to a pet sitter. You can list pet sitters through the main menu and" +
+                                  " choose one to send request");
+                return;
+            }
+
+            ListContacts();
+            Console.WriteLine("Enter the index of the pet sitter you want to see messages of, enter -1 to exit");
+            PetSitter messagesOfWhom = null;
+            while (true)
+            {
+                try
                 {
-                    Console.WriteLine(message.ToString());
+                    int messagesOfWhomIndex = int.Parse(Console.ReadLine());
+                    if (messagesOfWhomIndex == -1)
+                    {
+                        break;
+                    }
+
+                    messagesOfWhom = FindPetSitter(messagesOfWhomIndex - 1);
+                    break;
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("Please enter the index of whose messages you want to read or -1 to exit");
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    Console.WriteLine("Please enter a number between 1-" + PetSitterContacts.Count + " or -1");
                 }
             }
-            else
+
+            ShowMessagesFor(messagesOfWhom);
+            Console.WriteLine("Do you want to send message to " + messagesOfWhom.Name + "? (Y/N)");
+            if (Console.ReadLine().ToUpper() == "Y")
             {
-                Console.WriteLine("No connection with email " + email);
+                SendMessageToPetSitter(messagesOfWhom);
             }
         }
 
+        
         private PetSitter FindPetSitter(String email)
         {
             foreach (var petSitterInfo in PetSitterContacts)
@@ -578,6 +608,20 @@ namespace SE307Project
                 {
                     return petSitterInfo.Item1;
                 }
+            }
+
+            return null;
+        }
+
+        private PetSitter FindPetSitter(int index)
+        {
+            try
+            {
+                return PetSitterContacts[index].Item1;
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine("No pet sitter at the given index.");
             }
 
             return null;

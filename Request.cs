@@ -11,6 +11,8 @@ namespace SE307Project
 
         public String RequestOwnerName;
         
+        public String RequestOwnerEmail;
+
         public String Location;
 
         public List<Pet> RequestedPets;
@@ -24,12 +26,14 @@ namespace SE307Project
             RequestedPets = new List<Pet>();
             IsAccepted = false;
             Location = "";
+            RequestOwnerEmail = "";
         }
 
 
-        public Request(String requestOwnerName, List<Pet> requestedPets, String location)
+        public Request(String requestOwnerName, String requestOwnerEmail, List<Pet> requestedPets, String location)
         {
             RequestOwnerName = requestOwnerName;
+            RequestOwnerEmail = requestOwnerEmail;
             Date = DateTime.Now;
             RequestedPets = requestedPets;
             Location = location;

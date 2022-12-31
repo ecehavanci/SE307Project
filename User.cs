@@ -112,7 +112,39 @@ namespace SE307Project
             }
         }
 
-        public abstract void ShowMessagesFor(String email);
+        public void ShowMessagesFor(User messagesOfWhom)
+        {
+            bool showMyName = true;
+            bool showOthersName = true;
+            foreach (var message in MessageBox)
+            {
+                if (message.SenderMail == messagesOfWhom.Email)
+                {
+                    if (showOthersName)
+                    {
+                        Console.WriteLine(messagesOfWhom.Name + " " + messagesOfWhom.Surname + " (" + message.Date + "):");
+                        showOthersName = false;
+                        showMyName = true;
+                    }
+
+                    Console.WriteLine(message);
+                }
+
+
+                if (message.SenderMail == Email && message.ReceiverMail == messagesOfWhom.Email)
+                {
+                    if (showMyName)
+                    {
+                        Console.WriteLine("You (" + message.Date + "):");
+                        showMyName = false;
+                        showOthersName = true;
+                    }
+
+                    Console.WriteLine(message);
+                }
+            }
+        }
+
         
         public abstract String ToString();
 
