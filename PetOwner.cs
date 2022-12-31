@@ -10,18 +10,18 @@ namespace SE307Project
     {
         public PetOwner()
         {
-            HiredPetSitters = new List<PetSitter>();
+            PetSitterContacts = new List<(PetSitter,bool)>();
             Pets = new List<Pet>();
         }
 
-        public List<PetSitter> HiredPetSitters;
+        public List<(PetSitter,bool)> PetSitterContacts;//bool represents if the pet sitter is hired
 
         public List<Pet> Pets;
 
         public PetOwner(string name, string surname, string email, string password) : base(name,
             surname, email, password)
         {
-            HiredPetSitters = new List<PetSitter>();
+            PetSitterContacts = new List<(PetSitter,bool)>();
             Pets = new List<Pet>();
         }
 
@@ -142,6 +142,16 @@ namespace SE307Project
             {
                 pet.Breed = breed;
             }
+            
+            /*Console.Write("Care Routine: ");
+            pet.ListCareRoutine();
+            Console.WriteLine();
+            String breed = Console.ReadLine();
+
+            if (breed != "-1")
+            {
+                pet.Breed = breed;
+            }*/
 
             return 1;
         }
@@ -337,6 +347,8 @@ namespace SE307Project
                             {
                                 int petIndex = int.Parse(petInput);
                                 int result = EditPet(petIndex - 1);
+                                //Pets[petIndex-1].CareRoutine.Add(CareType.Comb);
+                                //Pets[petIndex-1].CareRoutine.Add(CareType.Walk);
 
                                 if (result == 0)
                                 {
@@ -385,7 +397,7 @@ namespace SE307Project
 
         public void HirePetSitter(PetSitter petSitter)
         {
-            HiredPetSitters.Add(petSitter);
+            PetSitterContacts.Add((petSitter,false));
         }
 
         private void ListPets()
@@ -398,7 +410,7 @@ namespace SE307Project
 
         public void AddToPetSitters(PetSitter petSitter)
         {
-            HiredPetSitters.Add(petSitter);
+            PetSitterContacts.Add((petSitter,false));
         }
 
         public void MakeCommentToPetSitter(PetSitter petSitter)
@@ -438,7 +450,7 @@ namespace SE307Project
 
         public void SendMessageToPetSitter(PetSitter petSitter)
         {
-            if (HiredPetSitters.Contains(petSitter))
+            if (PetSitterContacts.Contains((petSitter,false)))
             {
                 Console.WriteLine("Message:");
                 String messageText = Console.ReadLine();
@@ -459,7 +471,7 @@ namespace SE307Project
             Console.WriteLine("Please choose the animals you want to hire this pet sitter for");
             ListPets();
 
-            ArrayList pets = new ArrayList();
+            List<Pet> pets = new List<Pet>();
 
             Console.WriteLine("Enter a pet name to add to the request, enter -1 when enough pets are added.");
             while (true)
@@ -511,9 +523,11 @@ namespace SE307Project
             String yesNoInput = Console.ReadLine();
             if (yesNoInput.ToUpper() == "Y")
             {
-                Request request = new Request(this, pets);
+                Request request = new Request(Name + " " + Surname, pets, Location);
                 petSitter.AddRequest(request);
                 Console.WriteLine("Request is sent");
+
+                
             }
             else
             {
@@ -530,6 +544,13 @@ namespace SE307Project
             {
                 Console.WriteLine(pet.Name + "(" + pet.GetSpecies() + ")");
             }
+        }
+
+        public override void ReadMessages()
+        {
+            Console.WriteLine("Whose messages do you want to read?");
+            String ps_email = Console.ReadLine();
+            ShowMessagesFor(ps_email);
         }
 
         public override void ShowMessagesFor(String email)
@@ -551,11 +572,11 @@ namespace SE307Project
 
         private PetSitter FindPetSitter(String email)
         {
-            foreach (var petSitter in HiredPetSitters)
+            foreach (var petSitterInfo in PetSitterContacts)
             {
-                if (email == petSitter.Email)
+                if (email == petSitterInfo.Item1.Email)
                 {
-                    return petSitter;
+                    return petSitterInfo.Item1;
                 }
             }
 

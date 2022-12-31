@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SE307Project
 {
-    class WrongRequestSelection : Exception
+    public class WrongRequestSelection : Exception
     {
         public WrongRequestSelection() : base("Please enter correct selection number.") {
 
@@ -19,7 +19,7 @@ namespace SE307Project
 
     }
     
-    class ExceptionWrongPassword : Exception
+    public class ExceptionWrongPassword : Exception
     {
 
         public ExceptionWrongPassword() : base("Entered password is wrong! Try Again.")
@@ -31,21 +31,7 @@ namespace SE307Project
             Console.WriteLine(Message);
         }
     }
-
-    class ExceptionWrongPassword : Exception
-    {
-        private String Password;
-
-        public ExceptionWrongPassword(string password) : base("Entered password is wrong! Try Again.")
-        {
-            Password = password;
-        }
-
-        public void PrintException()
-        {
-            Console.WriteLine(Message);
-        }
-    }
+    
     class ExceptionWrongEmail : Exception
     {
         private String Email;

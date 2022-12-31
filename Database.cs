@@ -6,19 +6,33 @@ namespace SE307Project
 {
     public class Database
     {
+        
         public List<PetOwner> PetOwnerList = new List<PetOwner>();
         public List<PetSitter> PetSitterList = new List<PetSitter>();
 
-        public readonly String XmlOwnerFileName = "lastTryO5";
-        public readonly String XmlSitterFileName = "lastTryS5";
+        public readonly String XmlOwnerFileName = "lastTryO19.xml";
+        public readonly String XmlSitterFileName = "lastTryS19.xml";
 
 
         private readonly string _connectionString;
 
-        public Database(string connectionString)
+        private Database()
         {
-            _connectionString = connectionString;
         }
+
+        private static Database Instance;
+
+        public static Database GetInstance()
+        {
+            if (Instance==null)
+            {
+                Instance = new Database();
+            }
+
+            return Instance;
+        }
+        
+        
 
         //This is for trying TODO: DELETE LATER
         public PetOwner AddPetOwner(string name, string surname, string email, string password)
@@ -66,7 +80,7 @@ namespace SE307Project
 
         public void InsertPetSitter(string name, string surname, string email, string password)
         {
-            string insertSql = "INSERT INTO users (name, surname, email, password, location) VALUES (@name, @surname, @email, @password, @location)";
+            /*string insertSql = "INSERT INTO users (name, surname, email, password, location) VALUES (@name, @surname, @email, @password, @location)";
             
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -92,7 +106,7 @@ namespace SE307Project
             xmlHandler.WritePetSitterList(XmlSitterFileName,PetSitterList);
         }
 
-        public bool CheckUserExist(string email, string password)
+        /*public bool CheckUserExist(string email, string password)
         {
             string selectSql = "SELECT COUNT(*) FROM users WHERE email = @email AND password = @password";
 
@@ -108,7 +122,7 @@ namespace SE307Project
                     return count > 0;
                 }
             }
-        }
+        }*/
 
         public User FindUser(string email, string password)
         {
@@ -136,6 +150,19 @@ namespace SE307Project
                 }
             }
 
+            return null;
+        }
+
+        
+        public PetOwner FindPetOwner(string email)
+        {
+            foreach (var user in PetOwnerList)
+            {
+                if (user.Email == email)
+                {
+                    return user;
+                }
+            }
             return null;
         }
 

@@ -53,6 +53,8 @@ namespace SE307Project
             MessageBox.Add(message);
         }
 
+        public abstract void ReadMessages();
+
         public void ChangePassword()
         {
             bool loop = true;

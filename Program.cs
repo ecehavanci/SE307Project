@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -13,7 +14,7 @@ namespace SE307Project
             var users = new List<User>();
             users.Add(sitter);
             hander.saveToCSV(); */
-            Database db = new Database("server=server_name;database=database_name;email=email;password=password");
+            Database db = Database.GetInstance();
 
             //var po = new PetOwner("Selina", "Kyle", "1", "1");
             //var ps = db.AddPetSitter("Gizem", "Kilic", "2", "2");
@@ -21,9 +22,9 @@ namespace SE307Project
             
             XMLHandler xmlHandler = new XMLHandler();
             //xmlHandler.WritePetOwnerList("bettertemp2.xml", db.);
+
             db.PetOwnerList = xmlHandler.ReadPetOwnerList(db.XmlOwnerFileName);
             db.PetSitterList = xmlHandler.ReadPetSitterList(db.XmlSitterFileName);
-             
 
             while (true)
             {
@@ -88,7 +89,8 @@ namespace SE307Project
                                         throw;
                                     }
                                 }
-
+                                
+                               // xmlHandler.WritePetSitterList(db.XmlOwnerFileName, db.PetSitterList);
                                 break;
                             case 2:
                                 user.EditProfile();
@@ -102,6 +104,7 @@ namespace SE307Project
                                 isLoggedIn = false;
                                 break;
                             case 5:
+                                user.AddMessage(new Message(user.Email, user.Email,"HELLO"));
                                 Environment.Exit(0);
                                 break;
                         }
@@ -136,7 +139,9 @@ namespace SE307Project
                         {
                             case 1:
                                 petSitter.ReadRequestBox();
+                                
                                 xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
+                                //xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 break;
                             case 2:
                                 user.EditProfile();
@@ -144,12 +149,15 @@ namespace SE307Project
                                 break;
                             case 3:
                                 user.ReadMessages();
-                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
+                                
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 break;
                             case 4:
                                 isLoggedIn = false;
                                 break;
                             case 5:
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
+                                //xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 Environment.Exit(0);
                                 break;
                         }

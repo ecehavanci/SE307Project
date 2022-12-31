@@ -14,33 +14,30 @@ namespace SE307Project
     public class RequestBox
     {
         public List<Request> Requests { get; set; }
-        public String OwnerName { get; set; }
         public StatusEnum StatusEnum { get; set; }
 
-        public RequestBox(String ownerName, StatusEnum status)
+        public RequestBox(StatusEnum status)
         {
             Requests = new List<Request>();
-            OwnerName = ownerName;
             StatusEnum = status;
         }
 
         public RequestBox()
         {
             Requests = new List<Request>();
-            OwnerName = "";
             StatusEnum = StatusEnum.Waiting;
         }
-        public virtual void DisplayRequestBox()
+        public void DisplayRequestBox()
         {
-            Console.WriteLine("----------- "+StatusEnum+ "Request Box -----------");
+            Console.WriteLine("----------- "+StatusEnum+ " Request Box -----------");
             if (Requests.Count == 0)
                 Console.WriteLine("No Requests here!\n");
             else
             {
                 for (int i = 0; i < Requests.Count; i++)
                 {
-                    Console.Write((i + 1) + ") ");
-                    Requests[i].ToString();
+                    Console.WriteLine((i + 1) + ") ");
+                    Console.WriteLine(Requests[i].ToString());
                 }
             }
         }

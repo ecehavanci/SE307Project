@@ -5,7 +5,6 @@ using System.Xml.Serialization;
 
 namespace SE307Project
 {
-    [XmlRoot("Comment")]
     public class Comment
     {
         public Comment(){}

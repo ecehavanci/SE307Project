@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Xml.Serialization;
 
 namespace SE307Project
@@ -32,40 +33,46 @@ namespace SE307Project
         {
             Comments = new List<Comment>();
             //PetOwnerContacts = new List<PetOwner>();
-            WaitingRequestBox = new RequestBox(Name, StatusEnum.Waiting);
-            AcceptedRequestBox = new RequestBox(Name, StatusEnum.Accepted);
-            RejectedRequestBox = new RequestBox(Name, StatusEnum.Rejected);
+            WaitingRequestBox = new RequestBox(StatusEnum.Waiting);
+            AcceptedRequestBox = new RequestBox(StatusEnum.Accepted);
+            RejectedRequestBox = new RequestBox(StatusEnum.Rejected);
         }
         
         public void AddComment(Comment comment)
         {
             Comments.Add(comment);
+            XMLHandler xmlHandler = new XMLHandler();
+            Database db = Database.GetInstance();
+            xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
         }
         
         public void AddRequest(Request request)
         {
             WaitingRequestBox.ReceiveRequest(request);
+            XMLHandler xmlHandler = new XMLHandler();
+            Database db = Database.GetInstance();
+            xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
         }
 
         public void ReadRequestBox()
         {
-            bool loop = true;
+            //bool loop = true;
 
-            while (loop)
+            while (/*loop*/true)
             {
                 Console.WriteLine(
                     "Which Request Box do you wish to read?\n1)Waiting Requests\n2)AcceptedRequests\n3)Rejected Requests\n4)Exit");
                 int selection = Convert.ToInt32(Console.ReadLine());
                 if (selection == 4)
                 {
-                    loop = false;
+                    //loop = false;
                     break;
                 }
                 RequestBox selectedRequestBox = SelectRequestBox(selection);
                 if (selectedRequestBox is null)
                 {
                     Console.WriteLine("Incorrect input.");
-                    return;
+                    continue;
                 }
 
                 selectedRequestBox.DisplayRequestBox();
@@ -88,19 +95,19 @@ namespace SE307Project
                     selectedRequestBox.DisplayRequestBox();
 
                 Console.WriteLine("Would you like to 1)Read / 2)Acccept/ 3)Reject any Request?");
-                int requestToDo = Convert.ToInt32(Console.ReadLine());
-                if (requestToDo == 1)
+                String requestToDo = Console.ReadLine();
+                if (requestToDo == "1")
                 {
                     //TODO Read Request
                 }
-                else if (requestToDo == 2)
+                else if (requestToDo == "2")
                 {
                     Console.WriteLine("Which Request Do you want to Accept? Choose below:");
                     selectedRequestBox.DisplayRequestBox();
                     int selectedRequest = Convert.ToInt32(Console.ReadLine());
                     AcceptRequest(selectedRequestBox.MoveMailToAnotherBox(selectedRequest - 1));
                 }
-                else if (requestToDo == 3)
+                else if (requestToDo == "3")
                 {
                     Console.WriteLine("Which Request Do you want to Reject? Choose below:");
                     selectedRequestBox.DisplayRequestBox();
@@ -144,6 +151,11 @@ namespace SE307Project
         {
             base.ShowProfile();
             Console.WriteLine("Bio:\n" + Bio);
+        }
+
+        public override void ReadMessages()
+        {
+            
         }
 
         public override void EditProfile()
@@ -220,7 +232,23 @@ namespace SE307Project
 
         public override void ShowMessagesFor(String email)
         {
-            PetOwner petOwner = FindPetOwner(email);
+            bool isThereAnyMessage = false;
+            foreach (var message in MessageBox)
+            {
+                if (message.ReceiverMail == email)
+                {
+                    Console.WriteLine(message.ToString());
+                    isThereAnyMessage = true;
+
+                }
+            }
+
+            if (!isThereAnyMessage)
+            {
+                Console.WriteLine("There are no messages.");
+
+            }
+            /*PetOwner petOwner = FindPetOwner(email);
             if(petOwner != null)
             {
                 Console.WriteLine("Messages:\n");
@@ -232,32 +260,39 @@ namespace SE307Project
             else
             {
                 Console.WriteLine("No connection with email " + email);
-            }
+            }*/
         }
 
-        public void SendMessageToPetOwner(PetOwner petOwner)
+        public void SendMessageToPetOwner(String o_email)
         {
-            if (PetOwnerContacts.Contains(petOwner))
+            Database db = Database.GetInstance();
+            PetOwner po = db.FindPetOwner(o_email);
+
+            foreach (var contact in po.PetSitterContacts)
             {
-                Console.WriteLine("Message:");
-                String messageText = Console.ReadLine();
-                Message message = new Message(Email, petOwner._Email, messageText);
-                petOwner.AddMessage(message);
-                AddMessage(message);
+                if (contact.Item1.Email == Email)
+                {
+                    Console.WriteLine("Message:");
+                    String messageText = Console.ReadLine();
+                    Message message = new Message(Email, contact.Item1.Email,messageText);
+                    contact.Item1.AddMessage(message);
+                    AddMessage(message);
+                }
             }
+           
         }
 
-        private PetOwner FindPetOwner(String email)
+        /*private PetOwner FindPetOwner(String email)
         {
-            foreach(PetOwner petOwner in PetOwnerContacts)
+            foreach(PetOwner petOwner in PetOw)
             {
-                if(email == petOwner._Email)
+                if(email == petOwner.Email)
                 {
                     return petOwner;
                 }
             }
             return null;
-        }
+        }*/
         private static double GetMedian(int[] sourceNumbers)
         {
             //Framework 2.0 version of this method. there is an easier way in F4        

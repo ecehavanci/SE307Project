@@ -3,7 +3,6 @@ using System.Xml.Serialization;
 
 namespace SE307Project
 {
-    [XmlRoot("Message")]
     public class Message
     {
         
