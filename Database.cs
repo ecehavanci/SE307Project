@@ -70,11 +70,22 @@ namespace SE307Project
                     command.ExecuteNonQuery();
                 }
             }*/
-            
+
+            try
+            {
+                CheckPetOwnerExists(email);
+                
+                
             PetOwner po = new PetOwner(name, surname, email, password);
             PetOwnerList.Add(po);
             XMLHandler xmlHandler = new XMLHandler();
             xmlHandler.WritePetOwnerList(XmlOwnerFileName,PetOwnerList);
+            }
+            catch (UserAlreadyExistsException e)
+            {
+                e.PrintException();
+            }
+
 
         }
 
@@ -99,12 +110,20 @@ namespace SE307Project
             
             
             }*/
+            try
+            {
+                CheckPetSitterExists(email);
 
             PetSitter ps = new PetSitter(name, surname, email, password);
             PetSitterList.Add(ps);
             XMLHandler xmlHandler = new XMLHandler();
             xmlHandler.WritePetSitterList(XmlSitterFileName,PetSitterList);
+            }  catch (UserAlreadyExistsException e)
+            {
+                e.PrintException();
+            }
         }
+            
 
         /*public bool CheckUserExist(string email, string password)
         {
@@ -164,6 +183,24 @@ namespace SE307Project
                 }
             }
             return null;
+        }
+        
+        private void CheckPetOwnerExists(string email) {
+            
+            foreach (PetOwner po in PetOwnerList) {
+                if (po.Email == email) {
+                    throw new UserAlreadyExistsException();
+                }
+            }
+        }
+        
+        private void CheckPetSitterExists(string email) {
+            
+            foreach (PetSitter ps in PetSitterList) {
+                if (ps.Email == email) {
+                    throw new UserAlreadyExistsException();
+                }
+            }
         }
 
 

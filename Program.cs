@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace SE307Project
@@ -34,7 +35,7 @@ namespace SE307Project
                     continue;
                 }
 
-                Console.WriteLine("Welcome " + user.Name);
+                Console.WriteLine("Welcome " + user.Name + "!");
 
                 if (user is PetOwner)
                 {
@@ -240,14 +241,60 @@ namespace SE307Project
                             break;
                         if (signUpChoice == 1 || signUpChoice == 2)
                         {
-                            Console.WriteLine("Name: ");
-                            String newName = Console.ReadLine();
-                            Console.WriteLine("Surname: ");
-                            String newSurname = Console.ReadLine();
-                            Console.WriteLine("Email: ");
-                            String newEmail = Console.ReadLine();
-                            Console.WriteLine("Password: ");
-                            String newPassword = Console.ReadLine();
+                           
+                            String newName;
+                            while (true)
+                            {
+                                Console.WriteLine("Name: ");
+                                newName = Console.ReadLine();
+
+                                if (newName != "" && Regex.IsMatch(newName, @"^[a-zA-Z]*$") && !Regex.IsMatch(newName, @"\d"))
+                                {
+                                    break;
+                                }
+                                Console.WriteLine("Name is not valid. Please try again.");
+                            }
+
+
+                            String newSurname;
+                            while (true)
+                            {
+                                Console.WriteLine("Surname: ");
+                                newSurname = Console.ReadLine();
+
+                                if (newSurname != "" && Regex.IsMatch(newSurname, @"^[a-zA-Z]*$") && !Regex.IsMatch(newSurname, @"\d"))
+                                {
+                                    break;
+                                }
+                                Console.WriteLine("Surname is not valid. Please try again.");
+                            }
+                            
+                            String newEmail;
+                            while (true)
+                            {
+                                Console.WriteLine("Email: ");
+                                newEmail = Console.ReadLine();
+                                
+                                if (Regex.IsMatch(newEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"))
+                                {
+                                    break;
+                                }
+                                Console.WriteLine("Email is not valid. Please try again.");
+                            }
+                            
+                           
+                            String newPassword;
+                            while (true)
+                            {
+                                Console.WriteLine("Password: ");
+                                newPassword = Console.ReadLine();
+
+                                if (newPassword.Length >= 6 && Regex.IsMatch(newPassword, @"\d") && Regex.IsMatch(newPassword, @"[A-Z]"))
+                                {
+                                    break;
+                                }
+                                Console.WriteLine("The password must be at least 6 digits and contain at least one number and uppercase letter. Please try again.");
+                            }
 
                             switch (signUpChoice)
                             {
@@ -267,7 +314,6 @@ namespace SE307Project
                     case "2":
                         if (db.PetSitterList.Count == 0 && db.PetOwnerList.Count == 0)
                         {
-                            //TODO: When connection of sql is made, change it.
                             Console.WriteLine("There is no account. Please create an account for logging in.");
                             continue;
                         }
@@ -285,16 +331,9 @@ namespace SE307Project
                                 Console.WriteLine("Sign in successful!");
                                 return temp;
                             }
-                            else
-                            {
-                                Console.WriteLine("Email not found");
-                            }
+                            Console.WriteLine("Email not found");
 
                             isSigned = true;
-                            if (isSigned)
-                            {
-                                Console.WriteLine("Sign in successful!");
-                            }
                         }
                         catch (ExceptionWrongEmail e)
                         {

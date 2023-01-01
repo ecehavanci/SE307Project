@@ -46,13 +46,10 @@ namespace SE307Project
             Console.WriteLine(Message);
         }
     }
-    class ExceptionAlreadyExistEmail : Exception
+    class UserAlreadyExistsException : Exception
     {
-        private String Email;
-
-        public ExceptionAlreadyExistEmail(string email) : base("Entered email is already exist. Please use new one.")
+        public UserAlreadyExistsException() : base("Entered email is already exist. Please use new one.")
         {
-            Email = email;
         }
 
         public void PrintException()
