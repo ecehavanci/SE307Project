@@ -3,6 +3,7 @@ using CsvHelper.Configuration;
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace SE307Project
@@ -48,6 +49,7 @@ namespace SE307Project
             Console.WriteLine(profileInfo);
         }
         
+        
         public void AddMessage(Message message)
         {
             MessageBox.Add(message);
@@ -58,7 +60,9 @@ namespace SE307Project
         public void ChangePassword()
         {
             bool loop = true;
-            Console.WriteLine("Write your new password");
+            while (loop)
+            { 
+                Console.WriteLine("Write your new password");
             var newpass = string.Empty;
             ConsoleKey key;
             do
@@ -97,8 +101,7 @@ namespace SE307Project
                     newpass += keyInfo2.KeyChar;
                 }
             } while (key != ConsoleKey.Enter);
-
-            while (true)
+            if (newpass2.Length >= 6 && Regex.IsMatch(newpass2, @"\d") && Regex.IsMatch(newpass, @"[A-Z]"))
             {
                 if (newpass2 == newpass)
                 {
@@ -110,7 +113,11 @@ namespace SE307Project
                     Console.WriteLine("Passwords doesn't match.");
                 }
             }
+            Console.WriteLine("The password must be at least 6 digits and contain at least one number and uppercase letter. Please try again.");
+            
+            }
         }
+        
 
         public void ShowMessagesFor(User messagesOfWhom)
         {

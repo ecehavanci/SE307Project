@@ -473,7 +473,7 @@ namespace SE307Project
 
             List<Pet> pets = new List<Pet>();
 
-            Console.WriteLine("Enter a pet name to add to the request, enter -1 when enough pets are added.");
+            Console.WriteLine("Enter a pet name or index to add to the request, enter -1 when enough pets are added.");
             while (true)
             {
                 Pet pet;

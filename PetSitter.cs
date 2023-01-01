@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace SE307Project
@@ -91,31 +92,59 @@ namespace SE307Project
                     {
                         selectedRequestBox.SortByDateDesc();
                     }
+                    else
+                    {
+                        Console.WriteLine("Incorrect input");
+                    }
                 }
                 else if (willSort.Equals("N"))
                     selectedRequestBox.DisplayRequestBox();
-
-                Console.WriteLine("Would you like to 1)Read / 2)Acccept/ 3)Reject any Request?");
-                String requestToDo = Console.ReadLine();
-                if (requestToDo == "1")
+                else
                 {
-                    //TODO Read Request
-                }
-                else if (requestToDo == "2")
-                {
-                    Console.WriteLine("Which Request Do you want to accept? Choose below:");
+                    Console.WriteLine("You wrote incorrect input.");
                     selectedRequestBox.DisplayRequestBox();
-                    int selectedRequest = Convert.ToInt32(Console.ReadLine());
-                    AcceptRequest(selectedRequestBox.MoveMailToAnotherBox(selectedRequest - 1));
                 }
-                else if (requestToDo == "3")
-                {
-                    Console.WriteLine("Which Request Do you want to reject? Choose below:");
-                    selectedRequestBox.DisplayRequestBox();
-                    int selectedRequest = Convert.ToInt32(Console.ReadLine());
-                    RejectRequest(selectedRequestBox.MoveMailToAnotherBox(selectedRequest - 1));
 
+                if (!selectedRequestBox.isEmpty())
+                {
+                    Console.WriteLine("Would you like to 1)Read / 2)Accept/ 3)Reject any Request? 4)Exit");
+                    String requestToDo = Console.ReadLine();
+                    if (requestToDo == "1")
+                    {
+                        try
+                        {
+                            Console.WriteLine("Which request do you want to read? Choose below:");
+                            selectedRequestBox.DisplayRequestBox();
+                            int selectedRequest = Convert.ToInt32(Console.ReadLine());
+                            selectedRequestBox.ReadRequest(selectedRequest-1);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
+                        
+                    }
+                    else if (requestToDo == "2")
+                    {
+                        Console.WriteLine("Which Request Do you want to accept? Choose below:");
+                        selectedRequestBox.DisplayRequestBox();
+                        int selectedRequest = Convert.ToInt32(Console.ReadLine());
+                        AcceptRequest(selectedRequestBox.MoveMailToAnotherBox(selectedRequest - 1));
+                    }
+                    else if (requestToDo == "3")
+                    {
+                        Console.WriteLine("Which Request Do you want to reject? Choose below:");
+                        selectedRequestBox.DisplayRequestBox();
+                        int selectedRequest = Convert.ToInt32(Console.ReadLine());
+                        RejectRequest(selectedRequestBox.MoveMailToAnotherBox(selectedRequest - 1));
+
+                    }
+                    else if (requestToDo == "4")
+                    {
+                        break;
+                    }
                 }
+                
             }
 
         }
@@ -163,6 +192,8 @@ namespace SE307Project
         {
             base.ShowProfile();
             Console.WriteLine("Bio:\n" + Bio);
+            ShowCommentsAndRates();
+            
         }
 
         public override void ReadMessages()
@@ -246,7 +277,7 @@ namespace SE307Project
             {
                 Console.WriteLine(
                     "Which part of your profile you want to edit? \n1) Name(" + Name + ")\n2) Surname(" + Surname +
-                    ")\n3) Email(" + Email + ")\n4) Password\n5) Location(" + location + ") \n6) Bio\n7) Exit");
+                    ")\n3) Email(" + Email + ")\n4) Password\n5) Location(" + location + ") \n6) Bio\n7) Save & Exit");
 
                 try
                 {
@@ -261,26 +292,56 @@ namespace SE307Project
                 switch (selection)
                 {
                     case 1:
-                        Console.Write("New name: ");
-                        string newName = Console.ReadLine();
-                        Name = newName;
+                        string newName;
+                        while (true)
+                        {
+                            Console.WriteLine("New name: ");
+                            newName = Console.ReadLine();
+
+                            if (newName != "" && Regex.IsMatch(newName, @"^[a-zA-Z]*$") && !Regex.IsMatch(newName, @"\d"))
+                            {
+                                Name = newName;
+                                break;
+                            }
+                            Console.WriteLine("Name is not valid. Please try again.");
+                        }
                         Console.WriteLine();
                         break;
                     case 2:
-                        Console.Write("New surname: ");
-                        string newSurname = Console.ReadLine();
-                        Surname = newSurname;
+                        string newSurname;
+                        while (true)
+                        {
+                            Console.Write("New surname: ");
+                            newSurname = Console.ReadLine();
+
+                            if (newSurname != "" && Regex.IsMatch(newSurname, @"^[a-zA-Z]*$") && !Regex.IsMatch(newSurname, @"\d"))
+                            {
+                                Surname = newSurname;
+                                break;
+                            }
+                            Console.WriteLine("Surname is not valid. Please try again.");
+                        }
                         Console.WriteLine();
                         break;
 
                     case 3:
-                        Console.Write("New email: ");
-                        string newMail = Console.ReadLine();
-                        Email = newMail;
+                        string newEmail;
+                        while (true)
+                        {
+                            Console.WriteLine("New Email: ");
+                            newEmail = Console.ReadLine();
+                                
+                            if (Regex.IsMatch(newEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"))
+                            {
+                                Email = newEmail;
+                                break;
+                            }
+                            Console.WriteLine("Email is not valid. Please try again.");
+                        }
+                       
                         Console.WriteLine();
                         break;
                     case 4:
-                        Console.Write("New password: ");
                         ChangePassword();
                         Console.WriteLine();
                         break;
@@ -301,6 +362,7 @@ namespace SE307Project
         }
         public void ShowCommentsAndRates()
         {
+            Console.WriteLine("\n\nMy Comments & Rates");
             foreach (Comment comment in Comments)
             {
                 comment.ToString();

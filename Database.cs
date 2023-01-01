@@ -73,8 +73,7 @@ namespace SE307Project
 
             try
             {
-                CheckPetOwnerExists(email);
-                
+                CheckUserExists(email);
                 
             PetOwner po = new PetOwner(name, surname, email, password);
             PetOwnerList.Add(po);
@@ -112,12 +111,12 @@ namespace SE307Project
             }*/
             try
             {
-                CheckPetSitterExists(email);
-
-            PetSitter ps = new PetSitter(name, surname, email, password);
-            PetSitterList.Add(ps);
-            XMLHandler xmlHandler = new XMLHandler();
-            xmlHandler.WritePetSitterList(XmlSitterFileName,PetSitterList);
+                CheckUserExists(email); 
+                
+                PetSitter ps = new PetSitter(name, surname, email, password);
+                PetSitterList.Add(ps);
+                XMLHandler xmlHandler = new XMLHandler();
+                xmlHandler.WritePetSitterList(XmlSitterFileName,PetSitterList);
             }  catch (UserAlreadyExistsException e)
             {
                 e.PrintException();
@@ -185,24 +184,43 @@ namespace SE307Project
             return null;
         }
         
-        private void CheckPetOwnerExists(string email) {
-            
-            foreach (PetOwner po in PetOwnerList) {
-                if (po.Email == email) {
-                    throw new UserAlreadyExistsException();
+        private void CheckUserExists(string email)
+        {
+            List<string> emailsList = new List<string>();
+
+            foreach (var user in PetOwnerList)
+            {
+                emailsList.Add(user.Email);
+            }
+            foreach (var user in PetSitterList)
+            {
+                emailsList.Add(user.Email);
+            }
+
+            foreach (var emails in emailsList)
+            {
+                if (emails != email)
+                {
+                    
+                    foreach (var user in PetOwnerList)
+                    {
+                        if (user.Email == email) {
+                            throw new UserAlreadyExistsException();
+                        }
+                    }
+                    foreach (var user in PetSitterList)
+                    {
+                        if (user.Email == email) {
+                            throw new UserAlreadyExistsException();
+                        }
+                    }
+                    
                 }
             }
+
+           
         }
         
-        private void CheckPetSitterExists(string email) {
-            
-            foreach (PetSitter ps in PetSitterList) {
-                if (ps.Email == email) {
-                    throw new UserAlreadyExistsException();
-                }
-            }
-        }
-
 
         /* public User LogIn(string email, string password){
              foreach (User user in UserList) {
