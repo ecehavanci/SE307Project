@@ -38,7 +38,7 @@ namespace SE307Project
             AcceptedRequestBox = new RequestBox(StatusEnum.Accepted);
             RejectedRequestBox = new RequestBox(StatusEnum.Rejected);
         }
-        
+
         public void AddComment(Comment comment)
         {
             Comments.Add(comment);
@@ -46,7 +46,7 @@ namespace SE307Project
             Database db = Database.GetInstance();
             xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
         }
-        
+
         public void AddRequest(Request request)
         {
             WaitingRequestBox.ReceiveRequest(request);
@@ -59,7 +59,7 @@ namespace SE307Project
         {
             //bool loop = true;
 
-            while (/*loop*/true)
+            while ( /*loop*/true)
             {
                 Console.WriteLine(
                     "Which Request Box do you wish to read?\n1)Waiting Requests\n2)Accepted Requests\n3)Rejected Requests\n4)Exit");
@@ -69,6 +69,7 @@ namespace SE307Project
                     //loop = false;
                     break;
                 }
+
                 RequestBox selectedRequestBox = SelectRequestBox(selection);
                 if (selectedRequestBox is null)
                 {
@@ -114,10 +115,8 @@ namespace SE307Project
                     selectedRequestBox.DisplayRequestBox();
                     int selectedRequest = Convert.ToInt32(Console.ReadLine());
                     RejectRequest(selectedRequestBox.MoveMailToAnotherBox(selectedRequest - 1));
-
                 }
             }
-
         }
 
         private RequestBox SelectRequestBox(int BoxChoice)
@@ -149,6 +148,7 @@ namespace SE307Project
                 Console.WriteLine("Request owner not found. Cannot accept request");
                 return;
             }
+
             AcceptedRequestBox.ReceiveRequest(request);
             Console.WriteLine("Request Accepted!");
         }
@@ -162,7 +162,12 @@ namespace SE307Project
         public override void ShowProfile()
         {
             base.ShowProfile();
-            Console.WriteLine("Bio:\n" + Bio);
+            Console.WriteLine(ToString());
+        }
+
+        public void SendHiringRejectedMessage(PetOwner petOwner)
+        {
+            petOwner.AddMessage(new HiringMessage(petOwner.Email, Email, 2));
         }
 
         public override void ReadMessages()
@@ -170,7 +175,7 @@ namespace SE307Project
             Database db = Database.GetInstance();
             //PetSitter psToSend = null;
             //bool willSendMessage = false;
-            
+
             if (MessageBox.Count == 0)
             {
                 Console.WriteLine("You have no messages yet.");
@@ -181,27 +186,61 @@ namespace SE307Project
 
             Console.WriteLine("You are in contact with:");
             int index = 0;
-            
+
+            bool isFirstHiringMessage = true;
+            HiringMessage hiringMessage = null;
+            for (int i = 0; i < MessageBox.Count; i++)
+            {
+                if (MessageBox[i].SenderMail == "system")
+                {
+                    if (isFirstHiringMessage)
+                    {
+                        hiringMessage = (HiringMessage) MessageBox[i];
+                        Console.WriteLine("There are people who claims that they hired you. Letting them marking you " +
+                                          "as hired let them comment and rate you.");
+                        isFirstHiringMessage = false;
+                    }
+
+                    Console.WriteLine(MessageBox[i]);
+                    String hiredInput = Console.ReadLine();
+                    PetOwner po = (PetOwner) db.FindUser(hiringMessage.RelatedEmail);
+                    if (hiredInput.ToUpper() == "Y")
+                    {
+                        if (po != null)
+                        {
+                            po.HirePetSitter(this);
+                            MessageBox.RemoveAt(i);
+                        }
+                    }
+                    else
+                    {
+                        SendHiringRejectedMessage(po);
+                        Console.WriteLine("Request rejected.");
+                    }
+                }
+            }
+
             //This is for obtaining message owners
-            foreach (var message  in MessageBox)
+            foreach (var message in MessageBox)
             {
                 try
                 {
-                    PetOwner po = db.FindPetOwner(message.SenderMail);//There has to be at least one message sent by pet owner
+                    PetOwner
+                        po = db.FindPetOwner(message
+                            .SenderMail); //There has to be at least one message sent by pet owner
                     if (!poIndexes.ContainsValue(po))
                     {
-                        poIndexes.Add(index,po);
-                        Console.WriteLine(index+1 + ") " + po.Name + " " + po.Surname);
+                        poIndexes.Add(index, po);
+                        Console.WriteLine(index + 1 + ") " + po.Name + " " + po.Surname);
                         index++;
                     }
-
                 }
                 catch (NullReferenceException e)
                 {
                     continue;
                 }
-
             }
+
             Console.WriteLine("Enter the index of the pet owner you want to see messages of, enter -1 to exit");
             PetOwner messagesOfWhom = null;
             while (true)
@@ -211,7 +250,7 @@ namespace SE307Project
                     int messagesOfWhomIndex = int.Parse(Console.ReadLine());
                     if (messagesOfWhomIndex == -1)
                     {
-                        break;
+                        return;
                     }
 
                     messagesOfWhom = poIndexes[messagesOfWhomIndex - 1];
@@ -297,8 +336,8 @@ namespace SE307Project
                         break;
                 }
             }
-
         }
+
         public void ShowCommentsAndRates()
         {
             foreach (Comment comment in Comments)
@@ -344,7 +383,7 @@ namespace SE307Project
         {
             Console.WriteLine("Message:");
             String messageText = Console.ReadLine();
-            Message message = new Message(Email, po.Email,messageText);
+            Message message = new Message(Email, po.Email, messageText);
             po.AddMessage(message);
             AddMessage(message);
         }
@@ -360,7 +399,7 @@ namespace SE307Project
             }
             return null;
         }*/
-        private static double GetMedian(int[] sourceNumbers)
+        /*private static double GetMedian(int[] sourceNumbers)
         {
             //Framework 2.0 version of this method. there is an easier way in F4        
             if (sourceNumbers == null || sourceNumbers.Length == 0)
@@ -387,13 +426,13 @@ namespace SE307Project
                 allRates[i] = Comments[i].Star;
             }
 
-            return GetMedian(allRates);
-        }
+            return Comments.Count==0?0:GetMedian(allRates);
+        }*/
 
         public double CalculateAverageStars()
         {
             double counter = 0;
-            Console.WriteLine("My Calculated Rate Average is:");
+            //Console.WriteLine("My Calculated Rate Average is:");
             for (int i = 0; i < Comments.Count; i++)
             {
                 counter += Comments[i].Star;
@@ -404,7 +443,11 @@ namespace SE307Project
 
         public override String ToString()
         {
-            return Name + " " + Surname + "\n" + Bio;
+            String rate = Comments.Count == 0
+                ? ""
+                : ("Rate: " + CalculateAverageStars() + "/5"/* +
+                   "\nMostly Rated: " + CalculateMedianStars() + "/5"*/);
+            return "Bio:\n" + Bio + rate;
         }
     }
 }

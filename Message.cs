@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 
 namespace SE307Project
 {
+    [XmlInclude(typeof(HiringMessage))]
     public class Message
     {
         
@@ -38,4 +39,6 @@ namespace SE307Project
             return Text; //+ "                                     " + Date.ToString();
         }
     }
+
+    
 }

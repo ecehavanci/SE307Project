@@ -99,8 +99,12 @@ namespace SE307Project
             {
                 CareRoutine.Add(CareType.GiveMeds);
             }
+            else
+            {
+                Console.WriteLine("This care routine cannot be added");
+            }
         }
-
+        
         public void AddCareRoutine(int index)
         {
             if (index == 1)
@@ -131,7 +135,63 @@ namespace SE307Project
             {
                 CareRoutine.Add(CareType.GiveMeds);
             }
+            else
+            {
+                Console.WriteLine("There is no care routine with the given name");
+            }
         }
+        
+        public void RemoveCareRoutine(int index)
+        {
+            try
+            {
+                CareRoutine.RemoveAt(index);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine("There is no care routine at the given index");
+
+            }
+        }
+        
+        public void RemoveCareRoutine(String careType)
+        {
+            careType = careType.ToUpper();
+            if (careType == "BATHE")
+            {
+                CareRoutine.Remove(CareType.Bathe);
+            }
+            else if (careType == "WALK")
+            {
+                CareRoutine.Remove(CareType.Walk);
+            }
+            else if (careType == "COMB")
+            {
+                CareRoutine.Remove(CareType.Comb);
+            }
+            else if (careType == "FEED")
+            {
+                CareRoutine.Remove(CareType.Feed);
+            }
+            else if (careType == "TAKE TO VET")
+            {
+                CareRoutine.Remove(CareType.TakeToVet);
+            }
+            else if (careType == "PLAY")
+            {
+                CareRoutine.Remove(CareType.Play);
+            }
+            else if (careType == "GIVE MEDS")
+            {
+                CareRoutine.Remove(CareType.GiveMeds);
+            }
+            else
+            {
+                Console.WriteLine("This care coutine cannot be added");
+            }
+        }
+
+       
 
         public string ListCareRoutine()
         {

@@ -64,12 +64,12 @@ namespace SE307Project
                         {
                             case 1:
                                 List<PetSitter> list = db.ListPetSitters();
-                                Console.WriteLine("1) Send request\n2) Mark as hired\n3) Exit");
+                                Console.WriteLine("1) Send request\n2) Mark as hired\n3) Comment and rate\n4) Exit");
                                 String actionChoice = Console.ReadLine();
                                 switch (actionChoice)
                                 {
                                     case "1":
-                                        Console.WriteLine("Which one do you want to send a request? Enter -1 to exit.");
+                                        Console.WriteLine("Which pet sitter do you want to send a request? Enter -1 to exit.");
                                         while (true)
                                         {
                                             int petSitterIndex = int.Parse(Console.ReadLine());
@@ -100,7 +100,7 @@ namespace SE307Project
 
                                         break;
                                     case "2":
-                                        Console.WriteLine("Which one do you want to mark as hired? Enter -1 to exit.");
+                                        Console.WriteLine("Which pet sitter do you want to mark as hired? Enter -1 to exit.");
                                         while (true)
                                         {
                                             int petSitterIndex = int.Parse(Console.ReadLine());
@@ -118,7 +118,7 @@ namespace SE307Project
                                                 }
                                                 else
                                                 {
-                                                    petOwner.HirePetSitter(list[petSitterIndex - 1]);
+                                                    petOwner.SendHiringMessage(list[petSitterIndex - 1]);
                                                     break;
                                                 }
                                             }
@@ -129,6 +129,36 @@ namespace SE307Project
                                             }
                                         }
 
+                                        break;
+                                    case "3":
+                                        Console.WriteLine("Which pet sitter do you want to comment and rate? Enter -1 to exit.");
+                                        while (true)
+                                        {
+                                            int petSitterIndex = int.Parse(Console.ReadLine());
+                                            try
+                                            {
+                                                if (petSitterIndex == -1)
+                                                {
+                                                    break;
+                                                }
+
+                                                if (petSitterIndex > list.Count || petSitterIndex < 0)
+                                                {
+                                                    Console.WriteLine("Please enter a number between 0 and " +
+                                                                      list.Count);
+                                                }
+                                                else
+                                                {
+                                                    petOwner.MakeCommentToPetSitter(list[petSitterIndex - 1]);
+                                                    break;
+                                                }
+                                            }
+                                            catch (FormatException e)
+                                            {
+                                                Console.WriteLine("Please enter a number.");
+                                                throw;
+                                            }
+                                        }
                                         break;
                                 }
 

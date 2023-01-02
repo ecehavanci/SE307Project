@@ -6,12 +6,11 @@ namespace SE307Project
 {
     public class Database
     {
-        
         public List<PetOwner> PetOwnerList = new List<PetOwner>();
         public List<PetSitter> PetSitterList = new List<PetSitter>();
 
-        public readonly String XmlOwnerFileName = "lastTryO23.xml";
-        public readonly String XmlSitterFileName = "lastTryS23.xml";
+        public readonly String XmlOwnerFileName = "lastTryO32.xml";
+        public readonly String XmlSitterFileName = "lastTryS32.xml";
 
 
         private readonly string _connectionString;
@@ -24,15 +23,14 @@ namespace SE307Project
 
         public static Database GetInstance()
         {
-            if (Instance==null)
+            if (Instance == null)
             {
                 Instance = new Database();
             }
 
             return Instance;
         }
-        
-        
+
 
         //This is for trying TODO: DELETE LATER
         public PetOwner AddPetOwner(string name, string surname, string email, string password)
@@ -49,7 +47,7 @@ namespace SE307Project
             return ps;
         }
 
-        public void InsertPetOwner(string name, string surname, string email, string password/*, string location*/)
+        public void InsertPetOwner(string name, string surname, string email, string password /*, string location*/)
         {
             /*string insertSql =
                 "INSERT INTO users (name, surname, email, password, location) VALUES (@name, @surname, @email, @password, @location)";
@@ -74,19 +72,17 @@ namespace SE307Project
             try
             {
                 CheckPetOwnerExists(email);
-                
-                
-            PetOwner po = new PetOwner(name, surname, email, password);
-            PetOwnerList.Add(po);
-            XMLHandler xmlHandler = new XMLHandler();
-            xmlHandler.WritePetOwnerList(XmlOwnerFileName,PetOwnerList);
+
+
+                PetOwner po = new PetOwner(name, surname, email, password);
+                PetOwnerList.Add(po);
+                XMLHandler xmlHandler = new XMLHandler();
+                xmlHandler.WritePetOwnerList(XmlOwnerFileName, PetOwnerList);
             }
             catch (UserAlreadyExistsException e)
             {
                 e.PrintException();
             }
-
-
         }
 
         public void InsertPetSitter(string name, string surname, string email, string password)
@@ -114,16 +110,17 @@ namespace SE307Project
             {
                 CheckPetSitterExists(email);
 
-            PetSitter ps = new PetSitter(name, surname, email, password);
-            PetSitterList.Add(ps);
-            XMLHandler xmlHandler = new XMLHandler();
-            xmlHandler.WritePetSitterList(XmlSitterFileName,PetSitterList);
-            }  catch (UserAlreadyExistsException e)
+                PetSitter ps = new PetSitter(name, surname, email, password);
+                PetSitterList.Add(ps);
+                XMLHandler xmlHandler = new XMLHandler();
+                xmlHandler.WritePetSitterList(XmlSitterFileName, PetSitterList);
+            }
+            catch (UserAlreadyExistsException e)
             {
                 e.PrintException();
             }
         }
-            
+
 
         /*public bool CheckUserExist(string email, string password)
         {
@@ -149,10 +146,11 @@ namespace SE307Project
             {
                 if (user.Email == email)
                 {
-                    if (user.Password!= password)
+                    if (user.Password != password)
                     {
                         throw new ExceptionWrongPassword();
                     }
+
                     return user;
                 }
             }
@@ -161,10 +159,11 @@ namespace SE307Project
             {
                 if (user.Email == email)
                 {
-                    if (user.Password!= password)
+                    if (user.Password != password)
                     {
                         throw new ExceptionWrongPassword();
                     }
+
                     return user;
                 }
             }
@@ -172,7 +171,27 @@ namespace SE307Project
             return null;
         }
 
-        
+        public User FindUser(string email)
+        {
+            foreach (var user in PetOwnerList)
+            {
+                if (user.Email == email)
+                {
+                    return user;
+                }
+            }
+            
+            foreach (var user in PetSitterList)
+            {
+                if (user.Email == email)
+                {
+                    return user;
+                }
+            }
+
+            return null;
+        }
+
         public PetOwner FindPetOwner(string email)
         {
             foreach (var user in PetOwnerList)
@@ -182,22 +201,28 @@ namespace SE307Project
                     return user;
                 }
             }
+
+
             return null;
         }
-        
-        private void CheckPetOwnerExists(string email) {
-            
-            foreach (PetOwner po in PetOwnerList) {
-                if (po.Email == email) {
+
+        private void CheckPetOwnerExists(string email)
+        {
+            foreach (PetOwner po in PetOwnerList)
+            {
+                if (po.Email == email)
+                {
                     throw new UserAlreadyExistsException();
                 }
             }
         }
-        
-        private void CheckPetSitterExists(string email) {
-            
-            foreach (PetSitter ps in PetSitterList) {
-                if (ps.Email == email) {
+
+        private void CheckPetSitterExists(string email)
+        {
+            foreach (PetSitter ps in PetSitterList)
+            {
+                if (ps.Email == email)
+                {
                     throw new UserAlreadyExistsException();
                 }
             }
@@ -246,8 +271,8 @@ namespace SE307Project
 
             return list;
         }
-        
-        
+
+
         public List<PetOwner> ListPetOwners()
         {
             int index = 1;

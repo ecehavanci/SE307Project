@@ -141,15 +141,49 @@ namespace SE307Project
                 pet.Breed = breed;
             }
 
-            /*Console.Write("Care Routine: ");
+            Console.Write("Care Routine: ");
             pet.ListCareRoutine();
             Console.WriteLine();
-            String breed = Console.ReadLine();
+            String routine = Console.ReadLine();
 
-            if (breed != "-1")
+            Console.WriteLine("Please enter care routines to add, press -1 to stop");
+            while (true)
             {
-                pet.Breed = breed;
-            }*/
+                if (routine != "-1")
+                {
+                    break;
+                }
+
+                try
+                {
+                    pet.AddCareRoutine(int.Parse(routine));
+
+                }
+                catch (FormatException e)
+                {
+                    pet.AddCareRoutine(routine);
+                }
+            }
+            
+            Console.WriteLine("Please enter care routines to remove from this pet, press -1 to stop");
+            while (true)
+            {
+                if (routine != "-1")
+                {
+                    break;
+                }
+
+                try
+                {
+                    pet.RemoveCareRoutine(int.Parse(routine));
+
+                }
+                catch (FormatException e)
+                {
+                    pet.RemoveCareRoutine(routine);
+                }
+            }
+
 
             return 1;
         }
@@ -256,8 +290,9 @@ namespace SE307Project
 
             String petBreed = Console.ReadLine();
 
-            Pets.Add(new Pet(petName, petAge, petBreed, petSpecies));
+            AddPet(petName, petAge, petBreed, petSpecies);
             Console.WriteLine(petName + " is added to your pets.");
+            
         }
 
         private bool EditPersonalInformation()
@@ -392,12 +427,35 @@ namespace SE307Project
             }
         }
 
-        public void HirePetSitter(PetSitter petSitter)
+        public void SendHiringMessage(PetSitter petSitter)
         {
-            //PetSitterContacts.Add((petSitter, false));
-            //TODO: Send hiring message
+            for (int i = 0; i < PetSitterContacts.Count; i++)
+            {
+                if (PetSitterContacts[i].Item1 == petSitter)
+                {
+                    petSitter.AddMessage(new HiringMessage(petSitter.Email, Email, 1));
+                    Console.WriteLine("Sending hiring message...");
+                    return;
+                }
+            }
+
+            Console.WriteLine("You cannot hire a pet sitter that you did not send a request before.");
         }
 
+        public void HirePetSitter(PetSitter petSitter)
+        {
+            for (int i = 0; i < PetSitterContacts.Count; i++)
+            {
+                if (PetSitterContacts[i].Item1 == petSitter)
+                {
+                    PetSitterContacts[i] = (petSitter, true);
+                    Console.WriteLine("Marked as hired");
+                    return;
+                }
+            }
+
+            Console.WriteLine("Request accepting problem, try again later.");
+        }
 
         private void ListPets()
         {
@@ -414,10 +472,28 @@ namespace SE307Project
 
         public void MakeCommentToPetSitter(PetSitter petSitter)
         {
-            Console.WriteLine("Enter your comment here:");
-            String comment = Console.ReadLine();
-            int rate = RatePetSitter();
-            petSitter.AddComment(new Comment(Name, rate, comment));
+            foreach (var psInfo in PetSitterContacts)
+            {
+                if (psInfo.Item1.Email == petSitter.Email)
+                {
+                    if (psInfo.Item2)
+                    {
+                        Console.WriteLine("Enter your comment here:");
+                        String comment = Console.ReadLine();
+                        int rate = RatePetSitter();
+                        petSitter.AddComment(new Comment(Name, rate, comment));
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You need to hire this pet sitter first in order to  make a comment.");
+                        return;
+                    }
+                }
+            }
+
+            Console.WriteLine(
+                "You do not have contact with this pet sitter, in order to have contact please send a request.");
         }
 
         public int
@@ -457,6 +533,7 @@ namespace SE307Project
                 petSitter.AddMessage(message);
                 AddMessage(message);
             }
+
             Console.WriteLine("Message sent!");
         }
 
@@ -489,17 +566,31 @@ namespace SE307Project
                     pet = FindPetInPets(int.Parse(petInput) - 1);
                     if (pet != null)
                     {
-                        pets.Add(pet);
+                        if (pets.Contains(pet))
+                        {
+                            Console.WriteLine("Skipping...");
+                        }
+                        else
+                        {
+                            pets.Add(pet);
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("There is no pet with given name.");
+                        Console.WriteLine("There is no pet with given name/index.");
                     }
                 }
                 catch (FormatException e)
                 {
                     pet = FindPetInPets(petInput);
-                    pets.Add(pet);
+                    if (pets.Contains(pet))
+                    {
+                        Console.WriteLine("Skipping...");
+                    }
+                    else
+                    {
+                        pets.Add(pet);
+                    }
                 }
                 catch (NullReferenceException e)
                 {
@@ -555,6 +646,22 @@ namespace SE307Project
 
         public override void ReadMessages()
         {
+            bool isFirstHiringMessage = true;
+            foreach (var message in MessageBox)
+            {
+                if (message.ReceiverMail == "system")
+                {
+                    if (isFirstHiringMessage)
+                    {
+                        Console.WriteLine("There are people who claims that they hired you. Letting them marking you " +
+                                          "as hired let them comment and rate you.");
+                        isFirstHiringMessage = false;
+                    }
+
+                    Console.WriteLine(message);
+                }
+            }
+
             PetSitter psToSend = null;
             bool willSendMessage = false;
             if (PetSitterContacts.Count == 0)
@@ -575,7 +682,7 @@ namespace SE307Project
                     int messagesOfWhomIndex = int.Parse(Console.ReadLine());
                     if (messagesOfWhomIndex == -1)
                     {
-                        break;
+                        return;
                     }
 
                     messagesOfWhom = FindPetSitter(messagesOfWhomIndex - 1);
@@ -599,7 +706,7 @@ namespace SE307Project
             }
         }
 
-        
+
         private PetSitter FindPetSitter(String email)
         {
             foreach (var petSitterInfo in PetSitterContacts)
