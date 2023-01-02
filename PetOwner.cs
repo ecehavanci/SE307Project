@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -279,7 +280,6 @@ namespace SE307Project
                 {
                     break;
                 }
-                
             }
 
             int petAge = 0;
@@ -295,12 +295,14 @@ namespace SE307Project
                         Console.WriteLine("Age is invalid");
                         continue;
                     }
+
                     petAge = int.Parse(petAgeInput);
-                    if (petAge<0)
+                    if (petAge < 0)
                     {
                         Console.WriteLine("Age is invalid");
                         continue;
                     }
+
                     break;
                 }
                 catch (FormatException e)
@@ -335,7 +337,6 @@ namespace SE307Project
                 {
                     break;
                 }
-                
             }
 
             AddPet(petName, petAge, petBreed, petSpecies);
@@ -348,10 +349,11 @@ namespace SE307Project
             Console.WriteLine(
                 "Which part of your profile you want to edit? \n1) Name (" + Name + ")\n2) Surname (" + Surname +
                 ")\n3) Email (" + Email + ")\n4) Password \n5) Location (" + location + ") \n6) Exit");
-            int editWhere = Int32.Parse(Console.ReadLine());
+            
+            String editWhere = Console.ReadLine();
             switch (editWhere)
             {
-                case 1:
+                case "1":
                     Console.Write("New name: ");
                     string newName = Console.ReadLine();
                     if (newName.All(char.IsLetter) && !String.IsNullOrEmpty(newName))
@@ -364,7 +366,7 @@ namespace SE307Project
                     }
 
                     break;
-                case 2:
+                case "2":
                     Console.Write("New surname: ");
                     string newSurname = Console.ReadLine();
 
@@ -378,32 +380,54 @@ namespace SE307Project
                     }
 
                     break;
-                case 3:
+                case "3":
                     string newEmail;
                     while (true)
                     {
                         Console.WriteLine("New Email: ");
                         newEmail = Console.ReadLine();
-                                
-                        if (Regex.IsMatch(newEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"))
+
+                        if (Regex.IsMatch(newEmail,
+                                @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"))
                         {
-                            Email = newEmail;
-                            break;
+                            Database db = Database.GetInstance();
+                            User u = db.FindUser(newEmail);
+                            if (u == null)
+                            {
+                                Email = newEmail;
+                                break;
+                            }
+
+                            if (u.Email == Email)
+                            {
+                                Console.WriteLine(
+                                    "Entered email is your current email. Do you wish to exit without changing? (Y/N)");
+                                if (Console.ReadLine().ToUpper() == "Y")
+                                {
+                                    break;
+                                }
+
+                                continue;
+                            }
+
+                            Console.WriteLine("There is another user with same email. Please try again.");
+                            continue;
                         }
+
                         Console.WriteLine("Email is not valid. Please try again.");
                     }
-                       
+
                     Console.WriteLine();
                     break;
-                case 4:
+                case "4":
                     ChangePassword();
                     break;
-                case 5:
+                case "5":
                     Console.Write(Location == null || Location == "" ? "Location: " : "New Location: ");
                     string newLoc = Console.ReadLine();
                     Location = newLoc;
                     break;
-                case 6:
+                case "6":
                     return true;
             }
 

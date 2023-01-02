@@ -382,8 +382,28 @@ namespace SE307Project
                                 
                             if (Regex.IsMatch(newEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"))
                             {
-                                Email = newEmail;
-                                break;
+                                Database db = Database.GetInstance();
+                                User u = db.FindUser(newEmail);
+                                if (u == null)
+                                {
+                                    Email = newEmail;
+                                    break;
+                                }
+
+                                if (u.Email == Email)
+                                {
+                                    Console.WriteLine(
+                                        "Entered email is your current email. Do you wish to exit without changing? (Y/N)");
+                                    if (Console.ReadLine().ToUpper() == "Y")
+                                    {
+                                        break;
+                                    }
+
+                                    continue;
+                                }
+
+                                Console.WriteLine("There is another user with same email. Please try again.");
+                                continue;
                             }
                             Console.WriteLine("Email is not valid. Please try again.");
                         }

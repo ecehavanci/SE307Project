@@ -1,6 +1,5 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
-
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -8,20 +7,22 @@ using System.Xml.Serialization;
 
 namespace SE307Project
 {
-    public abstract class User 
+    public abstract class User
     {
-        public User(){}
-        
+        public User()
+        {
+        }
+
         public String Name { get; set; }
         public String Surname { get; set; }
         public String Email { get; set; }
         public String Location { get; set; }
-        
+
         public String Password { get; set; }
         public List<Message> MessageBox { get; set; }
         public DateTime SignUpTime { get; set; }
-        
-        public User(string name,string surname,string email,string password)
+
+        public User(string name, string surname, string email, string password)
         {
             MessageBox = new List<Message>();
             Name = name;
@@ -36,8 +37,6 @@ namespace SE307Project
             Map(p => p.Password).Index(3);
             Map(p => p.Location).Index(4);
             Map(p => p.SignUpTime).Index(5);*/
-          
-
         }
 
         public abstract void EditProfile();
@@ -45,11 +44,11 @@ namespace SE307Project
         public virtual void ShowProfile()
         {
             Console.WriteLine("********** " + Name + " " + Surname + "'s Profile **********");
-            string profileInfo = "Location:\t" + (Location == null? "N/A" : Location);
+            string profileInfo = "Location:\t" + (Location == null ? "N/A" : Location);
             Console.WriteLine(profileInfo);
         }
-        
-        
+
+
         public void AddMessage(Message message)
         {
             MessageBox.Add(message);
@@ -59,65 +58,110 @@ namespace SE307Project
 
         public void ChangePassword()
         {
-            bool loop = true;
-            while (loop)
-            { 
-                Console.WriteLine("Write your new password");
-            var newpass = string.Empty;
-            ConsoleKey key;
-            do
+            while (true)
             {
-                var keyInfo = Console.ReadKey(intercept: true);
-                key = keyInfo.Key;
+                Console.WriteLine("Please enter your current password, enter -1 to cancel password changing.");
+                String oldPass = string.Empty;
+                ConsoleKey key;
+                do
+                {
+                    var keyInfo = Console.ReadKey(true);
+                    key = keyInfo.Key;
 
-                if (key == ConsoleKey.Backspace && newpass.Length > 0)
+                    if (key == ConsoleKey.Backspace && oldPass.Length > 0)
+                    {
+                        Console.Write("\b \b");
+                        oldPass = oldPass[0..^1];
+                    }
+                    else if (!char.IsControl(keyInfo.KeyChar))
+                    {
+                        Console.Write("*");
+                        oldPass += keyInfo.KeyChar;
+                    }
+                } while (key != ConsoleKey.Enter);
+                if (oldPass == "-1")
                 {
-                    Console.Write("\b \b");
-                    newpass = newpass[0..^1];
+                    Console.WriteLine();
+                    return;
                 }
-                else if (!char.IsControl(keyInfo.KeyChar))
+                if (oldPass != Password)
                 {
-                    Console.Write("*");
-                    newpass += keyInfo.KeyChar;
-                }
-            } while (key != ConsoleKey.Enter);
-
-            Console.WriteLine("Please write your password again.");
-            var newpass2 = string.Empty;
-            ConsoleKey key2;
-            do
-            {
-                var keyInfo2 = Console.ReadKey(intercept: true);
-                key2 = keyInfo2.Key;
-
-                if (key2 == ConsoleKey.Backspace && newpass2.Length > 0)
-                {
-                    Console.Write("\b \b");
-                    newpass2 = newpass2[0..^1];
-                }
-                else if (!char.IsControl(keyInfo2.KeyChar))
-                {
-                    Console.Write("*");
-                    newpass += keyInfo2.KeyChar;
-                }
-            } while (key != ConsoleKey.Enter);
-            if (newpass2.Length >= 6 && Regex.IsMatch(newpass2, @"\d") && Regex.IsMatch(newpass, @"[A-Z]"))
-            {
-                if (newpass2 == newpass)
-                {
-                    Password = newpass2;
-                    loop = false;
+                    Console.WriteLine("\nWrong password");
                 }
                 else
                 {
-                    Console.WriteLine("Passwords doesn't match.");
+                    Console.WriteLine();
+                    break;
                 }
             }
-            Console.WriteLine("The password must be at least 6 digits and contain at least one number and uppercase letter. Please try again.");
             
+            bool loop = true;
+            while (loop)
+            {
+                Console.WriteLine("Write your new password");
+                var newpass = string.Empty;
+                ConsoleKey key;
+                do
+                {
+                    var keyInfo = Console.ReadKey(true);
+                    key = keyInfo.Key;
+
+                    if (key == ConsoleKey.Backspace && newpass.Length > 0)
+                    {
+                        Console.Write("\b \b");
+                        newpass = newpass[0..^1];
+                    }
+                    else if (!char.IsControl(keyInfo.KeyChar))
+                    {
+                        Console.Write("*");
+                        newpass += keyInfo.KeyChar;
+                    }
+                } while (key != ConsoleKey.Enter);
+
+
+                if (newpass.Length >= 6 && Regex.IsMatch(newpass, @"\d") && Regex.IsMatch(newpass, @"[A-Z]"))
+                {
+                    Console.WriteLine("\nPlease write your password again.");
+                    var newpass2 = string.Empty;
+                    ConsoleKey key2;
+                    do
+                    {
+                        var keyInfo2 = Console.ReadKey(true);
+                        key2 = keyInfo2.Key;
+
+                        if (key2 == ConsoleKey.Backspace && newpass2.Length > 0)
+                        {
+                            Console.Write("\b \b");
+                            newpass2 = newpass2[0..^1];
+                        }
+                        else if (!char.IsControl(keyInfo2.KeyChar))
+                        {
+                            Console.Write("*");
+                            newpass2 += keyInfo2.KeyChar;
+                        }
+                    } while (key2 != ConsoleKey.Enter);
+
+                    if (newpass2.Length >= 6 && Regex.IsMatch(newpass2, @"\d") && Regex.IsMatch(newpass, @"[A-Z]"))
+                    {
+                        if (newpass2 == newpass)
+                        {
+                            Password = newpass2;
+                            Console.WriteLine("Password successfully changed.");
+                            loop = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nPasswords doesn't match.");
+                            continue;
+                        }
+                    }
+                }
+
+                Console.WriteLine(
+                    "\nThe password must be at least 6 digits and contain at least one number and uppercase letter. Please try again.");
             }
         }
-        
+
 
         public void ShowMessagesFor(User messagesOfWhom)
         {
@@ -129,7 +173,8 @@ namespace SE307Project
                 {
                     if (showOthersName)
                     {
-                        Console.WriteLine(messagesOfWhom.Name + " " + messagesOfWhom.Surname + " (" + message.Date + "):");
+                        Console.WriteLine(messagesOfWhom.Name + " " + messagesOfWhom.Surname + " (" + message.Date +
+                                          "):");
                         showOthersName = false;
                         showMyName = true;
                     }
@@ -152,10 +197,7 @@ namespace SE307Project
             }
         }
 
-        
+
         public abstract String ToString();
-
-
     }
-
 }
