@@ -23,13 +23,13 @@ namespace SE307Project
             SenderMail = "system";
             ReceiverMail = receiverEmail;
             RelatedEmail = relatedEmail;
-            User user = db.FindUser(ReceiverMail);
+            User user = db.FindUser(relatedEmail);
             if (mode == 1)
             {
                 Text = user == null
                     ? ""
                     : (user.Name + " " + user.Surname) + " wants to mark you as hired. Did this " +
-                      "person hire you?";
+                      "person hire you? (Y/N)";
             }
             else
             {

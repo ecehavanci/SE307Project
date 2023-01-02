@@ -30,17 +30,14 @@ namespace SE307Project
             Email = email;
             Password = password;
             SignUpTime = DateTime.Now;
-
-            /*Map(p => p.Email).Index(0);
-            Map(p => p.Name).Index(1);
-            Map(p => p.Surname).Index(2);
-            Map(p => p.Password).Index(3);
-            Map(p => p.Location).Index(4);
-            Map(p => p.SignUpTime).Index(5);*/
         }
-
+        
+        //This method enables users to alter the data in their profiles. It works differently in PetOwner and PetSitter
+        //but its aim is the same. So it is an abstract method.
         public abstract void EditProfile();
 
+        //PetOwners and PetSitters can show profiles the same up to some point but PetSitters have bio and PetOwners
+        //have pets differently. So this is a virtual method.
         public virtual void ShowProfile()
         {
             Console.WriteLine("********** " + Name + " " + Surname + "'s Profile **********");
@@ -54,15 +51,20 @@ namespace SE307Project
             MessageBox.Add(message);
         }
 
+        //Reading messages works different for PetSitter and PetOwner so this method is abstract.
         public abstract void ReadMessages();
 
+        //Both type of users can change their password using the same method.
         public void ChangePassword()
         {
             while (true)
             {
+                //User has to first enter the old password to change it
                 Console.WriteLine("Please enter your current password, enter -1 to cancel password changing.");
                 String oldPass = string.Empty;
                 ConsoleKey key;
+                
+                //Passwords are never shown. Each character of passwords are change into stars while typing.
                 do
                 {
                     var keyInfo = Console.ReadKey(true);
@@ -79,17 +81,22 @@ namespace SE307Project
                         oldPass += keyInfo.KeyChar;
                     }
                 } while (key != ConsoleKey.Enter);
+                
+                //If user wants to cancel changing password
                 if (oldPass == "-1")
                 {
                     Console.WriteLine();
                     return;
                 }
+                
+                //If entered password is wrong a warning is shown
                 if (oldPass != Password)
                 {
                     Console.WriteLine("\nWrong password");
                 }
                 else
                 {
+                    //If entered password is right this loop is broken so password changing can start
                     Console.WriteLine();
                     break;
                 }
@@ -98,6 +105,7 @@ namespace SE307Project
             bool loop = true;
             while (loop)
             {
+                //User enters new password
                 Console.WriteLine("Write your new password");
                 var newpass = string.Empty;
                 ConsoleKey key;
@@ -119,8 +127,10 @@ namespace SE307Project
                 } while (key != ConsoleKey.Enter);
 
 
+                //If the new password is suitable is checked
                 if (newpass.Length >= 6 && Regex.IsMatch(newpass, @"\d") && Regex.IsMatch(newpass, @"[A-Z]"))
                 {
+                    //User enters new password again to verify
                     Console.WriteLine("\nPlease write your password again.");
                     var newpass2 = string.Empty;
                     ConsoleKey key2;
@@ -163,14 +173,19 @@ namespace SE307Project
         }
 
 
+        //Show messages for a user given
         public void ShowMessagesFor(User messagesOfWhom)
         {
             bool showMyName = true;
             bool showOthersName = true;
+            
+            //Since messages are saved in the order they are sent they will be shown in ascending order by date
             foreach (var message in MessageBox)
             {
+                //Show the message of a specific person
                 if (message.SenderMail == messagesOfWhom.Email)
                 {
+                    //Show the name only once if there are multiple messages sent by the same user without other user answering
                     if (showOthersName)
                     {
                         Console.WriteLine(messagesOfWhom.Name + " " + messagesOfWhom.Surname + " (" + message.Date +
@@ -181,8 +196,8 @@ namespace SE307Project
 
                     Console.WriteLine(message);
                 }
-
-
+                
+                //Show my message
                 if (message.SenderMail == Email && message.ReceiverMail == messagesOfWhom.Email)
                 {
                     if (showMyName)

@@ -28,12 +28,13 @@ namespace SE307Project
             Pets = new List<Pet>();
         }
 
+        //For adding a new pet to the PetOwner's Pets
         public void AddPet(String name, int age, String breed, String species)
         {
             Pets.Add(new Pet(name, age, breed, species));
         }
 
-        //If given pet name is in the list it returns the pet othervise it returns null so a null reference exception
+        //If given pet name is in the list it returns the pet otherwise it returns null so a null reference exception
         //to be thrown and be handled
         public Pet FindPetInPets(String PetName)
         {
@@ -48,6 +49,8 @@ namespace SE307Project
             return null;
         }
 
+        //If given index is in range of the list size in the list it returns the pet otherwise it returns null so a 
+        //null reference exception to be thrown and be handled
         public Pet FindPetInPets(int index)
         {
             if (index > Pets.Count - 1 || index < 0)
@@ -60,6 +63,7 @@ namespace SE307Project
             }
         }
 
+        //Deleting a pet with given name without exception
         public void DeletePet(String PetName)
         {
             try
@@ -72,6 +76,7 @@ namespace SE307Project
             }
         }
 
+        //Deleting a pet with given index without exception
         public void DeletePet(int index)
         {
             if (index > Pets.Count || index < 0)
@@ -84,6 +89,7 @@ namespace SE307Project
             }
         }
 
+        //Editing a pet with given name
         public int EditPet(String PetName)
         {
             Pet pet = FindPetInPets(PetName);
@@ -95,12 +101,26 @@ namespace SE307Project
 
             Console.WriteLine("Enter new properties, enter -1 to skip");
 
-            Console.Write("Name (" + pet.Name + "): ");
-            String name = Console.ReadLine();
 
-            if (name != "-1")
+            String petName;
+            while (true)
             {
-                pet.Name = name;
+                Console.Write("Name (" + pet.Name + "): ");
+                petName = Console.ReadLine();
+                if (petName == "-1")
+                {
+                    break;
+                }
+
+                if (!petName.All(Char.IsLetter) || String.IsNullOrEmpty(petName))
+                {
+                    Console.WriteLine("Name is invalid");
+                }
+                else
+                {
+                    pet.Name = petName;
+                    break;
+                }
             }
 
 
@@ -141,29 +161,44 @@ namespace SE307Project
                 pet.SetSpecies(species);
             }
 
-            Console.Write("Breed (" + pet.Breed + "): ");
-            String breed = Console.ReadLine();
-
-            if (breed != "-1")
+            String petBreed;
+            while (true)
             {
-                pet.Breed = breed;
+                Console.Write("Breed (" + pet.Breed + "): ");
+                petBreed = Console.ReadLine();
+                if (petBreed == "-1")
+                {
+                    break;
+                }
+
+                if (petBreed.Any(Char.IsDigit) || petBreed.Any(Char.IsPunctuation))
+                {
+                    Console.WriteLine("Breed is invalid");
+                }
+                else
+                {
+                    pet.Breed = petBreed;
+                    break;
+                }
             }
 
 
             Console.Write("Current care routine: ");
-            pet.ListCareRoutine();
+            Console.WriteLine(pet.ListCareRoutine());
 
             Console.WriteLine();
 
             ListCareTypes();
 
             Console.WriteLine();
-            String routine = Console.ReadLine();
+
+            String routine;
 
             Console.WriteLine("Please enter care routines to add, press -1 to stop");
             while (true)
             {
-                if (routine != "-1")
+                routine = Console.ReadLine();
+                if (routine == "-1")
                 {
                     break;
                 }
@@ -181,7 +216,8 @@ namespace SE307Project
             Console.WriteLine("Please enter care routines to remove from this pet, press -1 to stop");
             while (true)
             {
-                if (routine != "-1")
+                routine = Console.ReadLine();
+                if (routine == "-1")
                 {
                     break;
                 }
@@ -211,12 +247,25 @@ namespace SE307Project
 
             Console.WriteLine("Enter new properties, enter -1 to skip");
 
-            Console.Write("Name(" + pet.Name + "): ");
-            String name = Console.ReadLine();
-
-            if (name != "-1")
+            String petName;
+            while (true)
             {
-                pet.Name = name;
+                Console.Write("Name (" + pet.Name + "): ");
+                petName = Console.ReadLine();
+                if (petName == "-1")
+                {
+                    break;
+                }
+
+                if (!petName.All(Char.IsLetter) || String.IsNullOrEmpty(petName))
+                {
+                    Console.WriteLine("Name is invalid");
+                }
+                else
+                {
+                    pet.Name = petName;
+                    break;
+                }
             }
 
 
@@ -252,27 +301,96 @@ namespace SE307Project
                 pet.SetSpecies(species);
             }
 
-            Console.Write("Breed:(" + pet.Breed + "): ");
-            String breed = Console.ReadLine();
-
-            if (breed != "-1")
+            String petBreed;
+            while (true)
             {
-                pet.Breed = breed;
+                Console.Write("Breed (" + pet.Breed + "): ");
+                petBreed = Console.ReadLine();
+                if (petBreed == "-1")
+                {
+                    break;
+                }
+
+                if (petBreed.Any(Char.IsDigit) || petBreed.Any(Char.IsPunctuation))
+                {
+                    Console.WriteLine("Breed is invalid");
+                }
+                else
+                {
+                    pet.Breed = petBreed;
+                    break;
+                }
+            }
+
+
+            Console.Write("Current care routine: ");
+            Console.WriteLine(pet.ListCareRoutine());
+
+            Console.WriteLine();
+
+            ListCareTypes();
+
+            Console.WriteLine();
+            String routine;
+
+            Console.WriteLine("Please enter care routines to add, press -1 to stop");
+            while (true)
+            {
+                routine = Console.ReadLine();
+                if (routine == "-1")
+                {
+                    break;
+                }
+
+                try
+                {
+                    pet.AddCareRoutine(int.Parse(routine));
+                }
+                catch (FormatException e)
+                {
+                    pet.AddCareRoutine(routine);
+                }
+            }
+
+            if (pet.CareRoutine.Count == 0)
+            {
+                return 1;
+            }
+
+            Console.WriteLine("Please enter care routines to remove from this pet, press -1 to stop");
+            while (true)
+            {
+                routine = Console.ReadLine();
+                if (routine == "-1")
+                {
+                    break;
+                }
+
+                try
+                {
+                    pet.RemoveCareRoutine(int.Parse(routine));
+                }
+                catch (FormatException e)
+                {
+                    pet.RemoveCareRoutine(routine);
+                }
             }
 
             return 1;
         }
 
+        //Pet is created by getting input from user
         private void CreatePet()
         {
             Console.WriteLine("Please enter pet data");
 
+            //Name is checked to only consist letter
             String petName;
             while (true)
             {
                 Console.Write("Name: ");
                 petName = Console.ReadLine();
-                if (!petName.All(Char.IsLetter))
+                if (!petName.All(Char.IsLetter) || String.IsNullOrEmpty(petName))
                 {
                     Console.WriteLine("Name is invalid");
                 }
@@ -282,6 +400,7 @@ namespace SE307Project
                 }
             }
 
+            //Age is checked to only consist digits and be greater than or equal to 0
             int petAge = 0;
 
             while (true)
@@ -311,6 +430,7 @@ namespace SE307Project
                 }
             }
 
+            //Species is checked to be only given options if any other input is given it is set to undefined
             ListPetSpecies();
             Console.Write("Species: ");
             String petSpecies = "";
@@ -324,12 +444,13 @@ namespace SE307Project
             }
 
 
+            //Breed is checked not to consist any numbers or punctuation
             String petBreed;
             while (true)
             {
                 Console.Write("Breed: ");
                 petBreed = Console.ReadLine();
-                if (!petBreed.All(Char.IsLetter))
+                if (petBreed.Any(Char.IsDigit) || petBreed.Any(Char.IsPunctuation))
                 {
                     Console.WriteLine("Breed is invalid");
                 }
@@ -343,20 +464,22 @@ namespace SE307Project
             Console.WriteLine(petName + " is added to your pets.");
         }
 
+        //Editing personal information like name, surname, email, password and location
         private bool EditPersonalInformation()
         {
             String location = String.IsNullOrEmpty(Location) ? "Unknown" : Location;
             Console.WriteLine(
                 "Which part of your profile you want to edit? \n1) Name (" + Name + ")\n2) Surname (" + Surname +
                 ")\n3) Email (" + Email + ")\n4) Password \n5) Location (" + location + ") \n6) Exit");
-            
+
             String editWhere = Console.ReadLine();
             switch (editWhere)
             {
                 case "1":
                     Console.Write("New name: ");
                     string newName = Console.ReadLine();
-                    if (newName.All(char.IsLetter) && !String.IsNullOrEmpty(newName))
+                    //New name is checked not to consist any number or punctuation
+                    if (newName.Any(char.IsDigit) && newName.Any(char.IsPunctuation) && !String.IsNullOrEmpty(newName))
                     {
                         Name = newName;
                     }
@@ -369,8 +492,9 @@ namespace SE307Project
                 case "2":
                     Console.Write("New surname: ");
                     string newSurname = Console.ReadLine();
-
-                    if (newSurname.All(char.IsLetter) && !String.IsNullOrEmpty(newSurname))
+                    //New surname is checked not to consist any number or punctuation
+                    if (newSurname.All(char.IsLetter) && newSurname.Any(char.IsPunctuation) &&
+                        !String.IsNullOrEmpty(newSurname))
                     {
                         Surname = newSurname;
                     }
@@ -387,6 +511,7 @@ namespace SE307Project
                         Console.WriteLine("New Email: ");
                         newEmail = Console.ReadLine();
 
+                        //New email is checked to be in the example@email.com format
                         if (Regex.IsMatch(newEmail,
                                 @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"))
                         {
@@ -420,6 +545,7 @@ namespace SE307Project
                     Console.WriteLine();
                     break;
                 case "4":
+                    //Password is changed safely without showing it on the screen
                     ChangePassword();
                     break;
                 case "5":
@@ -434,6 +560,7 @@ namespace SE307Project
             return false;
         }
 
+        //List possible species for pets
         private void ListPetSpecies()
         {
             Console.WriteLine("Possible species");
@@ -444,6 +571,7 @@ namespace SE307Project
             Console.WriteLine("5) Exotic Animal");
         }
 
+        //List possible care types for pets
         private void ListCareTypes()
         {
             Console.WriteLine("Possible care types");
@@ -452,10 +580,11 @@ namespace SE307Project
             Console.WriteLine("3) Walk");
             Console.WriteLine("4) Feed");
             Console.WriteLine("5) Take to vet");
-            Console.WriteLine("5) Play");
-            Console.WriteLine("5) Give meds");
+            Console.WriteLine("6) Play");
+            Console.WriteLine("7) Give meds");
         }
 
+        //Editing profile: can be editing own info or pet info
         public override void EditProfile()
         {
             bool isDone = false;
@@ -481,15 +610,18 @@ namespace SE307Project
                     switch (petChoice)
                     {
                         case "1":
+                            //Adding a new pet
                             CreatePet();
                             break;
                         case "2":
+                            //Editing an existing pet
                             if (Pets.Count == 0)
                             {
                                 Console.WriteLine("You do not have a pet yet.");
                                 continue;
                             }
 
+                            //Showing all pets owned to enable user choose one from them
                             Console.WriteLine("Your Pets:");
                             ListPets();
                             Console.WriteLine("Please enter the name/index of the pet you want to edit");
@@ -499,8 +631,6 @@ namespace SE307Project
                             {
                                 int petIndex = int.Parse(petInput);
                                 int result = EditPet(petIndex - 1);
-                                //Pets[petIndex-1].CareRoutine.Add(CareType.Comb);
-                                //Pets[petIndex-1].CareRoutine.Add(CareType.Walk);
 
                                 if (result == 0)
                                 {
@@ -524,12 +654,14 @@ namespace SE307Project
 
                             break;
                         case "3":
+                            //Checking if Pets is empty
                             if (Pets.Count == 0)
                             {
                                 Console.WriteLine("You do not have a pet yet.");
                                 continue;
                             }
 
+                            //Showing all pets owned to enable user choose one from them
                             Console.WriteLine("Your Pets:");
                             ListPets();
                             Console.WriteLine("Please enter the name/index of the pet you want to edit.");
@@ -542,6 +674,7 @@ namespace SE307Project
                             }
                             catch (FormatException e)
                             {
+                                //Deleting a pet from Pets
                                 DeletePet(petInput2);
                             }
 
@@ -554,11 +687,13 @@ namespace SE307Project
             }
         }
 
+        //Send a pet sitter a message for asking permission to mark this PetSitter as hired to be able this PetOwner to
+        //can make comments and give stars to this PetSitter later
         public void SendHiringMessage(PetSitter petSitter)
         {
             for (int i = 0; i < PetSitterContacts.Count; i++)
             {
-                if (PetSitterContacts[i].Item1 == petSitter)
+                if (PetSitterContacts[i].Item1.Email == petSitter.Email)
                 {
                     petSitter.AddMessage(new HiringMessage(petSitter.Email, Email, 1));
                     Console.WriteLine("Sending hiring message...");
@@ -569,11 +704,12 @@ namespace SE307Project
             Console.WriteLine("You cannot hire a pet sitter that you did not send a request before or did not accept your request.");
         }
 
+        //Marking a PetSitter as hired so this PetOwner can make comments and give stars to this PetSitter
         public void HirePetSitter(PetSitter petSitter)
         {
             for (int i = 0; i < PetSitterContacts.Count; i++)
             {
-                if (PetSitterContacts[i].Item1 == petSitter)
+                if (PetSitterContacts[i].Item1.Email == petSitter.Email)
                 {
                     PetSitterContacts[i] = (petSitter, true);
                     Console.WriteLine("Marked as hired");
@@ -584,6 +720,7 @@ namespace SE307Project
             Console.WriteLine("Request accepting problem, try again later.");
         }
 
+        //Show all pets
         private void ListPets()
         {
             for (int i = 0; i < Pets.Count; i++)
@@ -592,11 +729,13 @@ namespace SE307Project
             }
         }
 
+        //Adding a pet sitter to pet owners contacts so they can communicate
         public void AddToPetSitters(PetSitter petSitter)
         {
             PetSitterContacts.Add((petSitter, false));
         }
 
+        //Making a comment to a pet sitter for other PetOwners to see and decide more easily on this PetSitter
         public void MakeCommentToPetSitter(PetSitter petSitter)
         {
             foreach (var psInfo in PetSitterContacts)
@@ -623,9 +762,8 @@ namespace SE307Project
                 "You do not have contact with this pet sitter, in order to have contact please send a request.");
         }
 
-        public int
-            RatePetSitter(
-                /*PetSitter petSitter*/) //Unfortunately we might have to delete pet sitter from parameters
+        //Giving a rate out of 5 to a PetSitter for other PetOwners to see and decide more easily on this PetSitter
+        public int RatePetSitter()
         {
             while (true)
             {
@@ -650,6 +788,8 @@ namespace SE307Project
             }
         }
 
+        //Sending a message to a PetSitter so PetOwners and PetSitters can communicate and agree on the duties of the
+        //PetSitter and when to start pet sitting
         public void SendMessageToPetSitter(PetSitter petSitter)
         {
             if (PetSitterContacts.Contains((petSitter, false)))
@@ -664,8 +804,12 @@ namespace SE307Project
             Console.WriteLine("Message sent!");
         }
 
+        //Sending a request to PetSitter and asking PetSitter's permission to communicate so they can discuss details 
+        //with messages
         public void SendRequestToPetSitter(PetSitter petSitter)
         {
+            //PetOwner has  to have at least one Pet to send a request because request includes the info of which pet
+            //to be taken care of
             if (Pets.Count == 0)
             {
                 Console.WriteLine("You have to have at least one pet to send a request.");
@@ -751,6 +895,7 @@ namespace SE307Project
             }
         }
 
+        //Listing the PetSitters this PetOwner has sent a request and got accepted before
         private void ListContacts()
         {
             Console.WriteLine("You are in contact with:");
@@ -761,27 +906,25 @@ namespace SE307Project
             }
         }
 
+        //Showing profile
         public override void ShowProfile()
         {
             base.ShowProfile();
-            Console.WriteLine("Pets:");
-            foreach (var pet in Pets)
-            {
-                Console.WriteLine(pet.Name + "(" + pet.GetSpecies() + ")");
-            }
+            Console.Write("Pets: " + ToString() + "\n");
+            
         }
 
+        //Reading messages 
         public override void ReadMessages()
         {
             bool isFirstHiringMessage = true;
             foreach (var message in MessageBox)
             {
-                if (message.ReceiverMail == "system")
+                if (message.SenderMail == "system")
                 {
                     if (isFirstHiringMessage)
                     {
-                        Console.WriteLine("There are people who claims that they hired you. Letting them marking you " +
-                                          "as hired let them comment and rate you.");
+                        Console.WriteLine("There are people who rejected your hiring requests.");
                         isFirstHiringMessage = false;
                     }
 
@@ -833,20 +976,6 @@ namespace SE307Project
             }
         }
 
-
-        private PetSitter FindPetSitter(String email)
-        {
-            foreach (var petSitterInfo in PetSitterContacts)
-            {
-                if (email == petSitterInfo.Item1.Email)
-                {
-                    return petSitterInfo.Item1;
-                }
-            }
-
-            return null;
-        }
-
         private PetSitter FindPetSitter(int index)
         {
             try
@@ -863,8 +992,17 @@ namespace SE307Project
 
         public override String ToString()
         {
-            return ""; // TODO: To be filled
-            //throw new NotImplementedException();
+            String pets = "";
+            for (int i = 0; i < Pets.Count; i++)
+            {
+                pets += Pets[i].Name + "("+ Pets[i].Breed +")";
+                if (Pets.Count()-1!= i)
+                {
+                    pets += ", ";
+                }
+            }
+            return pets;
+            
         }
     }
 }

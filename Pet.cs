@@ -13,12 +13,12 @@ namespace SE307Project
         public String Breed { set; get; }
         public AnimalType Species { set; get; }
 
-        public String GetSpecies()//get speciecies of pet
+        public String GetSpecies() //get speciecies of pet
         {
             return Species.ToString().Replace("Species.", "").Replace("A", " A");
         }
 
-        public void SetSpecies(String _Species)//choose and set the species of the pet from options
+        public void SetSpecies(String _Species) //choose and set the species of the pet from options
         {
             if (_Species.ToUpper() == "DOG" || _Species == "1")
             {
@@ -70,36 +70,85 @@ namespace SE307Project
         }
 
 
-        public void AddCareRoutine(String careType)//add care routine to a pet from options by care type name
+        public void AddCareRoutine(String careType) //add care routine to a pet from options by care type name
         {
             careType = careType.ToUpper();
             if (careType == "BATHE")
             {
-                CareRoutine.Add(CareType.Bathe);
+                if (!CareRoutine.Contains(CareType.Bathe))
+                {
+                    CareRoutine.Add(CareType.Bathe);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (careType == "WALK")
             {
-                CareRoutine.Add(CareType.Walk);
+                if (!CareRoutine.Contains(CareType.Walk))
+                {
+                    CareRoutine.Add(CareType.Walk);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (careType == "COMB")
             {
-                CareRoutine.Add(CareType.Comb);
+                if (!CareRoutine.Contains(CareType.Comb))
+                {
+                    CareRoutine.Add(CareType.Comb);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (careType == "FEED")
             {
-                CareRoutine.Add(CareType.Feed);
+                if (!CareRoutine.Contains(CareType.Feed))
+                {
+                    CareRoutine.Add(CareType.Feed);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (careType == "TAKE TO VET")
             {
-                CareRoutine.Add(CareType.TakeToVet);
+                if (!CareRoutine.Contains(CareType.TakeToVet))
+                {
+                    CareRoutine.Add(CareType.TakeToVet);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (careType == "PLAY")
             {
-                CareRoutine.Add(CareType.Play);
+                if (!CareRoutine.Contains(CareType.Play))
+                {
+                    CareRoutine.Add(CareType.Play);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (careType == "GIVE MEDS")
             {
-                CareRoutine.Add(CareType.GiveMeds);
+                if (!CareRoutine.Contains(CareType.GiveMeds))
+                {
+                    CareRoutine.Add(CareType.GiveMeds);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else
             {
@@ -107,107 +156,281 @@ namespace SE307Project
             }
         }
 
-        public void AddCareRoutine(int index)//add care routine to a pet from options by care type index
+        public void AddCareRoutine(int index) //add care routine to a pet from options by care type index
         {
             if (index == 1)
             {
-                CareRoutine.Add(CareType.Bathe);
+                if (!CareRoutine.Contains(CareType.Bathe))
+                {
+                    CareRoutine.Add(CareType.Bathe);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (index == 2)
             {
-                CareRoutine.Add(CareType.Walk);
+                if (!CareRoutine.Contains(CareType.Walk))
+                {
+                    CareRoutine.Add(CareType.Walk);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (index == 3)
             {
-                CareRoutine.Add(CareType.Comb);
+                if (!CareRoutine.Contains(CareType.Comb))
+                {
+                    CareRoutine.Add(CareType.Comb);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (index == 4)
             {
-                CareRoutine.Add(CareType.Feed);
+                if (!CareRoutine.Contains(CareType.Feed))
+                {
+                    CareRoutine.Add(CareType.Feed);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (index == 5)
             {
-                CareRoutine.Add(CareType.TakeToVet);
+                if (!CareRoutine.Contains(CareType.TakeToVet))
+                {
+                    CareRoutine.Add(CareType.TakeToVet);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (index == 6)
             {
-                CareRoutine.Add(CareType.Play);
+                if (!CareRoutine.Contains(CareType.Play))
+                {
+                    CareRoutine.Add(CareType.Play);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else if (index == 7)
             {
-                CareRoutine.Add(CareType.GiveMeds);
+                if (!CareRoutine.Contains(CareType.GiveMeds))
+                {
+                    CareRoutine.Add(CareType.GiveMeds);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
             else
             {
-                Console.WriteLine("There is no care routine with the given name");
+                Console.WriteLine("There is no care routine with the given index");
             }
         }
 
-        public void RemoveCareRoutine(int index)//remove a care routine with index from a pet
+        public void RemoveCareRoutine(int index) //remove a care routine with index from a pet
         {
-            try
+            if (index == 1)
             {
-                CareRoutine.RemoveAt(index);
+                if (CareRoutine.Contains(CareType.Bathe))
+                {
+                    CareRoutine.Remove(CareType.Bathe);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
             }
-            catch (IndexOutOfRangeException e)
+            else if (index == 2)
             {
-                Console.WriteLine("There is no care routine at the given index");
+                if (CareRoutine.Contains(CareType.Walk))
+                {
+                    CareRoutine.Remove(CareType.Walk);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
+            }
+            else if (index == 3)
+            {
+                if (CareRoutine.Contains(CareType.Comb))
+                {
+                    CareRoutine.Remove(CareType.Comb);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
+            }
+            else if (index == 4)
+            {
+                if (CareRoutine.Contains(CareType.Feed))
+                {
+                    CareRoutine.Remove(CareType.Feed);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
+            }
+            else if (index == 5)
+            {
+                if (CareRoutine.Contains(CareType.TakeToVet))
+                {
+                    CareRoutine.Remove(CareType.TakeToVet);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
+            }
+            else if (index == 6)
+            {
+                if (CareRoutine.Contains(CareType.Play))
+                {
+                    CareRoutine.Remove(CareType.Play);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
+            }
+            else if (index == 7)
+            {
+                if (CareRoutine.Contains(CareType.GiveMeds))
+                {
+                    CareRoutine.Remove(CareType.GiveMeds);
+                }
+                else
+                {
+                    Console.WriteLine("Already added.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("There is no care routine with the given index");
             }
         }
 
-        public void RemoveCareRoutine(String careType)//remove a care routine with name from a pet
+        public void RemoveCareRoutine(String careType) //remove a care routine with name from a pet
         {
             careType = careType.ToUpper();
             if (careType == "BATHE")
             {
-                CareRoutine.Remove(CareType.Bathe);
+                if (CareRoutine.Contains(CareType.Bathe))
+                {
+                    CareRoutine.Remove(CareType.Bathe);
+                }
+                else
+                {
+                    Console.WriteLine("Not in the list.");
+                }
             }
             else if (careType == "WALK")
             {
-                CareRoutine.Remove(CareType.Walk);
+                if (CareRoutine.Contains(CareType.Walk))
+                {
+                    CareRoutine.Remove(CareType.Walk);
+                }
+                else
+                {
+                    Console.WriteLine("Not in the list.");
+                }
             }
             else if (careType == "COMB")
             {
-                CareRoutine.Remove(CareType.Comb);
+                if (CareRoutine.Contains(CareType.Comb))
+                {
+                    CareRoutine.Remove(CareType.Comb);
+                }
+                else
+                {
+                    Console.WriteLine("Not in the list.");
+                }
             }
             else if (careType == "FEED")
             {
-                CareRoutine.Remove(CareType.Feed);
+                if (CareRoutine.Contains(CareType.Feed))
+                {
+                    CareRoutine.Remove(CareType.Feed);
+                }
+                else
+                {
+                    Console.WriteLine("Not in the list.");
+                }
             }
             else if (careType == "TAKE TO VET")
             {
-                CareRoutine.Remove(CareType.TakeToVet);
+                if (CareRoutine.Contains(CareType.TakeToVet))
+                {
+                    CareRoutine.Remove(CareType.TakeToVet);
+                }
+                else
+                {
+                    Console.WriteLine("Not in the list.");
+                }
             }
             else if (careType == "PLAY")
             {
-                CareRoutine.Remove(CareType.Play);
+                if (CareRoutine.Contains(CareType.Play))
+                {
+                    CareRoutine.Remove(CareType.Play);
+                }
+                else
+                {
+                    Console.WriteLine("Not in the list.");
+                }
             }
             else if (careType == "GIVE MEDS")
             {
-                CareRoutine.Remove(CareType.GiveMeds);
+                if (CareRoutine.Contains(CareType.GiveMeds))
+                {
+                    CareRoutine.Remove(CareType.GiveMeds);
+                }
+                else
+                {
+                    Console.WriteLine("Not in the list.");
+                }
             }
             else
             {
-                Console.WriteLine("This care coutine cannot be added");
+                Console.WriteLine("This care routine cannot be added");
             }
         }
 
 
-        public string ListCareRoutine()//list of care routines
+        public String ListCareRoutine() //returns the list of care routines of pet
         {
             string routine = "";
+            int i = 1;
             foreach (CareType careType in CareRoutine)
             {
-                routine += careType + ",\t";
+                routine += careType;
+                routine += i != CareRoutine.Count ? ", " : "";
+                i++;
             }
 
             return routine;
         }
 
-        public override string ToString()//print out the details of a pet
+        public override string ToString() //print out the details of a pet
         {
             String petInfo = Name + ": " + "a " + Age + " years old " + Species + "(" + Breed + ")";
-            petInfo += "\nCare Routine:\t " + ListCareRoutine() + "\n";
+            petInfo += "\nCare Routine: " + ListCareRoutine() + "\n";
 
             return petInfo;
         }
@@ -223,7 +446,7 @@ namespace SE307Project
         Undefined,
     }
 
-    public enum CareType//to handle care types
+    public enum CareType //to handle care types
     {
         Bathe,
         Walk,

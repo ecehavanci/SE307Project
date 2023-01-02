@@ -211,7 +211,7 @@ namespace SE307Project
             petOwner.AddMessage(new HiringMessage(petOwner.Email, Email, 2));
         }
 
-        public override void ReadMessages() //read message
+        public override void ReadMessages() //read messages
         {
             Database db = Database.GetInstance();
 
@@ -232,7 +232,7 @@ namespace SE307Project
             {
                 if (MessageBox[i].SenderMail == "system")//if the message is sent by system it means message is for hiring
                 {
-                    if (isFirstHiringMessage)//if pet owner send a hiring message
+                    if (isFirstHiringMessage)//if pet owner send a hiring message there is a text to show
                     {
                         hiringMessage = (HiringMessage) MessageBox[i];
                         Console.WriteLine("There are people who claims that they hired you. Letting them marking you " +
@@ -241,14 +241,16 @@ namespace SE307Project
                     }
 
                     Console.WriteLine(MessageBox[i]);
-                    String hiredInput = Console.ReadLine();
-                    PetOwner po = (PetOwner) db.FindUser(hiringMessage.RelatedEmail);//find pet owner to send hiring message
+                    String hiredInput = Console.ReadLine();//"Y" if hired
+                    PetOwner po = (PetOwner) db.FindUser(hiringMessage.RelatedEmail);//find pet owner to accept or reject hiring
+                    
                     if (hiredInput.ToUpper() == "Y")//accept the hiring message
                     {
                         if (po != null)
                         {
                             po.HirePetSitter(this);
                             MessageBox.RemoveAt(i);
+                            Console.WriteLine("Request accepted.");
                         }
                        
                     }
@@ -481,7 +483,7 @@ namespace SE307Project
             String rate = Comments.Count == 0
                 ? "- no rate yet -"
                 : (CalculateAverageStars() + "/5");
-            return "Bio:\n" + Bio + "Rate: " + rate;
+            return "Bio:\n" + Bio + "\nRate: " + rate;
         }
     }
 }

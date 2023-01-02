@@ -18,6 +18,7 @@ namespace SE307Project
             db.PetOwnerList = xmlHandler.ReadPetOwnerList(db.XmlOwnerFileName);//read pet owner list from xml
             db.PetSitterList = xmlHandler.ReadPetSitterList(db.XmlSitterFileName);//read pet sitter list from xml
 
+
             while (true)
             {
                 User user = LoginScreen(db); //login or sign up or exit screen
@@ -36,7 +37,7 @@ namespace SE307Project
                     while (isLoggedIn) //if user is a pet owner list the options that user can do
                     {
                         Console.WriteLine("1) List pet sitters");
-                        Console.WriteLine("2) Edit profile");
+                        Console.WriteLine("2) View profile");
                         Console.WriteLine("3) Read messages");
                         Console.WriteLine("4) Sign out");
                         Console.WriteLine("5) Terminate the system");
@@ -91,7 +92,7 @@ namespace SE307Project
                                         }
 
                                         break;
-                                    case "2": //mark choosen pet sitter hired from pet sitter list
+                                    case "2": //mark chosen pet sitter hired from pet sitter list
                                         Console.WriteLine("Which pet sitter do you want to mark as hired? Enter -1 to exit.");
                                         while (true)
                                         {
@@ -142,7 +143,7 @@ namespace SE307Project
                                                 else
                                                 {
                                                     list[petSitterIndex - 1].ShowCommentsAndRates(); //show the comments
-                                                    Console.WriteLine("Do you want to make comment?");
+                                                    Console.WriteLine("Do you want to make comment? (Y/N)");
                                                     if (Console.ReadLine().ToUpper() == "Y")
                                                     {
                                                         petOwner.MakeCommentToPetSitter(list[petSitterIndex - 1]); //make a comment
@@ -158,19 +159,16 @@ namespace SE307Project
                                         }
                                         break;
                                 }
-
-
+                                
                                 xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList); //renew the pet sitter list
                                 xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList); //renew the pet owner list
                                 break;
                             case 2:
-                               
+                                user.ShowProfile();//show user profile
                                 user.EditProfile();//edit profile page
                                 xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);//renew the pet sitter list
                                 xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);//renew the pet owner list
-
-
-
+                                
                                 break;
                             case 3:
                                 user.ReadMessages(); //read messages page
