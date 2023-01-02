@@ -25,17 +25,16 @@ namespace SE307Project
             Text = text;
         }
 
-        public override string ToString()
+        public override string ToString()//print the comment's details
         {
             string print = "-----------------------------------";
-            //print +="Date:\t" + Date;
             print += "From:\t" + SenderName + "                    ("+Date+")";
             print += "Rate:\t" + ConvertToStars();
             print += "Comment:\t" + Text;
             return print;
         }
 
-        private string ConvertToStars()
+        private string ConvertToStars() //print comment's stars 
         {
             switch (Star)
             {

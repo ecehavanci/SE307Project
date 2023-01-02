@@ -12,7 +12,7 @@ namespace SE307Project
         public PetSitter()
         {
             Comments = new List<Comment>();
-            RejectedRequestBox = new RequestBox();
+            RejectedRequestBox = new RequestBox(); 
             WaitingRequestBox = new RequestBox();
             AcceptedRequestBox = new RequestBox();
             Bio = "";
@@ -20,7 +20,6 @@ namespace SE307Project
 
         public List<Comment> Comments;
 
-        //public List<PetOwner> PetOwnerContacts;
 
         public RequestBox WaitingRequestBox;
 
@@ -34,13 +33,12 @@ namespace SE307Project
             password)
         {
             Comments = new List<Comment>();
-            //PetOwnerContacts = new List<PetOwner>();
             WaitingRequestBox = new RequestBox(StatusEnum.Waiting);
             AcceptedRequestBox = new RequestBox(StatusEnum.Accepted);
             RejectedRequestBox = new RequestBox(StatusEnum.Rejected);
         }
 
-        public void AddComment(Comment comment)
+        public void AddComment(Comment comment) //receive the comments from pet owners
         {
             Comments.Add(comment);
             XMLHandler xmlHandler = new XMLHandler();
@@ -48,7 +46,7 @@ namespace SE307Project
             xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
         }
 
-        public void AddRequest(Request request)
+        public void AddRequest(Request request)//receive the coming request from pet owner to waiting request box
         {
             WaitingRequestBox.ReceiveRequest(request);
             XMLHandler xmlHandler = new XMLHandler();
@@ -56,7 +54,7 @@ namespace SE307Project
             xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
         }
 
-        public void ReadRequests()
+        public void ReadRequests() //read the request within desired request box
         {
             while (true)
             {
@@ -162,7 +160,7 @@ namespace SE307Project
             }
         }
 
-        private RequestBox SelectRequestBox(int BoxChoice)
+        private RequestBox SelectRequestBox(int BoxChoice)//select the desired request box
         {
             switch (BoxChoice)
             {
@@ -178,7 +176,7 @@ namespace SE307Project
             }
         }
 
-        public void AcceptRequest(Request request)
+        public void AcceptRequest(Request request)//accept the request from any request box
         {
             Database db = Database.GetInstance();
             try
@@ -196,28 +194,26 @@ namespace SE307Project
             Console.WriteLine("Request Accepted!");
         }
 
-        public void RejectRequest(Request request)
+        public void RejectRequest(Request request)//reject the request from any request box
         {
             RejectedRequestBox.ReceiveRequest(request);
             Console.WriteLine("Request Rejected!");
         }
 
-        public override void ShowProfile()
+        public override void ShowProfile()//show pet sitter profile
         {
             base.ShowProfile();
             Console.WriteLine(ToString());
         }
 
-        public void SendHiringRejectedMessage(PetOwner petOwner)
+        public void SendHiringRejectedMessage(PetOwner petOwner)//send a rejected message to pet owner when pet sitter rejected a hiring
         {
             petOwner.AddMessage(new HiringMessage(petOwner.Email, Email, 2));
         }
 
-        public override void ReadMessages()
+        public override void ReadMessages() //read message
         {
             Database db = Database.GetInstance();
-            //PetSitter psToSend = null;
-            //bool willSendMessage = false;
 
             if (MessageBox.Count == 0)
             {
@@ -234,9 +230,9 @@ namespace SE307Project
             HiringMessage hiringMessage = null;
             for (int i = 0; i < MessageBox.Count; i++)
             {
-                if (MessageBox[i].SenderMail == "system")
+                if (MessageBox[i].SenderMail == "system")//if the message is sent by system it means message is for hiring
                 {
-                    if (isFirstHiringMessage)
+                    if (isFirstHiringMessage)//if pet owner send a hiring message
                     {
                         hiringMessage = (HiringMessage) MessageBox[i];
                         Console.WriteLine("There are people who claims that they hired you. Letting them marking you " +
@@ -246,8 +242,8 @@ namespace SE307Project
 
                     Console.WriteLine(MessageBox[i]);
                     String hiredInput = Console.ReadLine();
-                    PetOwner po = (PetOwner) db.FindUser(hiringMessage.RelatedEmail);
-                    if (hiredInput.ToUpper() == "Y")
+                    PetOwner po = (PetOwner) db.FindUser(hiringMessage.RelatedEmail);//find pet owner to send hiring message
+                    if (hiredInput.ToUpper() == "Y")//accept the hiring message
                     {
                         if (po != null)
                         {
@@ -256,7 +252,7 @@ namespace SE307Project
                         }
                        
                     }
-                    else
+                    else //reject the hiring message
                     {
                         SendHiringRejectedMessage(po);
                         Console.WriteLine("Request rejected.");
@@ -323,9 +319,8 @@ namespace SE307Project
             }
         }
 
-        public override void EditProfile()
+        public override void EditProfile()//edit the profile
         {
-            //ShowProfile();
             Console.WriteLine(Bio == "" ? Bio : "No Biography available.");
 
             int selection = -1;
@@ -354,7 +349,7 @@ namespace SE307Project
                         {
                             Console.WriteLine("New name: ");
                             newName = Console.ReadLine();
-
+                            //match if input is in the format of an name
                             if (newName != "" && Regex.IsMatch(newName, @"^[a-zA-Z]*$") && !Regex.IsMatch(newName, @"\d"))
                             {
                                 Name = newName;
@@ -370,7 +365,7 @@ namespace SE307Project
                         {
                             Console.Write("New surname: ");
                             newSurname = Console.ReadLine();
-
+                            //match if input is in the format of an name
                             if (newSurname != "" && Regex.IsMatch(newSurname, @"^[a-zA-Z]*$") && !Regex.IsMatch(newSurname, @"\d"))
                             {
                                 Surname = newSurname;
@@ -387,7 +382,7 @@ namespace SE307Project
                         {
                             Console.WriteLine("New Email: ");
                             newEmail = Console.ReadLine();
-                                
+                                //match if input is in the format of an mail
                             if (Regex.IsMatch(newEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"))
                             {
                                 Database db = Database.GetInstance();
@@ -437,7 +432,7 @@ namespace SE307Project
             }
         }
 
-        public void ShowCommentsAndRates()
+        public void ShowCommentsAndRates()//show both comments and rates(stars)
         {
             Console.WriteLine("-----------------------");
             if (Comments.Count == 0)
@@ -458,40 +453,9 @@ namespace SE307Project
             
         }
 
-        /*public override void ShowMessagesFor(String email)
-        {
-            bool isThereAnyMessage = false;
-            foreach (var message in MessageBox)
-            {
-                if (message.ReceiverMail == email)
-                {
-                    Console.WriteLine(message.ToString());
-                    isThereAnyMessage = true;
+  
 
-                }
-            }
-
-            if (!isThereAnyMessage)
-            {
-                Console.WriteLine("There are no messages.");
-
-            }
-            /*PetOwner petOwner = FindPetOwner(email);
-            if(petOwner != null)
-            {
-                Console.WriteLine("Messages:\n");
-                foreach (var message in MessageBox)
-                {
-                    Console.WriteLine(message.ToString());
-                }
-            }
-            else
-            {
-                Console.WriteLine("No connection with email " + email);
-            }
-        }*/
-
-        public void SendMessageToPetOwner(PetOwner po)
+        public void SendMessageToPetOwner(PetOwner po)//send message to a pet owner
         {
             Console.WriteLine("Message:");
             String messageText = Console.ReadLine();
@@ -500,51 +464,10 @@ namespace SE307Project
             AddMessage(message);
         }
 
-        /*private PetOwner FindPetOwner(String email)
-        {
-            foreach(PetOwner petOwner in PetOw)
-            {
-                if(email == petOwner.Email)
-                {
-                    return petOwner;
-                }
-            }
-            return null;
-        }*/
-        /*private static double GetMedian(int[] sourceNumbers)
-        {
-            //Framework 2.0 version of this method. there is an easier way in F4        
-            if (sourceNumbers == null || sourceNumbers.Length == 0)
-                throw new System.Exception("Median of empty array not defined.");
 
-            double[] sortedPNumbers = (double[]) sourceNumbers.Clone();
-            Array.Sort(sortedPNumbers);
-
-            //get the median
-            int size = sortedPNumbers.Length;
-            int mid = size / 2;
-            double median = (size % 2 != 0)
-                ? (double) sortedPNumbers[mid]
-                : ((double) sortedPNumbers[mid] + (double) sortedPNumbers[mid - 1]) / 2;
-            return median;
-        }
-
-        public double CalculateMedianStars()
-        {
-            int[] allRates = { };
-            //Console.WriteLine("My Calculated Rate Median is:");
-            for (int i = 0; i < Comments.Count; i++)
-            {
-                allRates[i] = Comments[i].Star;
-            }
-
-            return Comments.Count==0?0:GetMedian(allRates);
-        }*/
-
-        public double CalculateAverageStars()
+        public double CalculateAverageStars()//calculate the average of stars from list of comment's stars
         {
             double counter = 0;
-            //Console.WriteLine("My Calculated Rate Average is:");
             for (int i = 0; i < Comments.Count; i++)
             {
                 counter += Comments[i].Star;
@@ -553,12 +476,11 @@ namespace SE307Project
             return counter / Comments.Count;
         }
 
-        public override String ToString()
+        public override String ToString()//print out both average rate and bio
         {
             String rate = Comments.Count == 0
                 ? "- no rate yet -"
-                : (CalculateAverageStars() + "/5"/* +
-                   "\nMostly Rated: " + CalculateMedianStars() + "/5"*/);
+                : (CalculateAverageStars() + "/5");
             return "Bio:\n" + Bio + "Rate: " + rate;
         }
     }

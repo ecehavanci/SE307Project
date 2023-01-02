@@ -39,22 +39,7 @@ namespace SE307Project
             Location = location;
         }
 
-        /*public override string ToString()
-        {
-            String location = String.IsNullOrEmpty(RequestOwner.Location) ? "N/A" : RequestOwner.Location;
-            string content = "********* Request Content *********";
-            content += "\nName:" + RequestOwner.Name + " " + RequestOwner.Surname+"\n";
-            content += "Desired Location:\t" + location +"\n";
-            content += "Number Of Pets:\t"+RequestedPets.Count;
-            foreach(Pet pet in RequestedPets)
-            {
-               content += pet.ToString();
-            }
-            content += "****************************";
-            return content;
-        }*/
-
-        public override string ToString()
+        public override string ToString() //to print the Request properties
         {
             String location = String.IsNullOrEmpty(Location) ? "N/A" : Location;
             string content = RequestOwnerName + " sent you a request to take care of " +

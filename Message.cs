@@ -33,10 +33,10 @@ namespace SE307Project
             Text = text;
         }
 
-        public override string ToString()
+        public override string ToString()//to print the mesage text
         {
-            //Console.ForegroundColor == ConsoleColor.DarkGray;
-            return Text; //+ "                                     " + Date.ToString();
+          
+            return Text; 
         }
     }
 

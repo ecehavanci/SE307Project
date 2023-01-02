@@ -4,21 +4,7 @@ using System.Text;
 
 namespace SE307Project
 {
-    public class WrongRequestSelection : Exception
-    {
-        public WrongRequestSelection() : base("Please enter correct selection number.") {
-
-        }
-        
-        public void PrintException()
-        {
-            Console.BackgroundColor = ConsoleColor.DarkMagenta;
-            Console.WriteLine(Message);
-            Console.ResetColor();
-        }
-
-    }
-    
+    //to catch the wrong entered password
     public class ExceptionWrongPassword : Exception
     {
 
@@ -31,7 +17,8 @@ namespace SE307Project
             Console.WriteLine(Message);
         }
     }
-    
+
+    //to catch the wrong entered email
     class ExceptionWrongEmail : Exception
     {
         private String Email;
@@ -46,6 +33,7 @@ namespace SE307Project
             Console.WriteLine(Message);
         }
     }
+    //to catch if user already exists in the system database
     class UserAlreadyExistsException : Exception
     {
         public UserAlreadyExistsException() : base("Entered email is already exist. Please use new one.")

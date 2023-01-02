@@ -10,38 +10,30 @@ namespace SE307Project
     {
         static void Main(string[] args)
         {
-            /*PetSitter sitter = new PetSitter("name","surname","email","pass","Location");
-            FileHandler hander = new FileHandler();
-            var users = new List<User>();
-            users.Add(sitter);
-            hander.saveToCSV(); */
-            Database db = Database.GetInstance();
 
-            //var po = new PetOwner("Selina", "Kyle", "1", "1");
-            //var ps = db.AddPetSitter("Gizem", "Kilic", "2", "2");
-            //bool logOut = false;
+            Database db = Database.GetInstance();//create the database instance
 
-            XMLHandler xmlHandler = new XMLHandler();
-            //xmlHandler.WritePetOwnerList("bettertemp2.xml", db.);
+            XMLHandler xmlHandler = new XMLHandler();//create new xml handler
 
-            db.PetOwnerList = xmlHandler.ReadPetOwnerList(db.XmlOwnerFileName);
-            db.PetSitterList = xmlHandler.ReadPetSitterList(db.XmlSitterFileName);
+            db.PetOwnerList = xmlHandler.ReadPetOwnerList(db.XmlOwnerFileName);//read pet owner list from xml
+            db.PetSitterList = xmlHandler.ReadPetSitterList(db.XmlSitterFileName);//read pet sitter list from xml
 
             while (true)
             {
-                User user = LoginScreen(db);
+                User user = LoginScreen(db); //login or sign up or exit screen
                 if (user == null)
                 {
                     continue;
                 }
 
-                Console.WriteLine("Welcome " + user.Name + "!");
+                Console.WriteLine("Welcome " + user.Name + "!"); //after login or sign up enter the system
 
-                if (user is PetOwner)
+
+                if (user is PetOwner)//if user is a pet owner
                 {
                     PetOwner petOwner = (PetOwner) user;
                     bool isLoggedIn = true;
-                    while (isLoggedIn)
+                    while (isLoggedIn) //if user is a pet owner list the options that user can do
                     {
                         Console.WriteLine("1) List pet sitters");
                         Console.WriteLine("2) Edit profile");
@@ -62,13 +54,13 @@ namespace SE307Project
 
                         switch (mainPageChoice)
                         {
-                            case 1:
-                                List<PetSitter> list = db.ListPetSitters();
+                            case 1://list pet sitters choice 
+                                List<PetSitter> list = db.ListPetSitters(); 
                                 Console.WriteLine("1) Send request\n2) Mark as hired\n3) Comment and rate\n4) Exit");
                                 String actionChoice = Console.ReadLine();
                                 switch (actionChoice)
                                 {
-                                    case "1":
+                                    case "1": //send request from choosen pet sitter from pet sitter list
                                         Console.WriteLine("Which pet sitter do you want to send a request? Enter -1 to exit.");
                                         while (true)
                                         {
@@ -99,7 +91,7 @@ namespace SE307Project
                                         }
 
                                         break;
-                                    case "2":
+                                    case "2": //mark choosen pet sitter hired from pet sitter list
                                         Console.WriteLine("Which pet sitter do you want to mark as hired? Enter -1 to exit.");
                                         while (true)
                                         {
@@ -130,7 +122,7 @@ namespace SE307Project
                                         }
 
                                         break;
-                                    case "3":
+                                    case "3"://see or add comments and stars of choosen pet sitter from pet sitters list
                                         Console.WriteLine("Enter the index of the pet sitter you want to see comments of, enter -1 to exit.");
                                         while (true)
                                         {
@@ -149,11 +141,11 @@ namespace SE307Project
                                                 }
                                                 else
                                                 {
-                                                    list[petSitterIndex - 1].ShowCommentsAndRates();
+                                                    list[petSitterIndex - 1].ShowCommentsAndRates(); //show the comments
                                                     Console.WriteLine("Do you want to make comment?");
                                                     if (Console.ReadLine().ToUpper() == "Y")
                                                     {
-                                                        petOwner.MakeCommentToPetSitter(list[petSitterIndex - 1]);
+                                                        petOwner.MakeCommentToPetSitter(list[petSitterIndex - 1]); //make a comment
                                                     }
                                                     break;
                                                 }
@@ -168,40 +160,43 @@ namespace SE307Project
                                 }
 
 
-                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
-                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList); //renew the pet sitter list
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList); //renew the pet owner list
                                 break;
                             case 2:
                                
-                                    user.EditProfile();
-                                    xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
-                                    xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
-                               
-                                
-                                
+                                user.EditProfile();//edit profile page
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);//renew the pet sitter list
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);//renew the pet owner list
+
+
+
                                 break;
                             case 3:
-                                user.ReadMessages();
-                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
-                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
+                                user.ReadMessages(); //read messages page
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);//renew the pet sitter list
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);//renew the pet owner list
                                 break;
                             case 4:
-                                isLoggedIn = false;
+                                isLoggedIn = false; //log out
                                 break;
                             case 5:
-                                Environment.Exit(0);
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);//renew the pet sitter list
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);//renew the pet owner list
+                                Environment.Exit(0); //shut down the system
                                 break;
                         }
                     }
                 }
 
 
-                if (user is PetSitter)
+                if (user is PetSitter)//if user is a pet sitter
                 {
                     PetSitter petSitter = (PetSitter) user;
                     bool isLoggedIn = true;
                     while (isLoggedIn)
                     {
+                        //show options in main page
                         Console.WriteLine("1) List request");
                         Console.WriteLine("2) View profile");
                         Console.WriteLine("3) Read messages");
@@ -221,14 +216,14 @@ namespace SE307Project
 
                         switch (mainPageChoice)
                         {
-                            case 1:
+                            case 1://list the received requests came from pet owners
                                 petSitter.ReadRequests();
 
-                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
-                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList); //renew pet sitter list
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);//renew pet owner list
                                 break;
-                            case 2:
-                                user.ShowProfile();
+                            case 2://view or edit the profile
+                                user.ShowProfile(); 
                                 
                                 Console.WriteLine("\nWould you like to edit your profile? (Y/N)");
 
@@ -240,18 +235,18 @@ namespace SE307Project
                                 }
                                 
                                 break;
-                            case 3:
+                            case 3://read received messages/forwarded messages between logged in user and other user
                                 user.ReadMessages();
 
-                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
-                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);//renew pet sitter list
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);//renew pet owner list
                                 break;
-                            case 4:
+                            case 4://log out 
                                 isLoggedIn = false;
                                 break;
-                            case 5:
-                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
-                                //xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
+                            case 5://shut down the system
+                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);//renew pet sitter list
+                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);//renew pet owner list
                                 Environment.Exit(0);
                                 break;
                         }
@@ -260,7 +255,7 @@ namespace SE307Project
             }
         }
 
-        public static User LoginScreen(Database db)
+        public static User LoginScreen(Database db) //handle sign in, sign up 
         {
             User user = null;
 
@@ -277,7 +272,7 @@ namespace SE307Project
 
                 switch (choice)
                 {
-                    case "1":
+                    case "1": //sign up choice
                         Console.WriteLine("What do you want to sign up as?");
                         Console.WriteLine("1) Pet Sitter");
                         Console.WriteLine("2) Pet Owner");
@@ -295,7 +290,7 @@ namespace SE307Project
                             {
                                 Console.WriteLine("Name: ");
                                 newName = Console.ReadLine();
-
+                                //check if name fits name constraints with regex
                                 if (newName != "" && Regex.IsMatch(newName, @"^[a-zA-Z]*$") && !Regex.IsMatch(newName, @"\d"))
                                 {
                                     break;
@@ -309,7 +304,7 @@ namespace SE307Project
                             {
                                 Console.WriteLine("Surname: ");
                                 newSurname = Console.ReadLine();
-
+                                //check if name fits name constraints with regex
                                 if (newSurname != "" && Regex.IsMatch(newSurname, @"^[a-zA-Z]*$") && !Regex.IsMatch(newSurname, @"\d"))
                                 {
                                     break;
@@ -322,7 +317,7 @@ namespace SE307Project
                             {
                                 Console.WriteLine("Email: ");
                                 newEmail = Console.ReadLine();
-                                
+                                //check if Email fits Email constraints with regex
                                 if (Regex.IsMatch(newEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"))
                                 {
                                     break;
@@ -339,7 +334,7 @@ namespace SE307Project
                                 
                                 ConsoleKey key;
                                 do
-                                {
+                                {//use to not show password on screen, every character is shown with (*)
                                     var keyInfo = Console.ReadKey(intercept: true);
                                     key = keyInfo.Key;
 
@@ -366,10 +361,10 @@ namespace SE307Project
                             switch (signUpChoice)
                             {
                                 case 1:
-                                    db.InsertPetSitter(newName, newSurname, newEmail, newPassword);
+                                    db.InsertPetSitter(newName, newSurname, newEmail, newPassword);//add pet sitter to xml pet sitter users
                                     break;
                                 case 2:
-                                    db.InsertPetOwner(newName, newSurname, newEmail, newPassword);
+                                    db.InsertPetOwner(newName, newSurname, newEmail, newPassword);//add pet owner to xml pet sitter owners
                                     break;
                             }
                         }
@@ -378,8 +373,8 @@ namespace SE307Project
 
                         break;
 
-                    case "2":
-                        if (db.PetSitterList.Count == 0 && db.PetOwnerList.Count == 0)
+                    case "2": //sign in choice
+                        if (db.PetSitterList.Count == 0 && db.PetOwnerList.Count == 0) //check db has any users
                         {
                             Console.WriteLine("There is no account. Please create an account for logging in.");
                             continue;
@@ -389,7 +384,7 @@ namespace SE307Project
                         String email = Console.ReadLine();
                         Console.WriteLine("Password: ");
                         String password = string.Empty;
-                        ConsoleKey key2;
+                        ConsoleKey key2; //use to not show password on screen, every character is shown with (*)
                         do
                         {
                             var keyInfo = Console.ReadKey(intercept: true);
@@ -411,7 +406,6 @@ namespace SE307Project
                         
                         try
                         {
-                            //user = db.LogIn(email, password);
                             User temp = db.FindUser(email, password);
                             if (temp != null)
                             {

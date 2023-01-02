@@ -13,12 +13,12 @@ namespace SE307Project
         public String Breed { set; get; }
         public AnimalType Species { set; get; }
 
-        public String GetSpecies()
+        public String GetSpecies()//get speciecies of pet
         {
             return Species.ToString().Replace("Species.", "").Replace("A", " A");
         }
 
-        public void SetSpecies(String _Species)
+        public void SetSpecies(String _Species)//choose and set the species of the pet from options
         {
             if (_Species.ToUpper() == "DOG" || _Species == "1")
             {
@@ -70,7 +70,7 @@ namespace SE307Project
         }
 
 
-        public void AddCareRoutine(String careType)
+        public void AddCareRoutine(String careType)//add care routine to a pet from options by care type name
         {
             careType = careType.ToUpper();
             if (careType == "BATHE")
@@ -107,7 +107,7 @@ namespace SE307Project
             }
         }
 
-        public void AddCareRoutine(int index)
+        public void AddCareRoutine(int index)//add care routine to a pet from options by care type index
         {
             if (index == 1)
             {
@@ -143,7 +143,7 @@ namespace SE307Project
             }
         }
 
-        public void RemoveCareRoutine(int index)
+        public void RemoveCareRoutine(int index)//remove a care routine with index from a pet
         {
             try
             {
@@ -155,7 +155,7 @@ namespace SE307Project
             }
         }
 
-        public void RemoveCareRoutine(String careType)
+        public void RemoveCareRoutine(String careType)//remove a care routine with name from a pet
         {
             careType = careType.ToUpper();
             if (careType == "BATHE")
@@ -193,7 +193,7 @@ namespace SE307Project
         }
 
 
-        public string ListCareRoutine()
+        public string ListCareRoutine()//list of care routines
         {
             string routine = "";
             foreach (CareType careType in CareRoutine)
@@ -204,7 +204,7 @@ namespace SE307Project
             return routine;
         }
 
-        public override string ToString()
+        public override string ToString()//print out the details of a pet
         {
             String petInfo = Name + ": " + "a " + Age + " years old " + Species + "(" + Breed + ")";
             petInfo += "\nCare Routine:\t " + ListCareRoutine() + "\n";
@@ -213,7 +213,7 @@ namespace SE307Project
         }
     }
 
-    public enum AnimalType
+    public enum AnimalType //to handle animal types
     {
         Cat,
         Dog,
@@ -223,7 +223,7 @@ namespace SE307Project
         Undefined,
     }
 
-    public enum CareType
+    public enum CareType//to handle care types
     {
         Bathe,
         Walk,

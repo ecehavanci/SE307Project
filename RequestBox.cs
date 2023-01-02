@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SE307Project
 {
-    public enum StatusEnum
+    public enum StatusEnum //to differantiate request box types
     {
         Waiting,
         Accepted,
@@ -27,7 +27,7 @@ namespace SE307Project
             Requests = new List<Request>();
             StatusEnum = StatusEnum.Waiting;
         }
-        public void DisplayRequestBox()
+        public void DisplayRequestBox()//display the request box
         {
             Console.WriteLine("----------- "+StatusEnum+ " Request Box -----------");
             if (IsEmpty())
@@ -42,32 +42,32 @@ namespace SE307Project
             }
         }
 
-        public bool IsEmpty()
+        public bool IsEmpty()// check if request box is empty
         {
             return Requests.Count == 0;
         }
 
-        public void ReadRequest(int RequestNo)
+        public void ReadRequest(int RequestNo) //read the selected request within the request box
         {
             if (RequestNo >= Requests.Count || RequestNo < 0)
                 throw new Exception("Incorrect Request selection!");
             Console.WriteLine(Requests[RequestNo].ToString());
         }
 
-        public void ReceiveRequest(Request request)
+        public void ReceiveRequest(Request request)//receive new request to request box
         {
             Requests.Add(request);
             Console.WriteLine("Success!");
         }
 
-        public Request MoveMailToAnotherBox(int selection)
+        public Request MoveMailToAnotherBox(int selection)//move mail to another desired request box
         {
             Request r = Requests[selection];
             Requests.Remove(r);
             return r;
         }
 
-        public void SortByDateDesc()
+        public void SortByDateDesc()//sort the request box by Descending Date
         {
             for (int i = 0; i < Requests.Count; i++)
             {
@@ -82,7 +82,7 @@ namespace SE307Project
             }
         }
 
-        public void SortByDateAsc()
+        public void SortByDateAsc()//sort the request box by Ascending Date
         {
             for (int i = 0; i < Requests.Count; i++)
             {
