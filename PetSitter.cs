@@ -99,10 +99,12 @@ namespace SE307Project
                     if (sortStyle == "ASC")
                     {
                         selectedRequestBox.SortByDateAsc();
+                        selectedRequestBox.DisplayRequestBox();
                     }
                     else if (sortStyle.Equals("DESC"))
                     {
                         selectedRequestBox.SortByDateDesc();
+                        selectedRequestBox.DisplayRequestBox();
                     }
                     else
                     {
@@ -252,11 +254,13 @@ namespace SE307Project
                             po.HirePetSitter(this);
                             MessageBox.RemoveAt(i);
                         }
+                       
                     }
                     else
                     {
                         SendHiringRejectedMessage(po);
                         Console.WriteLine("Request rejected.");
+                        MessageBox.RemoveAt(i);
                     }
                 }
             }
@@ -269,6 +273,10 @@ namespace SE307Project
                     PetOwner
                         po = db.FindPetOwner(message
                             .SenderMail); //There has to be at least one message sent by pet owner
+                    if(po is null)
+                    {
+                        continue;
+                    }
                     if (!poIndexes.ContainsValue(po))
                     {
                         poIndexes.Add(index, po);

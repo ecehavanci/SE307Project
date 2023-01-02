@@ -566,7 +566,7 @@ namespace SE307Project
                 }
             }
 
-            Console.WriteLine("You cannot hire a pet sitter that you did not send a request before.");
+            Console.WriteLine("You cannot hire a pet sitter that you did not send a request before or did not accept your request.");
         }
 
         public void HirePetSitter(PetSitter petSitter)
