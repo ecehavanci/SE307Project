@@ -43,7 +43,9 @@ namespace SE307Project
             else
             {
                 Species = AnimalType.Undefined;
-                Console.WriteLine("Species must be dog, cat, bird, exotic animal or hamster.");
+                Console.WriteLine(
+                    "Species must be dog, cat, bird, exotic animal or hamster. Your input was none of those" +
+                    " options so species of pet is set to undefined.");
             }
         }
 
@@ -104,7 +106,7 @@ namespace SE307Project
                 Console.WriteLine("This care routine cannot be added");
             }
         }
-        
+
         public void AddCareRoutine(int index)
         {
             if (index == 1)
@@ -140,7 +142,7 @@ namespace SE307Project
                 Console.WriteLine("There is no care routine with the given name");
             }
         }
-        
+
         public void RemoveCareRoutine(int index)
         {
             try
@@ -150,10 +152,9 @@ namespace SE307Project
             catch (IndexOutOfRangeException e)
             {
                 Console.WriteLine("There is no care routine at the given index");
-
             }
         }
-        
+
         public void RemoveCareRoutine(String careType)
         {
             careType = careType.ToUpper();
@@ -191,7 +192,6 @@ namespace SE307Project
             }
         }
 
-       
 
         public string ListCareRoutine()
         {

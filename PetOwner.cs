@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace SE307Project
@@ -92,7 +94,7 @@ namespace SE307Project
 
             Console.WriteLine("Enter new properties, enter -1 to skip");
 
-            Console.Write("Name(" + pet.Name + "): ");
+            Console.Write("Name (" + pet.Name + "): ");
             String name = Console.ReadLine();
 
             if (name != "-1")
@@ -103,13 +105,18 @@ namespace SE307Project
 
             while (true)
             {
-                Console.Write("Age(" + pet.Age + "): ");
+                Console.Write("Age (" + pet.Age + "): ");
                 String age = Console.ReadLine();
                 if (age != "-1")
                 {
                     try
                     {
-                        pet.Age = int.Parse(age);
+                        int ageNumeric = int.Parse(age);
+                        if (ageNumeric < 0)
+                        {
+                            pet.Age = ageNumeric;
+                        }
+
                         break;
                     }
                     catch (FormatException e)
@@ -125,7 +132,7 @@ namespace SE307Project
 
 
             ListPetSpecies();
-            Console.Write("Species(" + pet.GetSpecies() + "): ");
+            Console.Write("Species (" + pet.GetSpecies() + "): ");
             String species = Console.ReadLine();
 
             if (species != "-1")
@@ -133,7 +140,7 @@ namespace SE307Project
                 pet.SetSpecies(species);
             }
 
-            Console.Write("Breed:(" + pet.Breed + "): ");
+            Console.Write("Breed (" + pet.Breed + "): ");
             String breed = Console.ReadLine();
 
             if (breed != "-1")
@@ -141,8 +148,14 @@ namespace SE307Project
                 pet.Breed = breed;
             }
 
-            Console.Write("Care Routine: ");
+
+            Console.Write("Current care routine: ");
             pet.ListCareRoutine();
+
+            Console.WriteLine();
+
+            ListCareTypes();
+
             Console.WriteLine();
             String routine = Console.ReadLine();
 
@@ -157,14 +170,13 @@ namespace SE307Project
                 try
                 {
                     pet.AddCareRoutine(int.Parse(routine));
-
                 }
                 catch (FormatException e)
                 {
                     pet.AddCareRoutine(routine);
                 }
             }
-            
+
             Console.WriteLine("Please enter care routines to remove from this pet, press -1 to stop");
             while (true)
             {
@@ -176,7 +188,6 @@ namespace SE307Project
                 try
                 {
                     pet.RemoveCareRoutine(int.Parse(routine));
-
                 }
                 catch (FormatException e)
                 {
@@ -255,8 +266,21 @@ namespace SE307Project
         {
             Console.WriteLine("Please enter pet data");
 
-            Console.Write("Name: ");
-            String petName = Console.ReadLine();
+            String petName;
+            while (true)
+            {
+                Console.Write("Name: ");
+                petName = Console.ReadLine();
+                if (!petName.All(Char.IsLetter))
+                {
+                    Console.WriteLine("Name is invalid");
+                }
+                else
+                {
+                    break;
+                }
+                
+            }
 
             int petAge = 0;
 
@@ -265,7 +289,18 @@ namespace SE307Project
                 Console.Write("Age: ");
                 try
                 {
-                    petAge = int.Parse(Console.ReadLine());
+                    String petAgeInput = Console.ReadLine();
+                    if (!petAgeInput.All(Char.IsDigit))
+                    {
+                        Console.WriteLine("Age is invalid");
+                        continue;
+                    }
+                    petAge = int.Parse(petAgeInput);
+                    if (petAge<0)
+                    {
+                        Console.WriteLine("Age is invalid");
+                        continue;
+                    }
                     break;
                 }
                 catch (FormatException e)
@@ -286,45 +321,89 @@ namespace SE307Project
                 Console.WriteLine(e);
             }
 
-            Console.Write("Breed: ");
 
-            String petBreed = Console.ReadLine();
+            String petBreed;
+            while (true)
+            {
+                Console.Write("Breed: ");
+                petBreed = Console.ReadLine();
+                if (!petBreed.All(Char.IsLetter))
+                {
+                    Console.WriteLine("Breed is invalid");
+                }
+                else
+                {
+                    break;
+                }
+                
+            }
 
             AddPet(petName, petAge, petBreed, petSpecies);
             Console.WriteLine(petName + " is added to your pets.");
-            
         }
 
         private bool EditPersonalInformation()
         {
             String location = String.IsNullOrEmpty(Location) ? "Unknown" : Location;
             Console.WriteLine(
-                "Which part of your profile you want to edit? \n1) Name(" + Name + ")\n2) Surname(" + Surname +
-                ")\n3) Email(" + Email + ")\n4) Location(" + location + ") \n5) Exit");
+                "Which part of your profile you want to edit? \n1) Name (" + Name + ")\n2) Surname (" + Surname +
+                ")\n3) Email (" + Email + ")\n4) Password \n5) Location (" + location + ") \n6) Exit");
             int editWhere = Int32.Parse(Console.ReadLine());
             switch (editWhere)
             {
                 case 1:
                     Console.Write("New name: ");
                     string newName = Console.ReadLine();
-                    Name = newName;
+                    if (newName.All(char.IsLetter) && !String.IsNullOrEmpty(newName))
+                    {
+                        Name = newName;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Entered name is invalid.");
+                    }
+
                     break;
                 case 2:
                     Console.Write("New surname: ");
                     string newSurname = Console.ReadLine();
-                    Surname = newSurname;
+
+                    if (newSurname.All(char.IsLetter) && !String.IsNullOrEmpty(newSurname))
+                    {
+                        Surname = newSurname;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Entered surname is invalid.");
+                    }
+
                     break;
                 case 3:
-                    Console.Write("New email:");
-                    string newMail = Console.ReadLine();
-                    Email = newMail;
+                    string newEmail;
+                    while (true)
+                    {
+                        Console.WriteLine("New Email: ");
+                        newEmail = Console.ReadLine();
+                                
+                        if (Regex.IsMatch(newEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"))
+                        {
+                            Email = newEmail;
+                            break;
+                        }
+                        Console.WriteLine("Email is not valid. Please try again.");
+                    }
+                       
+                    Console.WriteLine();
                     break;
                 case 4:
+                    ChangePassword();
+                    break;
+                case 5:
                     Console.Write(Location == null || Location == "" ? "Location: " : "New Location: ");
                     string newLoc = Console.ReadLine();
                     Location = newLoc;
                     break;
-                case 5:
+                case 6:
                     return true;
             }
 
@@ -339,6 +418,18 @@ namespace SE307Project
             Console.WriteLine("3) Bird");
             Console.WriteLine("4) Hamster");
             Console.WriteLine("5) Exotic Animal");
+        }
+
+        private void ListCareTypes()
+        {
+            Console.WriteLine("Possible care types");
+            Console.WriteLine("1) Bathe");
+            Console.WriteLine("2) Comb");
+            Console.WriteLine("3) Walk");
+            Console.WriteLine("4) Feed");
+            Console.WriteLine("5) Take to vet");
+            Console.WriteLine("5) Play");
+            Console.WriteLine("5) Give meds");
         }
 
         public override void EditProfile()
@@ -369,6 +460,12 @@ namespace SE307Project
                             CreatePet();
                             break;
                         case "2":
+                            if (Pets.Count == 0)
+                            {
+                                Console.WriteLine("You do not have a pet yet.");
+                                continue;
+                            }
+
                             Console.WriteLine("Your Pets:");
                             ListPets();
                             Console.WriteLine("Please enter the name/index of the pet you want to edit");
@@ -403,9 +500,15 @@ namespace SE307Project
 
                             break;
                         case "3":
+                            if (Pets.Count == 0)
+                            {
+                                Console.WriteLine("You do not have a pet yet.");
+                                continue;
+                            }
+
                             Console.WriteLine("Your Pets:");
                             ListPets();
-                            Console.WriteLine("Please enter the name/index of the pet you want to edit");
+                            Console.WriteLine("Please enter the name/index of the pet you want to edit.");
                             String petInput2 = Console.ReadLine();
 
                             try

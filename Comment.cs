@@ -28,14 +28,14 @@ namespace SE307Project
         public override string ToString()
         {
             string print = "-----------------------------------";
-            print +="Date:\t" + Date;
-            print += "Sender:\t" + SenderName;
-            print += "Rate:\t" + StarPrinter();
+            //print +="Date:\t" + Date;
+            print += "From:\t" + SenderName + "                    ("+Date+")";
+            print += "Rate:\t" + ConvertToStars();
             print += "Comment:\t" + Text;
             return print;
         }
 
-        private string StarPrinter()
+        private string ConvertToStars()
         {
             switch (Star)
             {

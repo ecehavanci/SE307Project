@@ -56,36 +56,47 @@ namespace SE307Project
             xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
         }
 
-        public void ReadRequestBox()
+        public void ReadRequests()
         {
-            //bool loop = true;
-
-            while ( /*loop*/true)
+            while (true)
             {
                 Console.WriteLine(
                     "Which Request Box do you wish to read?\n1)Waiting Requests\n2)Accepted Requests\n3)Rejected Requests\n4)Exit");
-                int selection = Convert.ToInt32(Console.ReadLine());
+                int selection = 4;
+                try
+                {
+                    selection = Convert.ToInt32(Console.ReadLine());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Please enter a number between 1 and 4");
+                    continue;
+                }
                 if (selection == 4)
                 {
-                    //loop = false;
                     break;
                 }
 
                 RequestBox selectedRequestBox = SelectRequestBox(selection);
                 if (selectedRequestBox is null)
                 {
-                    Console.WriteLine("Incorrect input.");
+                    Console.WriteLine("Please enter a number between 1 and 4");
                     continue;
                 }
-
+                
                 selectedRequestBox.DisplayRequestBox();
+
+                if (selectedRequestBox.IsEmpty())
+                {
+                    continue;
+                }
                 Console.WriteLine("Want to sort by requests according to Date? Y/N");
-                string willSort = Console.ReadLine();
+                String willSort = Console.ReadLine();
                 if (willSort.Equals("Y"))
                 {
                     Console.WriteLine("How would you like to sort? ASC(in ascending)/DESC(in Descending) Date");
-                    string sortStyle = Console.ReadLine();
-                    if (sortStyle.Equals("ASC"))
+                    String sortStyle = Console.ReadLine();
+                    if (sortStyle == "ASC")
                     {
                         selectedRequestBox.SortByDateAsc();
                     }
@@ -95,7 +106,7 @@ namespace SE307Project
                     }
                     else
                     {
-                        Console.WriteLine("Incorrect input");
+                        Console.WriteLine("Sorting is available only ascending or descending, aborting action...");
                     }
                 }
                 else if (willSort.Equals("N"))
@@ -106,7 +117,7 @@ namespace SE307Project
                     selectedRequestBox.DisplayRequestBox();
                 }
 
-                if (!selectedRequestBox.isEmpty())
+                if (!selectedRequestBox.IsEmpty())
                 {
                     Console.WriteLine("Would you like to 1)Read / 2)Accept/ 3)Reject any Request? 4)Exit");
                     String requestToDo = Console.ReadLine();
@@ -308,14 +319,14 @@ namespace SE307Project
         {
             //ShowProfile();
             Console.WriteLine(Bio == "" ? Bio : "No Biography available.");
-            String location = String.IsNullOrEmpty(Location) ? "Unknown" : Location;
 
             int selection = -1;
             while (selection != 7)
             {
+                String location = String.IsNullOrEmpty(Location) ? "Unknown" : Location;
                 Console.WriteLine(
-                    "Which part of your profile you want to edit? \n1) Name(" + Name + ")\n2) Surname(" + Surname +
-                    ")\n3) Email(" + Email + ")\n4) Password\n5) Location(" + location + ") \n6) Bio\n7) Save & Exit");
+                    "Which part of your profile you want to edit? \n1) Name (" + Name + ")\n2) Surname (" + Surname +
+                    ")\n3) Email (" + Email + ")\n4) Password\n5) Location (" + location + ") \n6) Bio\n7) Save & Exit");
 
                 try
                 {
@@ -400,11 +411,23 @@ namespace SE307Project
 
         public void ShowCommentsAndRates()
         {
-            Console.WriteLine("\n\nMy Comments & Rates");
-            foreach (Comment comment in Comments)
+            Console.WriteLine("-----------------------");
+            if (Comments.Count == 0)
             {
-                comment.ToString();
+                Console.WriteLine("\nNo comments yet\n");
             }
+            else
+            {
+                Console.WriteLine("\nMy Comments & Rates");
+                foreach (Comment comment in Comments)
+                {
+                    Console.WriteLine("********");
+                    Console.WriteLine(comment.ToString());
+                    Console.WriteLine("********");
+                }
+            }
+            Console.WriteLine("-----------------------");
+            
         }
 
         /*public override void ShowMessagesFor(String email)
@@ -505,10 +528,10 @@ namespace SE307Project
         public override String ToString()
         {
             String rate = Comments.Count == 0
-                ? ""
-                : ("Rate: " + CalculateAverageStars() + "/5"/* +
+                ? "- no rate yet -"
+                : (CalculateAverageStars() + "/5"/* +
                    "\nMostly Rated: " + CalculateMedianStars() + "/5"*/);
-            return "Bio:\n" + Bio + rate;
+            return "Bio:\n" + Bio + "Rate: " + rate;
         }
     }
 }

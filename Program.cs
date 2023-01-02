@@ -131,7 +131,7 @@ namespace SE307Project
 
                                         break;
                                     case "3":
-                                        Console.WriteLine("Which pet sitter do you want to comment and rate? Enter -1 to exit.");
+                                        Console.WriteLine("Enter the index of the pet sitter you want to see comments of, enter -1 to exit.");
                                         while (true)
                                         {
                                             int petSitterIndex = int.Parse(Console.ReadLine());
@@ -149,7 +149,12 @@ namespace SE307Project
                                                 }
                                                 else
                                                 {
-                                                    petOwner.MakeCommentToPetSitter(list[petSitterIndex - 1]);
+                                                    list[petSitterIndex - 1].ShowCommentsAndRates();
+                                                    Console.WriteLine("Do you want to make comment?");
+                                                    if (Console.ReadLine().ToUpper() == "Y")
+                                                    {
+                                                        petOwner.MakeCommentToPetSitter(list[petSitterIndex - 1]);
+                                                    }
                                                     break;
                                                 }
                                             }
@@ -211,13 +216,13 @@ namespace SE307Project
                         }
                         catch (FormatException e)
                         {
-                            Console.WriteLine("Please enter a valid choice");
+                            Console.WriteLine("Please enter a valid choice.");
                         }
 
                         switch (mainPageChoice)
                         {
                             case 1:
-                                petSitter.ReadRequestBox();
+                                petSitter.ReadRequests();
 
                                 xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
                                 xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
@@ -225,19 +230,15 @@ namespace SE307Project
                             case 2:
                                 user.ShowProfile();
                                 
-                                
-                                Console.WriteLine("1)Edit Profile");
-                                int edit = Int32.Parse(Console.ReadLine());
+                                Console.WriteLine("\nWould you like to edit your profile? (Y/N)");
 
-                                if (edit == 1)
+                                String editingChoice = Console.ReadLine();
+                                if (editingChoice.ToUpper()=="Y")
                                 {
                                     user.EditProfile();
                                     xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
                                 }
-                                else
-                                {
-                                    Console.WriteLine("Incorrect choice!");
-                                }
+                                
                                 break;
                             case 3:
                                 user.ReadMessages();

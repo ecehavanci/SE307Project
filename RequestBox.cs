@@ -30,7 +30,7 @@ namespace SE307Project
         public void DisplayRequestBox()
         {
             Console.WriteLine("----------- "+StatusEnum+ " Request Box -----------");
-            if (Requests.Count == 0)
+            if (IsEmpty())
                 Console.WriteLine("No Requests here!\n");
             else
             {
@@ -42,14 +42,9 @@ namespace SE307Project
             }
         }
 
-        public bool isEmpty()
+        public bool IsEmpty()
         {
-            if (Requests.Count == 0)
-            {
-                return true;
-            }
-
-            return false;
+            return Requests.Count == 0;
         }
 
         public void ReadRequest(int RequestNo)
