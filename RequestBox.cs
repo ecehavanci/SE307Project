@@ -42,12 +42,21 @@ namespace SE307Project
             }
         }
 
-        public Request ReadRequest(int RequestNo )
+        public bool isEmpty()
+        {
+            if (Requests.Count == 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void ReadRequest(int RequestNo)
         {
             if (RequestNo >= Requests.Count || RequestNo < 0)
                 throw new Exception("Incorrect Request selection!");
             Console.WriteLine(Requests[RequestNo].ToString());
-            return Requests[RequestNo];
         }
 
         public void ReceiveRequest(Request request)

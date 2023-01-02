@@ -167,9 +167,13 @@ namespace SE307Project
                                 xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 break;
                             case 2:
-                                user.EditProfile();
-                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
-                                xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
+                               
+                                    user.EditProfile();
+                                    xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
+                                    xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
+                               
+                                
+                                
                                 break;
                             case 3:
                                 user.ReadMessages();
@@ -194,7 +198,7 @@ namespace SE307Project
                     while (isLoggedIn)
                     {
                         Console.WriteLine("1) List request");
-                        Console.WriteLine("2) Edit profile");
+                        Console.WriteLine("2) View profile");
                         Console.WriteLine("3) Read messages");
                         Console.WriteLine("4) Sign out");
                         Console.WriteLine("5) Terminate the system");
@@ -219,8 +223,21 @@ namespace SE307Project
                                 xmlHandler.WritePetOwnerList(db.XmlOwnerFileName, db.PetOwnerList);
                                 break;
                             case 2:
-                                user.EditProfile();
-                                xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
+                                user.ShowProfile();
+                                
+                                
+                                Console.WriteLine("1)Edit Profile");
+                                int edit = Int32.Parse(Console.ReadLine());
+
+                                if (edit == 1)
+                                {
+                                    user.EditProfile();
+                                    xmlHandler.WritePetSitterList(db.XmlSitterFileName, db.PetSitterList);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Incorrect choice!");
+                                }
                                 break;
                             case 3:
                                 user.ReadMessages();
@@ -317,7 +334,26 @@ namespace SE307Project
                             while (true)
                             {
                                 Console.WriteLine("Password: ");
-                                newPassword = Console.ReadLine();
+                                newPassword = string.Empty;
+                                
+                                ConsoleKey key;
+                                do
+                                {
+                                    var keyInfo = Console.ReadKey(intercept: true);
+                                    key = keyInfo.Key;
+
+                                    if (key == ConsoleKey.Backspace && newPassword.Length > 0)
+                                    {
+                                        Console.Write("\b \b");
+                                        newPassword = newPassword[0..^1];
+                                    }
+                                    else if (!char.IsControl(keyInfo.KeyChar))
+                                    {
+                                        Console.Write("*");
+                                        newPassword += keyInfo.KeyChar;
+                                    }
+                                } while (key != ConsoleKey.Enter);
+                                Console.WriteLine("\n");
 
                                 if (newPassword.Length >= 6 && Regex.IsMatch(newPassword, @"\d") && Regex.IsMatch(newPassword, @"[A-Z]"))
                                 {
@@ -351,7 +387,27 @@ namespace SE307Project
                         Console.WriteLine("Email: ");
                         String email = Console.ReadLine();
                         Console.WriteLine("Password: ");
-                        String password = Console.ReadLine();
+                        String password = string.Empty;
+                        ConsoleKey key2;
+                        do
+                        {
+                            var keyInfo = Console.ReadKey(intercept: true);
+                            key2 = keyInfo.Key;
+
+                            if (key2 == ConsoleKey.Backspace && password.Length > 0)
+                            {
+                                Console.Write("\b \b");
+                                password = password[0..^1];
+                            }
+                            
+                            else if (!char.IsControl(keyInfo.KeyChar))
+                            {
+                                Console.Write("*");
+                                password += keyInfo.KeyChar;
+                            }
+                        } while (key2 != ConsoleKey.Enter);
+                        Console.WriteLine("\n");
+                        
                         try
                         {
                             //user = db.LogIn(email, password);
